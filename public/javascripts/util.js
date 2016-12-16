@@ -60,6 +60,7 @@ $(document)
 $(document)
 .on('input', '#quoteInput', function() {
 	var quoteValue = document.getElementById("quoteInput").innerHTML;
+	
 	if(quoteValue) {
 		document.getElementById("quotePlaceholder").style.display = "none"; // quote placeholer
 		document.getElementById("openQuote").style.display = "inline"; // left quote
@@ -69,9 +70,14 @@ $(document)
 .on('keyup', function(event) {
 	var quoteValue = document.getElementById("quoteInput").innerHTML;
   var key = event.keyCode || event.charCode;
+  
+  var lines = quoteValue.split(/\r|\r\n|\n/);
+  var count = lines.length;
 
+  /*alert($("br", "#quoteInput").length);*/
+  
   if( key == 8 || key == 46 ) {
-  	if($('#quoteInput').text().trim().length == 0) {
+  	if($('#quoteInput').text().trim().length == 0 && $("br", "#quoteInput").length == 1) {
   		document.getElementById("quotePlaceholder").style.display = "block"; // quote placeholer
   		document.getElementById("openQuote").style.display = "none"; // left quote
   		document.getElementById("closeQuote").style.display = "none";
