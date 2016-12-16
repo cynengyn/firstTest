@@ -1,0 +1,509 @@
+a, a:hover {
+	color: gray;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+a.panel-title {
+  color:#444;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+blockquote {
+	border: none;
+	padding: 0px 0px 0px 20px;
+	text-indent: -20px;
+	word-wrap: break-word;
+}
+
+blockquote p {
+	font-family: georgia, serif;
+	font-size: 48px;
+}
+
+blockquote p:before {
+	content: open-quote;
+}
+
+blockquote p:after {
+	content: close-quote;
+}
+
+blockquote a, div.panel-body a {
+	font-size: 13px;
+}
+
+blockquote footer {
+	color: #444;
+	font-size: 14px;
+}
+
+body {
+	background-color: #36465D;
+}
+
+/* neo post "Post: button disable style */
+.btn[disabled], .btn[disabled]:hover {  
+	background: #529ECC;
+	border: none;
+	color: #A9CFE6;	
+	cursor: default;
+	opacity: 1;
+}
+
+div.btn-group {
+	border-radius: 3px;
+}
+
+h1.panel-title {
+	font-family: Arial;
+  font-size: 36px;
+}
+
+/* h2.panel-title {
+  font-size: 30px;
+}
+
+h3.panel-title {
+  font-size: 24px;
+}
+
+h4.panel-title {
+  font-size: 18px
+}
+
+h5.panel-title {
+  font-size: 14px
+}
+
+h6.panel-title {
+  font-size: 10px;
+} */
+
+/* new quote post button */
+span.fa.fa-quote-left {
+	font-size: 35px;
+	margin-bottom: 3px;
+}
+
+/* new post buttons */
+span.glyphicon {	
+	color: gray;	
+	cursor: pointer;
+	font-size: 17px;
+	margin-left: 8px;
+	margin-right: 8px;
+}
+
+/* new posts buttons icons default size */
+span.glyphicon.glyphicon-text-size, span.glyphicon.glyphicon-camera,
+span.glyphicon.glyphicon-link, span.glyphicon.glyphicon-comment,
+span.glyphicon.glyphicon-headphones, span.glyphicon.glyphicon-facetime-video {
+	font-size: 35px;
+	margin: 0px;
+}
+
+/* new posts footer "options" dropdown menu position */
+ul.dropdown-menu-right {
+	left: 80.5%;
+	right: auto;
+}
+
+/* new post form "close" button default background and text color */
+.btn.btn-default.pull-left, .btn.btn-default.pull-left:active 
+.btn.btn-default.pull-left:focus, .btn.btn-default.pull-left:hover {
+	background: #939CA4;
+	border: none;
+	color: #F1F6F6;	
+}
+
+/* new posts buttons */
+.btn.btn-primary.btn-lg {
+	background: transparent;
+	border: none;
+	color: #696969;
+	font-size: 15px;
+	height: 99px;
+	opacity: 0.9;
+	width: 76px;
+}
+
+/* setting icon in new post dialog */
+.glyphicon.glyphicon-cog.pull-right {
+  font-size: 20px;
+}
+
+/* photo post responsive image */
+.img-responsive {
+  margin-bottom: 4px;
+  width: 100%;
+}
+
+/* search bar and search bar icon background default color */
+.input-group input#search, .input-group span#searchIcon {
+	background: #2F3D51;
+	border: none;	
+	-webkit-transition: background .55s ease;
+	-moz-transition: background .55s ease;
+	-ms-transition: background .55s ease;
+	-o-transition: background .55s ease;
+	transition: background .55s ease;
+}
+
+/* search bar background color changes to white when focus*/
+.input-group input#search:focus, .input-group input#search:active {
+	background: white;
+	box-shadow: none;
+	outline: none;
+}
+
+.panel.panel-default {
+  border:none;
+}
+
+.panel-default > .panel-heading {
+	background: white;
+	border: none;
+}
+
+.panel-body {
+	padding: 15px 15px 0px 15px;
+}
+
+.panel-footer {
+	background: white;
+	border: none;
+	text-align: right;
+}
+
+/* add another photo button */
+#addAnotherPhotoButton, #addAnotherPhotoFromWebButton, #addAgainAnotherPhotoFromWebButton {
+  background-color: #f2f2f2;
+  border-bottom: 2px dashed #cfcfcf;
+  border-top: 2px dashed #cfcfcf;
+  color: #989898;
+  cursor: pointer;
+  display: none;
+  font-size: 14px;
+  line-height: 24px;
+  margin-top: 1px;
+  padding-bottom: 8px;  
+  padding-top: 8px;
+  vertical-align: top;
+}
+
+#addAnotherPhotoFromWebDiv {
+  background-color: #ffffff;
+  border-bottom: 2px dashed #cfcfcf;
+  border-top: 2px dashed #cfcfcf;
+  color: #989898;
+  display: none;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 1px;
+  vertical-align: top;
+}
+
+#addAnotherPhotoFromWebInput {
+  border:none;
+  color: #464646;
+  padding: 0px 20px;
+  width:100%;
+  box-shadow: none;
+  resize: none;
+}
+
+#addAnotherPhotoIcon, #addAnotherPhotoFromWebIcon {
+  display: inline-block;
+  font-size: 24px;
+  height: 24px;
+  line-height: 24px;
+  vertical-align: top;
+  width: 24px;
+}
+
+#containerHoldPosts {
+  margin-top: 20px;
+}
+
+/* new photo panel body*/
+#newPhotoPostModalBody {
+  padding: 0px;
+}
+
+/* new photo upload panel */
+#newPhotoUploadPanel {
+  background-color: #f2f2f2;
+  border-bottom: 2px dashed #cfcfcf;
+  border-top: 2px dashed #cfcfcf;
+  color: #989898;
+  cursor: pointer;
+}
+
+/* post panel heading */
+#newPostPanelHead {
+  background: white;
+  border: none;
+  padding: 15px 15px;
+}
+
+/* post panel heading title */
+#newPostPanelHeadTitle {
+  color:#444;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+#newPostPanelFooter {
+  border: none;
+  padding: 15px 20px;
+}
+
+#newQuoteModalBody {
+  padding-top: 0px;
+}
+
+/*new photo upload caption*/
+#photoCaption {
+  border: none;
+  box-shadow: none;
+  display: none;
+  margin-top: 20px;
+  padding: 0px;
+  resize: none;
+}
+
+/* hide photo file <input> element */
+#photoFileInput {
+  display: none;
+}
+
+#photoTag {
+  border: none;
+  box-shadow: none;
+  display: none;
+  padding: 0px;
+}
+
+/* new photo upload left & right side panel */
+#photoUploadColumn, #photoWebColumn {
+  border-right: 1px solid #cfcfcf;
+  cursor: pointer;
+  float: left;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  padding: 42.5px;
+  text-align: center;
+  width: 50%;
+}
+
+/* disable mouse text selection on new photos upload panel */
+#photoUploadIcon, #photoUploadLabel, #photoWebIcon, #photoWebLabel {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+   user-select: none; /* Non-prefixed version, currently not supported by any browser */
+}
+
+#photoUploadPostDropDown {
+  margin-top: 8px;
+  left: -26%;
+  right: auto;
+}
+
+#photoUploadPostDropDown li > a {
+  color: #444444;
+}
+
+/* new photo upload right side panel position */
+#photoWebColumn {
+  float: right;
+}
+
+/* new photo upload left & right side panel icon size */
+#photoUploadIcon, #photoWebIcon {
+  font-size: 60px;
+}
+
+/* new photo upload left & right side panel icon and label font color */
+#photoUploadIcon, #photoWebIcon, #photoUploadLabel, #photoWebLabel {
+  color: #989898;
+}
+
+/* contenteditable div new quote input */
+#quoteInput {
+  background-color: transparent;
+  display: block;
+  border: none;
+  font-family: Georgia,serif;
+  font-size: 48px;
+  min-height: 71px;
+  padding: 0px;
+  padding-left: 24px;
+  position: relative;
+  outline: none;
+  top:0px;
+  word-wrap: break-word;
+  z-index: 2;
+}
+
+/* #quoteInput:empty, #quoteInput::-moz-placeholder:empty {
+  padding-left: 20px;
+} */
+
+#quoteInputTextAreaDiv {
+  /* padding-left: 20px; */
+}
+
+#quotePlaceholder {
+  color: #a2a2a2;
+  display: block;
+  font-family: Georgia,serif;
+  font-size: 48px;
+  padding-left: 0px;
+  position: absolute;
+  top: 0px;
+  z-index: 1;
+}
+
+#openQuote {
+  color: #464646;
+  /* content: "“"; */
+  display: none;
+  font-family: Georgia,serif;
+  font-size: 48px;
+  position: absolute;
+  top: 0px;
+  z-index: 2;
+}
+
+#closeQuote {
+  color: #464646;
+  display: none;
+  font-family: Georgia,serif;
+  font-size: 48px;
+  position: relative;
+  top: 0px;
+  z-index: 2;
+}
+
+/* #openQuote {
+  color: #464646;
+  content: "“";
+  display: none;
+  font-family: Georgia,serif;
+  font-size: 48px;
+  position: relative;
+} */
+
+/* #closeQuote:after {
+  color: #464646;
+  color: green;
+  content: "”";
+  font-family: Georgia,serif;
+  font-size: 48px;
+  position: relative;
+} */
+
+#quotePostBody {
+  padding-top: 0px;
+}
+
+#quoteSourceDiv {
+  min-height: 80px;
+  padding-left: 20px;
+  position: relative;
+}
+
+#quoteSourceDiv:before {
+  color: #464646;
+  content: "—";  
+  font-size: 14px;
+  margin-left: -20px;
+  position: absolute;
+}
+
+#quoteSourceInput {
+  border:none;
+  box-shadow: none;
+  padding: 0px;
+  resize: none;
+}
+
+/* new qutoe tag input */
+#quoteTag {
+  border: none;
+  box-shadow: none;
+  font-size: 13px;
+  padding:0px;
+}
+
+/* new text post textarea */
+#textAreaPost {
+  border: 1px solid white;
+  box-shadow: none;
+  margin-bottom:5px;
+  min-height: 80px;
+  padding: 0px;
+  resize: none;
+}
+
+/* text post title */
+#textPostTitle {
+  background: white;
+  border: none;
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+
+/* new text post text tag placeholder */
+#textTag, #textTag::-moz-placeholder {  
+  border: none;
+  box-shadow: none;
+  font-family: Gibson,Helvetica Neue,HelveticaNeue,Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  padding: 0px;
+}
+
+/* new text post title textarea */
+#textTitle {
+  border: none;
+  box-shadow: none;
+  padding: 0px;
+  resize: none;
+}
+
+/* new text post text title placeholder */
+#textTitle, #textTitle::-moz-placeholder {
+  font-family: Gibson,Helvetica Neue,HelveticaNeue,Helvetica,Arial,sans-serif;
+  font-size: 36px;
+  font-weight: 400;  
+}
+
+/* new photo from web url input */
+#urlPhotoUploadInput {
+  border: none;
+  color: #464646;
+  padding: 20px;
+  width: 100%;
+  box-shadow: none;
+  resize: none;
+}
+
+/* new photo from web url input panel */
+#urlPhotoUploadPanel {  
+  border-bottom: 2px dashed #cfcfcf;
+  border-top: 2px dashed #cfcfcf;
+  color: #989898;
+  display: none;
+}
+/* new photo from web url input div */
+#urlPhotoUploadPanelDiv {
+  padding-bottom: 63px;
+  padding-left: 0px;
+  padding-right: 0px;  
+  padding-top: 63px;
+}

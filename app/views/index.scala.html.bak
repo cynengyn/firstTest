@@ -1,0 +1,66 @@
+@*
+* This template takes a single argument, a String containing a
+* message to display.
+*@
+@(message: String)
+@*
+* Call the `main` template with two arguments. The first
+* argument is a `String` with the title of the page, the second
+* argument is an `Html` object containing the body of the page.
+*@
+@main("First Test") {
+	<!DOCTYPE html>
+	<html lang="en">
+	  <head>
+	    <title>Bootstrap Example</title>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	    <script src="assets/javascripts/util.js"></script>
+	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/main.css">
+	    <!-- jQuery Bootstrap File Dialog plugin's files -->
+	    <link href="assets/stylesheets/bootstrap.fd.css" rel="stylesheet">
+	    <script src="assets/javascripts/bootstrap.fd.js"></script>
+	    <script src="assets/javascripts/upload.js"></script>
+	  </head>
+	  <body>
+	    <div class="container">
+	      <br>
+	      <form>
+	        <div class="input-group" id="searchBar">
+	          <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+	          <input type="text" class="form-control" placeholder="Search">
+	        </div>
+	      </form>
+	      <br>
+	      <div class="btn-group">
+	        <button type="button" class="btn btn-primary" onclick="textPostModal()" data-toggle="modal" data-target="#textModal">Text</button>
+	        <!-- Text Button Modal -->
+	        <div class="modal fade" id="textModal" role="dialog">
+	          <div class="modal-dialog" id="textModalDialog">
+	            <!-- util.js textPostModal() -->
+	          </div>
+	        </div>
+	        <button type="button" class="btn btn-primary">Photo</button>
+	        <button type="button" class="btn btn-primary" onclick="quotePostModal()" data-toggle="modal" data-target="#quoteModal">Quote</button>
+	        <!-- Quote Button Modal -->
+	        <div class="modal fade" id="quoteModal" role="dialog">
+	          <div class="modal-dialog" id="quoteModalDialog">
+	            <!-- util.js quotePostModal() -->
+	          </div>
+	        </div>
+	        <button type="button" class="btn btn-primary">Link</button>
+	        <button type="button" class="btn btn-primary">Chat</button>
+	        <button type="button" class="btn btn-primary">Audio</button>
+	        <button type="button" class="btn btn-primary">Video</button>
+	        <button id="open_btn" class="btn btn-primary" onclick="uploadDialog()">Open dialog</button>
+	      </div>
+	    </div>
+	    <div id="postDiv">
+	      <!-- util.js addNewPost() -->
+	    </div>
+	  </body>
+	</html>
+}
