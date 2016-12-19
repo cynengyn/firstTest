@@ -100,26 +100,15 @@ Quote</a>
 									  </div>
 									  <div class="modal-body" id="newQuoteModalBody">
 									    <form role="form">
-									    
-									    
-									    	<!-- <div id="quoteInputDiv" style="z-index: 3;position: relative;display:block;">
-									    		<div id="quoteInputTextAreaDiv" style="background-color:transparent;position: relative;z-index: 2;">
-									        	<textarea class="form-control" id="quoteInput" rows="1" data-min-rows="1" style="position: absolute;display:inline;padding-left:24px;border:1px solid red;background:transparent;"></textarea> -->
-								        	<div id="openQuote">“</div>
-								        	<div id="quoteInput" contenteditable="true"></div>
-								        	<!-- <div id="closeQuote">”</div> -->
-								        		<!-- <div id="closeQuote" style="display:inline;position: absolute;z-index: 3;"></div> -->
-									        								        	
-									        <!-- </div>
-									        
-									      </div> -->
-									      <!-- <div id="quoteDiv" style="position:relative;">
-								        	<textarea class="form-control" id="quoteInput" rows="1" data-min-rows="1" style="z-index: 2;position:relative;text-indent:25px; border:none; box-shadow: none; padding: 0px; resize:none;background:transparent;"></textarea>
-							        	</div> -->
-									      <div id="quotePlaceholder">“Quote”</div>
-									      
+							        	<div id="openQuote">“</div>
+							        	<div id="quoteInputDiv" onclick="focusQuoteInput()">
+								        	<span id="quoteInput" onclick="" contenteditable="true"></span>
+													<div id="closeQuote">”</div>
+							        	</div>
+									      <div id="quotePlaceholder" onclick="focusQuoteInput()">“Quote”</div>									      
 								        <div id="quoteSourceDiv">
-								        	<textarea class="form-control" id="quoteSourceInput" placeholder="Source" rows="1" data-min-rows="1"></textarea>
+								        	<!-- <textarea class="form-control" id="quoteSourceInput" placeholder="Source" rows="1" data-min-rows="1"></textarea> -->
+								        	<span id="quoteSourceInput" contenteditable="true" style="display:block;min-height: 80px;outline: none;word-wrap: break-word;"></span>
 							        	</div>
 								        <input class="form-control" id="quoteTag" placeholder="#tags">
 									    </form>

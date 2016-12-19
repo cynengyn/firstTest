@@ -56,145 +56,96 @@ $(document)
   this.rows = minRows + rows + 2; // plus 2 rows to avoid issues
 });
 
+/*new text post text input auto-expand*/
+$(document)
+.one('focus', '#quoteSourceInput', function() {
+  var savedValue = this.value;
+  this.value = '';
+  this.baseScrollHeight = this.scrollHeight;
+  this.value = savedValue;
+})
+.on('input', '#quoteSourceInput', function() {
+  var minRows = this.getAttribute('data-min-rows') | 0, rows;
+  this.rows = minRows;
+  rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 20); // 20 for rows="1" data-min-rows="1" without issues
+  this.rows = minRows + rows + 2; // plus 2 rows to avoid issues
+});
+
 /*hide and show quote placeholder and quotation mark*/
 $(document)
 .on('input', '#quoteInput', function() {
 	var quoteValue = document.getElementById("quoteInput").innerHTML;
 	
 	if(quoteValue) {
-		document.getElementById("quotePlaceholder").style.display = "none"; // quote placeholer
-		document.getElementById("openQuote").style.display = "inline"; // left quote
-		document.getElementById("closeQuote").style.display = "inline";
+		document.getElementById("quotePlaceholder").style.display = "none"; // hide quote placeholer
+		document.getElementById("openQuote").style.display = "inline"; // show left quote
+		document.getElementById("closeQuote").style.display = "inline";  // show right quote
 	}	
 })
 .on('keyup', function(event) {
-	var quoteValue = document.getElementById("quoteInput").innerHTML;
+	var quoteValue = document.getElementById("quoteInput");
   var key = event.keyCode || event.charCode;
-  
-  var lines = quoteValue.split(/\r|\r\n|\n/);
-  var count = lines.length;
 
-  /*alert($("br", "#quoteInput").length);*/
+  /*when backspace || delete key is pressed*/
+  if(key == 8 || key == 46) {
+  	// when #quoteInput is empty && has only one line && caret position is 0
+  	if($('#quoteInput').text().trim().length == 0 && $("br", "#quoteInput").length == 0 && getCaretPosition(quoteValue) == 0) {
+  		document.getElementById("quotePlaceholder").style.display = "block"; // show quote placeholer
+  		document.getElementById("openQuote").style.display = "none"; // hide left quote
+  		document.getElementById("closeQuote").style.display = "none"; // hide right quote
+  	}
+  }
   
-  if( key == 8 || key == 46 ) {
-  	if($('#quoteInput').text().trim().length == 0 && $("br", "#quoteInput").length == 1) {
-  		document.getElementById("quotePlaceholder").style.display = "block"; // quote placeholer
-  		document.getElementById("openQuote").style.display = "none"; // left quote
-  		document.getElementById("closeQuote").style.display = "none";
+  /*clear <br type=_moz> when is created after backspace || enter || delete key pressed*/
+  if(key == 8 || key == 13 || key == 46) {
+  	var inputs = document.getElementsByTagName('br');
+
+  	for(var i = 0; i < inputs.length; i++) {
+      if(inputs[i].getAttribute("type") == '_moz') {
+      	inputs[i].remove();
+      	
+      	var el = document.getElementById("quoteSourceInput");
+      	var range = document.createRange();
+      	var sel = window.getSelection();
+      	range.setStart(el.childNodes[0], 0);
+      	range.collapse(true);
+      	sel.removeAllRanges();
+      	sel.addRange(range);
+      }
   	}
   }
 });
 
-
-
-$(document)
-.on('keydown', '#quoteInput', function(objEvent) {
-  	if (objEvent.ctrlKey) {          
-      if (objEvent.keyCode == 65) {
-          return false;
-      }            
-  	}
-});
-
-
-/*new quote post include quotes when typing*/
-/*$(document)*/
-/*.on('click', '#quoteInput', function() {
-	var quoteValue = document.getElementById("quoteInput").value;
-	var textarea = document.getElementById("quoteInput");
-	var CaretPos = 0;
-	
-	if (document.getElementById("quoteInput").value && document.getElementById("quoteInput").value.match(/^“/) && document.getElementById("quoteInput").value.match(/”$/)) {
-		if (quoteValue.selectionStart || quoteValue.selectionStart == '0') {
-      CaretPos = quoteValue.selectionStart;
-      textarea.focus();
-      textarea.setSelectionRange(CaretPos, CaretPos);
-		}
-	}
-	
-	moveCaretToEnd(textarea);
-})*/
-/*.on('keydown', function(event) {
-	var quoteValue = document.getElementById("quoteInput").value;
-  var key = event.keyCode || event.charCode;
-  
-  if( key == 8 || key == 46 ) {
-  	if(!quoteValue)
-  		document.getElementById("quoteInput").style.textIndent = "25px";
-  	if(quoteValue.length == 1)
-    	document.getElementById("quoteInput").style.textIndent = "25px";
+/*get caret position in contentEditable div*/
+function getCaretPosition(editableDiv) {
+  var caretPos = 0,
+    sel, range;
+  if (window.getSelection) {
+    sel = window.getSelection();
+    if (sel.rangeCount) {
+      range = sel.getRangeAt(0);
+      if (range.commonAncestorContainer.parentNode == editableDiv) {
+        caretPos = range.endOffset;
+      }
+    }
+  } else if (document.selection && document.selection.createRange) {
+    range = document.selection.createRange();
+    if (range.parentElement() == editableDiv) {
+      var tempEl = document.createElement("span");
+      editableDiv.insertBefore(tempEl, editableDiv.firstChild);
+      var tempRange = range.duplicate();
+      tempRange.moveToElementText(tempEl);
+      tempRange.setEndPoint("EndToEnd", range);
+      caretPos = tempRange.text.length;
+    }
   }
-})
-.on('input', '#quoteInput', function() {*/
-	/*if(document.getElementById("quoteInput")) {
-		$(document.getElementById("quoteInput")).css("text-indent", "0px");
-	}
-	else {
-		$(document.getElementById("quoteInput")).css("text-indent", "25px");
-	}*/
-	/*var quoteValue = document.getElementById("quoteInput").value;
-	var textarea = document.getElementById("quoteInput");
-	
-	if(quoteValue) {
-	  if (!quoteValue.match(/^“/) && !quoteValue.match(/”$/)) {
-	  	document.getElementById("quoteInput").style.textIndent = "0px";
-	    quoteValue = '“' + quoteValue + '”';
-	    document.getElementById("quoteInput").value = quoteValue;
-	  	moveCaretToEnd(textarea);
-	  }*/
+  return caretPos;
+}
 
-	  /*else if(quoteValue.match(/^“/) && quoteValue.match(/”$/) && quoteValue.length == 2) {
-	    quoteValue = '';
-	    document.getElementById("quoteInput").value = quoteValue;
-	  }
-	  
-	  else if(!quoteValue.match(/^“/) && quoteValue.match(/”$/)) {
-	  	quoteValue = '“' + quoteValue;
-	  	document.getElementById("quoteInput").value = quoteValue;
-	  	resetCursor(textarea);
-	  }
-	  
-	  else if(quoteValue.match(/^“/) && !quoteValue.match(/”$/)) {
-	  	quoteValue += '”';
-	  	document.getElementById("quoteInput").value = quoteValue;
-	  	moveCaretToEnd(textarea);
-	  }*/
-	  
-	  /*if(!quoteValue) {
-	  	quoteValue = '';
-	    document.getElementById("quoteInput").value = quoteValue;
-	  	document.getElementById("quoteInput").style.textIndent = "25px";
-	  }*/
-	  /*if (document.getElementById("quoteInput").value.length < 2)
-	    quoteValue = document.getElementById("quoteInput").value + '“';*/
-
-	  /*document.getElementById("quoteInput").value = quoteValue;*/
-	  /*moveCaretToEnd(textarea);*//*}*/
-	/*}
-});*/
-
-/*when open quote is deleted set cursor to second position from start*/
-/*function resetCursor(txtElement) { 
-  if (txtElement.setSelectionRange) { 
-      txtElement.focus(); 
-      txtElement.setSelectionRange(1, 1); 
-  } else if (txtElement.createTextRange) { 
-      var range = txtElement.createTextRange();  
-      range.moveStart('character', 1); 
-      range.select(); 
-  } 
-}*/
-/*when close quote is deleted set cursor to one position before end*/
-/*function moveCaretToEnd(el) {
-  if (typeof el.selectionStart == "number") {
-      el.selectionStart = el.selectionEnd = el.value.length-1	;
-  } else if (typeof el.createTextRange != "undefined") {
-      el.focus();
-      var range = el.createTextRange();
-      range.collapse(false);
-      range.select();
-  }
-}*/
+/*focus when click on the the quote input area*/
+function focusQuoteInput() {
+	$('#quoteInput').focus();
+}
 
 /*preview photos selected by user*/
 function handlePhotoFiles(files) {
@@ -425,7 +376,6 @@ function addNewTextPost() {
 	divTextPanel.appendChild(divTextPanelBody);
 	divTextPanel.appendChild(divTextPanelFooter);
 	
-	/*document.getElementById("postColumn").appendChild(divTextPanel);*/
 	var postColumnList = document.getElementById("postColumn");
 	postColumnList.insertBefore(divTextPanel, postColumnList.childNodes[0]);
 }
@@ -470,7 +420,7 @@ function addNewQuotePost() {
 	spanGlyphiconCog.setAttribute('Title', 'Options');
 	
 	aQuotePanelTitle.innerHTML = "groovypeacetimetravel";
-	pQuote.innerHTML = $('#quoteInput').val();
+	pQuote.innerHTML = $('#quoteInput').html();
 	footerQuote.innerHTML = $('#quoteSourceInput').val();
 	aQuoteTag.innerHTML = "#" + $('#quoteTag').val();
 	aDropdownMenuEdit.innerHTML = "Edit";
@@ -495,12 +445,8 @@ function addNewQuotePost() {
 	divQuotePanel.appendChild(divQuotePanelBody);
 	divQuotePanel.appendChild(divQuotePanelFooter);
 	
-	/*document.getElementById("postColumn").appendChild(newQuoteModalContentDiv);*/
 	var postColumnList = document.getElementById("postColumn");
 	postColumnList.insertBefore(divQuotePanel, postColumnList.childNodes[0]);
-	
-	/*var newParagraphModal = document.createElement("p");
-	document.getElementById("postColumn").appendChild(newParagraphModal);*/
 }
 
 function addNewPhotoPost() {
@@ -568,7 +514,6 @@ function addNewPhotoPost() {
 	divPhotoPanel.appendChild(divPhotoTextPanelBody);
 	divPhotoPanel.appendChild(divPhotoPanelFooter);
 	
-	/*document.getElementById("postColumn").appendChild(divPhotoPanel);*/
 	var postColumnList = document.getElementById("postColumn");
 	postColumnList.insertBefore(divPhotoPanel, postColumnList.childNodes[0]);
 	
@@ -619,19 +564,40 @@ function textPostModal() {
 function quotePostModal() {
 	var quotePost = [
 		'<div class="modal-content">',
-		  '<div class="modal-body">',
-		    '<form role="form" id="textForm">',
-		      '<div class="form-group">',
-		        '<input id="quoteInput" type="text" class="form-control input-lg" name="quote" placeholder="&#34;Quote&#34;"><br>',
-		        '<input id="quoteSourceInput" type="text" class="form-control input-sm" name="source" placeholder="Source"><br>',
-		        '<input id="quoteTag" type="text" class="form-control" name="tags" placeholder="#tags">',
-		      '</div>',
-		    '</form>',
-		  '</div>',
-		  '<div class="modal-footer">',
-		    '<button class="btn btn-default pull-left" data-dismiss="modal">Close</button>',
-		    '<button onclick="addNewQuotePost()" data-dismiss="modal" class="btn btn-primary pull-right" disabled="">Post</button>',
-		  '</div>',
+		'	<div class="panel-heading" id="newPostPanelHead">',
+		'    <a class="panel-title" id="newPostPanelHeadTitle">groovypeacetimetravel</a>',
+		'    <span class="glyphicon glyphicon-cog pull-right"></span>',
+		'  </div>',
+		'  <div class="modal-body" id="newQuoteModalBody">',
+		'    <form role="form">',
+	  '    	<div id="openQuote">“</div>',
+	  '    	<div id="quoteInputDiv" onclick="focusQuoteInput()">',
+	  '      	<span id="quoteInput" onclick="" contenteditable="true"></span>',
+		'				<div id="closeQuote">”</div>',
+	  '    	</div>',
+		'      <div id="quotePlaceholder" onclick="focusQuoteInput()">“Quote”</div>',									      
+	  '      <div id="quoteSourceDiv">',
+	  '      	<textarea class="form-control" id="quoteSourceInput" placeholder="Source" rows="1" data-min-rows="1"></textarea>',
+	  '    	</div>',
+	  '      <input class="form-control" id="quoteTag" placeholder="#tags">',
+		'    </form>',
+		'  </div>',
+	  '	<div class="modal-footer" id="newPostPanelFooter">',
+	  '	  <button class="btn btn-default pull-left" data-dismiss="modal">Close</button>',
+	  '	  <div class="btn-group">',
+	  '	    <button class="btn btn-primary" data-dismiss="modal" onclick="addNewQuotePost()">Post</button>',
+	  '	    <button class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">',
+		'				<span class="caret"></span>',
+		'			</button>',
+	  '	    <ul class="dropdown-menu" id="photoUploadPostDropDown">',
+	  '	      <li><a href="">Post now</a></li>',
+	  '	      <li><a href="">Add to queue</a></li>',
+	  '	      <li><a href="">Save as draft</a></li>',
+	  '	      <li><a href="">Post privately</a></li>',
+	  '	      <li><a href="">Schedule</a></li>',
+	  '	    </ul>',
+	  '	  </div>',
+	  '	</div>',
 		'</div>'
 	].join('');
 		

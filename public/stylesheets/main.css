@@ -37,13 +37,14 @@ blockquote a, div.panel-body a {
 blockquote footer {
 	color: #444;
 	font-size: 14px;
+	white-space: pre-wrap;
 }
 
 body {
 	background-color: #36465D;
 }
 
-/* neo post "Post: button disable style */
+/* new post "Post" button disable style */
 .btn[disabled], .btn[disabled]:hover {  
 	background: #529ECC;
 	border: none;
@@ -60,26 +61,6 @@ h1.panel-title {
 	font-family: Arial;
   font-size: 36px;
 }
-
-/* h2.panel-title {
-  font-size: 30px;
-}
-
-h3.panel-title {
-  font-size: 24px;
-}
-
-h4.panel-title {
-  font-size: 18px
-}
-
-h5.panel-title {
-  font-size: 14px
-}
-
-h6.panel-title {
-  font-size: 10px;
-} */
 
 /* new quote post button */
 span.fa.fa-quote-left {
@@ -333,10 +314,10 @@ ul.dropdown-menu-right {
   color: #989898;
 }
 
-/* contenteditable div new quote input */
+/* contenteditable div new quote input */ /* display default value: block; */
 #quoteInput {
   background-color: transparent;
-  display: block;
+  display: inline;
   border: none;
   font-family: Georgia,serif;
   font-size: 48px;
@@ -347,15 +328,7 @@ ul.dropdown-menu-right {
   outline: none;
   top:0px;
   word-wrap: break-word;
-  z-index: 2;
-}
-
-/* #quoteInput:empty, #quoteInput::-moz-placeholder:empty {
-  padding-left: 20px;
-} */
-
-#quoteInputTextAreaDiv {
-  /* padding-left: 20px; */
+  z-index: 3;
 }
 
 #quotePlaceholder {
@@ -371,10 +344,10 @@ ul.dropdown-menu-right {
 
 #openQuote {
   color: #464646;
-  /* content: "“"; */
   display: none;
   font-family: Georgia,serif;
   font-size: 48px;
+  min-height: 71px;
   position: absolute;
   top: 0px;
   z-index: 2;
@@ -385,28 +358,18 @@ ul.dropdown-menu-right {
   display: none;
   font-family: Georgia,serif;
   font-size: 48px;
+  min-height: 71px;
   position: relative;
   top: 0px;
   z-index: 2;
+  
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+   user-select: none; /* Non-prefixed version, currently not supported by any browser */
 }
-
-/* #openQuote {
-  color: #464646;
-  content: "“";
-  display: none;
-  font-family: Georgia,serif;
-  font-size: 48px;
-  position: relative;
-} */
-
-/* #closeQuote:after {
-  color: #464646;
-  color: green;
-  content: "”";
-  font-family: Georgia,serif;
-  font-size: 48px;
-  position: relative;
-} */
 
 #quotePostBody {
   padding-top: 0px;
@@ -429,9 +392,19 @@ ul.dropdown-menu-right {
 #quoteSourceInput {
   border:none;
   box-shadow: none;
+  display:block;
+  min-height: 80px;
   padding: 0px;
   resize: none;
+  outline: none;
+  word-wrap: break-word;
 }
+
+#quoteSourceInput:empty::before {
+  color: #a2a2a2;
+  content: 'Source';
+}
+
 
 /* new qutoe tag input */
 #quoteTag {
