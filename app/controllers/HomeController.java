@@ -31,12 +31,16 @@ public class HomeController extends Controller {
     }
     
   	public Result textPost()  {
+  	
   		DynamicForm requestData = formFactory.form().bindFromRequest();
   		String title = requestData.get("title");
   		String text = requestData.get("text");
   		String tag = requestData.get("tag");
 
-  		return ok (index.render(text));
+  		return ok ("ok this is a test");
   	}
+  	
+  	
+  	
 
 }

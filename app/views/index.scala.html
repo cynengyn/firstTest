@@ -19,18 +19,13 @@
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	    <script src="assets/javascripts/util.js"></script>
+	    <script src="assets/javascripts/text_area_auto_expand.js"></script>
+	    <script src="assets/javascripts/text.js"></script>
+	    <script src="assets/javascripts/photo.js"></script>
+	    <script src="assets/javascripts/quote.js"></script>
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/main.css">
 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-			<!-- material icons font -->
-			<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-	    <!-- jQuery Bootstrap File Dialog plugin's files -->
-	    <link href="assets/stylesheets/bootstrap.fd.css" rel="stylesheet">
-	    <script src="assets/javascripts/bootstrap.fd.js"></script>
-	    <script src="assets/javascripts/upload.js"></script>
-	    
-	    <!-- <script src="assets/javascripts/imageuploadify.js"></script>
-	    <link href="assets/stylesheets/imageuploadify.min.css" rel="stylesheet"> -->
+			<!-- material icons font --><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	  </head>
 	  <body>
 	  
@@ -62,7 +57,7 @@
 			        <!-- photo button -->
 			        <a class="btn btn-primary btn-lg" onclick="photoPostModal()" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-camera"></span><br>Photo</a>			        
 			        <!-- quote button -->
-			        <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalFade"><span class="fa fa-quote-left" aria-hidden="true"></span><br>
+			        <a class="btn btn-primary btn-lg" onclick="quotePostModal()" data-toggle="modal" data-target="#modalFade"><span class="fa fa-quote-left" aria-hidden="true"></span><br>
 Quote</a>			        
 			        
 			        <a class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-link"></span><br>Link</a>
@@ -80,10 +75,10 @@ Quote</a>
 									    <a class="panel-title" id="newPostPanelHeadTitle">groovypeacetimetravel</a>
 									    <span class="glyphicon glyphicon-cog pull-right"></span>
 									  </div>
-									  <div class="modal-body">
+									  <div class="modal-body" id="newTextModalBody">
 									    <form role="form">
-									        <textarea class="form-control" id="textTitle" placeholder="Title" rows="1" data-min-rows="1"></textarea>
-									        <textarea class="form-control" id="textAreaPost" placeholder="Your text here" rows="1" data-min-rows="1"></textarea>
+									        <span id="textTitle" contenteditable="true"></span>
+									        <span id="textAreaPost" contenteditable="true"></span>
 									        <input class="form-control" id="textTag" placeholder="#tags" />
 									    </form>
 									  </div>
@@ -91,9 +86,15 @@ Quote</a>
 									    <button class="btn btn-default pull-left" data-dismiss="modal">Close</button>
 									    <button onclick="addNewTextPost()" data-dismiss="modal" class="btn btn-primary pull-right">Post</button>
 									  </div>
-									</div> -->
+									</div>
 									
-									<div class="modal-content">
+									<script>
+										$("#modalFade").on("shown.bs.modal", function(){
+									    $(this).find('#textAreaPost').focus();
+									  });
+									</script> -->
+									
+									<!-- <div class="modal-content">
 										<div class="panel-heading" id="newPostPanelHead">
 									    <a class="panel-title" id="newPostPanelHeadTitle">groovypeacetimetravel</a>
 									    <span class="glyphicon glyphicon-cog pull-right"></span>
@@ -107,8 +108,7 @@ Quote</a>
 							        	</div>
 									      <div id="quotePlaceholder" onclick="focusQuoteInput()">“Quote”</div>									      
 								        <div id="quoteSourceDiv">
-								        	<!-- <textarea class="form-control" id="quoteSourceInput" placeholder="Source" rows="1" data-min-rows="1"></textarea> -->
-								        	<span id="quoteSourceInput" contenteditable="true" style="display:block;min-height: 80px;outline: none;word-wrap: break-word;"></span>
+								        	<span id="quoteSourceInput" contenteditable="true"></span>
 							        	</div>
 								        <input class="form-control" id="quoteTag" placeholder="#tags">
 									    </form>
@@ -135,7 +135,7 @@ Quote</a>
 									$("#modalFade").on("shown.bs.modal", function(){
 								    $(this).find('#quoteInput').focus();
 								  });
-									</script>
+									</script> -->
 									
 									<!-- <div class="modal-content">
 										<div class="panel-heading" id="newPostPanelHead">

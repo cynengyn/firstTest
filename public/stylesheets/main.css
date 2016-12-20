@@ -30,6 +30,11 @@ blockquote p:after {
 	content: close-quote;
 }
 
+/* ignore the last break line in the quote post content */
+blockquote p > br:last-child {
+	display:none;
+}
+
 blockquote a, div.panel-body a {
 	font-size: 13px;
 }
@@ -37,7 +42,7 @@ blockquote a, div.panel-body a {
 blockquote footer {
 	color: #444;
 	font-size: 14px;
-	white-space: pre-wrap;
+	/* white-space: pre-wrap; */
 }
 
 body {
@@ -51,6 +56,11 @@ body {
 	color: #A9CFE6;	
 	cursor: default;
 	opacity: 1;
+}
+
+/* ignore <br type="_moz"> */
+br[type="_moz"] {
+  display: none;
 }
 
 div.btn-group {
@@ -245,6 +255,11 @@ ul.dropdown-menu-right {
   padding-top: 0px;
 }
 
+#newTextModalBody {
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+
 /*new photo upload caption*/
 #photoCaption {
   border: none;
@@ -321,9 +336,9 @@ ul.dropdown-menu-right {
   border: none;
   font-family: Georgia,serif;
   font-size: 48px;
+  left: 0px;
   min-height: 71px;
-  padding: 0px;
-  padding-left: 24px;
+  padding: 0px 0px 0px 24px;
   position: relative;
   outline: none;
   top:0px;
@@ -390,9 +405,9 @@ ul.dropdown-menu-right {
 }
 
 #quoteSourceInput {
-  border:none;
+  border: none;
   box-shadow: none;
-  display:block;
+  display: block;
   min-height: 80px;
   padding: 0px;
   resize: none;
@@ -405,7 +420,6 @@ ul.dropdown-menu-right {
   content: 'Source';
 }
 
-
 /* new qutoe tag input */
 #quoteTag {
   border: none;
@@ -416,12 +430,24 @@ ul.dropdown-menu-right {
 
 /* new text post textarea */
 #textAreaPost {
-  border: 1px solid white;
+  border: none;
   box-shadow: none;
+  display: block;
   margin-bottom:5px;
+  margin-top: 5px;
   min-height: 80px;
   padding: 0px;
-  resize: none;
+  outline: none;
+  word-wrap: break-word;
+}
+
+#textAreaPost:empty::before {
+  color: #a2a2a2;
+  content: 'Your text here';
+}
+
+#textPostTitle h1 > br:last-child, #textPostTitle div.panel-body > br:last-child {
+	display:none;
 }
 
 /* text post title */
@@ -445,12 +471,20 @@ ul.dropdown-menu-right {
 #textTitle {
   border: none;
   box-shadow: none;
+  display: block;
+  min-height: 42px;
   padding: 0px;
-  resize: none;
+  outline: none;
+  word-wrap: break-word;
+}
+
+#textTitle:empty::before {
+  color: #a2a2a2;
+  content: 'Title';
 }
 
 /* new text post text title placeholder */
-#textTitle, #textTitle::-moz-placeholder {
+#textTitle {
   font-family: Gibson,Helvetica Neue,HelveticaNeue,Helvetica,Arial,sans-serif;
   font-size: 36px;
   font-weight: 400;  

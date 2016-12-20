@@ -11,302 +11,6 @@ $(document).ready(function(){
 		});
 });
 
-/*text area auto-expand*/
-$(document)
-	.one('focus.form-control', 'textarea.form-control', function() {
-	  var savedValue = this.value;
-	  this.value = '';
-	  this.baseScrollHeight = this.scrollHeight;
-	  this.value = savedValue;
-	})
-	.on('input.form-control', 'textarea.form-control', function() {
-	  var minRows = this.getAttribute('data-min-rows') | 0, rows;
-	  this.rows = minRows;
-	  rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 20); // 20 for rows="1" data-min-rows="1" without issues
-	  this.rows = minRows + rows;
-	});
-
-/*new text post title input auto-expand*/
-$(document)
-.one('focus', '#textTitle', function() {
-  var savedValue = this.value;
-  this.value = '';
-  this.baseScrollHeight = this.scrollHeight;
-  this.value = savedValue;
-})
-.on('input', '#textTitle', function() {
-  var minRows = this.getAttribute('data-min-rows') | 0, rows;
-  this.rows = minRows;
-  rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 51.5); // 51.5 for rows="1" data-min-rows="1" font-size:36px without issues
-  this.rows = minRows + rows;
-});
-
-/*new text post text input auto-expand*/
-$(document)
-.one('focus', '#textAreaPost', function() {
-  var savedValue = this.value;
-  this.value = '';
-  this.baseScrollHeight = this.scrollHeight;
-  this.value = savedValue;
-})
-.on('input', '#textAreaPost', function() {
-  var minRows = this.getAttribute('data-min-rows') | 0, rows;
-  this.rows = minRows;
-  rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 20); // 20 for rows="1" data-min-rows="1" without issues
-  this.rows = minRows + rows + 2; // plus 2 rows to avoid issues
-});
-
-/*new text post text input auto-expand*/
-$(document)
-.one('focus', '#quoteSourceInput', function() {
-  var savedValue = this.value;
-  this.value = '';
-  this.baseScrollHeight = this.scrollHeight;
-  this.value = savedValue;
-})
-.on('input', '#quoteSourceInput', function() {
-  var minRows = this.getAttribute('data-min-rows') | 0, rows;
-  this.rows = minRows;
-  rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 20); // 20 for rows="1" data-min-rows="1" without issues
-  this.rows = minRows + rows + 2; // plus 2 rows to avoid issues
-});
-
-/*hide and show quote placeholder and quotation mark*/
-$(document)
-.on('input', '#quoteInput', function() {
-	var quoteValue = document.getElementById("quoteInput").innerHTML;
-	
-	if(quoteValue) {
-		document.getElementById("quotePlaceholder").style.display = "none"; // hide quote placeholer
-		document.getElementById("openQuote").style.display = "inline"; // show left quote
-		document.getElementById("closeQuote").style.display = "inline";  // show right quote
-	}	
-})
-.on('keyup', function(event) {
-	var quoteValue = document.getElementById("quoteInput");
-  var key = event.keyCode || event.charCode;
-
-  /*when backspace || delete key is pressed*/
-  if(key == 8 || key == 46) {
-  	// when #quoteInput is empty && has only one line && caret position is 0
-  	if($('#quoteInput').text().trim().length == 0 && $("br", "#quoteInput").length == 0 && getCaretPosition(quoteValue) == 0) {
-  		document.getElementById("quotePlaceholder").style.display = "block"; // show quote placeholer
-  		document.getElementById("openQuote").style.display = "none"; // hide left quote
-  		document.getElementById("closeQuote").style.display = "none"; // hide right quote
-  	}
-  }
-  
-  /*clear <br type=_moz> when is created after backspace || enter || delete key pressed*/
-  if(key == 8 || key == 13 || key == 46) {
-  	var inputs = document.getElementsByTagName('br');
-
-  	for(var i = 0; i < inputs.length; i++) {
-      if(inputs[i].getAttribute("type") == '_moz') {
-      	inputs[i].remove();
-      	
-      	var el = document.getElementById("quoteSourceInput");
-      	var range = document.createRange();
-      	var sel = window.getSelection();
-      	range.setStart(el.childNodes[0], 0);
-      	range.collapse(true);
-      	sel.removeAllRanges();
-      	sel.addRange(range);
-      }
-  	}
-  }
-});
-
-/*get caret position in contentEditable div*/
-function getCaretPosition(editableDiv) {
-  var caretPos = 0,
-    sel, range;
-  if (window.getSelection) {
-    sel = window.getSelection();
-    if (sel.rangeCount) {
-      range = sel.getRangeAt(0);
-      if (range.commonAncestorContainer.parentNode == editableDiv) {
-        caretPos = range.endOffset;
-      }
-    }
-  } else if (document.selection && document.selection.createRange) {
-    range = document.selection.createRange();
-    if (range.parentElement() == editableDiv) {
-      var tempEl = document.createElement("span");
-      editableDiv.insertBefore(tempEl, editableDiv.firstChild);
-      var tempRange = range.duplicate();
-      tempRange.moveToElementText(tempEl);
-      tempRange.setEndPoint("EndToEnd", range);
-      caretPos = tempRange.text.length;
-    }
-  }
-  return caretPos;
-}
-
-/*focus when click on the the quote input area*/
-function focusQuoteInput() {
-	$('#quoteInput').focus();
-}
-
-/*preview photos selected by user*/
-function handlePhotoFiles(files) {
-  for (var i = 0; i < files.length; i++) {
-    var file = files[i];
-    var imageType = /^image\//;
-    
-    if (!imageType.test(file.type)) {
-      continue;
-    }
-    
-    var img = document.createElement("img");
-    img.classList.add("img-responsive");
-    img.id = "photoPreview"
-    img.file = file;
-    document.getElementById("newPhotoUploadThumbnail").appendChild(img);
-    
-    /*using FileReader to display the image content*/
-    var reader = new FileReader(); // asynchronously read the contents of files
-    reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
-    reader.readAsDataURL(file);
-  }
-  
-  displayFormAfterPhotosUpload();
-  document.getElementById("photoCaption").focus();
-}
-
-/*validate and preview photos from web url*/
-function validatePhotoURL() {
-	var img = new Image();
-  img.onload = function() {
-  	img.classList.add("img-responsive");
-  	document.getElementById("newPhotoUploadThumbnail").appendChild(img);
-    
-    var reader = new FileReader(); // asynchronously read the contents of files
-    reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
-//    reader.readAsDataURL(file);
-    
-    displayFormAfterPhotoURL();
-    document.getElementById("photoCaption").focus();
-  };
-  
-  img.onerror = function() {
-//  	alert('Image onload=' + false);
-  };
-  img.src = document.getElementById("urlPhotoUploadInput").value;
-}
-
-/*validate and preview another photo from web url*/
-function validateAnotherPhotoURL() {
-	var img = new Image();
-  img.onload = function() {
-  	img.classList.add("img-responsive");
-  	document.getElementById("newPhotoUploadThumbnail").appendChild(img);
-    
-    var reader = new FileReader(); // asynchronously read the contents of files
-    reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
-//  reader.readAsDataURL(file);
-    
-    displayAgainAddAnotherPhotoFromWebButton();
-    document.getElementById("photoCaption").focus();
-  };
-  
-  img.onerror = function() {
-//	alert('Image onload=' + false);
-  };
-  img.src = document.getElementById("addAnotherPhotoFromWebInput").value;
-}
-
-/*display photo post caption and tag form after photos selected*/
-function displayFormAfterPhotosUpload() {
-	document.getElementById("addAnotherPhotoButton").style.display = "block"; // show add another photo button
-	document.getElementById("photoCaption").style.display = "block";
-	document.getElementById("photoTag").style.display = "block";
-	document.getElementById("newPhotoUploadPanel").style.display = "none"; // hide the normal photo upload panel
-}
-
-/*display photo post caption and tag form after add photo from web*/
-function displayFormAfterPhotoURL() {
-	document.getElementById("addAnotherPhotoFromWebButton").style.display = "block"; // show add another photo from web button
-	document.getElementById("photoCaption").style.display = "block";
-	document.getElementById("photoTag").style.display = "block";
-	document.getElementById("urlPhotoUploadPanel").style.display = "none"; // hide the normal add photo from web panel
-}
-
-function displayPhotoURLInput() {
-	document.getElementById("addAnotherPhotoFromWebButton").style.display = "none";
-	document.getElementById("addAnotherPhotoFromWebDiv").style.display = "block";
-  
-	$("#addAnotherPhotoFromWebDiv").find("#addAnotherPhotoFromWebInput").focus();
-}
-
-function displayAgainAddAnotherPhotoFromWebButton() {
-	document.getElementById("addAnotherPhotoFromWebButton").style.display = "block"; // show add another photo from web button
-	document.getElementById("addAnotherPhotoFromWebDiv").style.display = "none";
-}
-
-/*photo upload using drag and drop $("#modalFade").on("shown.bs.modal", function()*/
-$(document).ready(function() {
-/*$("#modalFade").on("shown.bs.modal", function() {*/
-	var dropboxPhotoUploadColumn;
-	var dropboxNewPhotoUploadThumbnail;
-	
-	if(document.getElementById("photoUploadColumn") != null) {
-		dropboxPhotoUploadColumn = document.getElementById("photoUploadColumn");
-		dropboxPhotoUploadColumn.addEventListener("dragenter", dragenter, false);
-		dropboxPhotoUploadColumn.addEventListener("dragover", dragover, false);
-		dropboxPhotoUploadColumn.addEventListener("drop", drop, false);
-	}
-	else if (document.getElementById("newPhotoUploadThumbnail") != null) {
-		dropboxNewPhotoUploadThumbnail = document.getElementById("newPhotoUploadThumbnail");
-		dropboxNewPhotoUploadThumbnail.addEventListener("dragenter", dragenter, false);
-		dropboxNewPhotoUploadThumbnail.addEventListener("dragover", dragover, false);
-		dropboxNewPhotoUploadThumbnail.addEventListener("drop", drop, false);		
-	}
-	
-	function dragenter(e) {
-	  e.stopPropagation();
-	  e.preventDefault();
-	}
-
-	function dragover(e) {
-	  e.stopPropagation();
-	  e.preventDefault();
-	}
-	
-	function drop(e) {
-	  e.stopPropagation();
-	  e.preventDefault();
-
-	  var dt = e.dataTransfer;
-	  var files = dt.files;
-
-	  handlePhotoFiles(files);
-	}
-});
-
-/*show url photo upload panel and hide the normal photo upload panel*/
-function photoUrlPanelDisplay() {
-	document.getElementById("newPhotoUploadPanel").style.display = "none";
-	document.getElementById("urlPhotoUploadPanel").style.display = "block";
-	document.getElementById("urlPhotoUploadInput").focus();
-}
-
-/*
-function addNewPost() {
-	var table = document.getElementById("bodyPost");	
-	var row1 = table.insertRow(0);
-	var row2 = table.insertRow(1);
-	var row3 = table.insertRow(2);		
-	var cell1 = row1.insertCell(0);
-	var cell2 = row2.insertCell(0);
-	var cell3 = row3.insertCell(0);
-	
-	cell1.innerHTML = "<h1>" + $('#textTitle').val() + "</h1><br>";
-	cell2.innerHTML = "<font size=\"4\">" + $('#textAreaPost').val() + "</font>";
-	cell3.innerHTML = "<br><font size=\"2\">" + "#"+ $('#textTag').val() + "</font>";
-	document.getElementById("textForm").reset();
-}
-*/
-
 function addNewTextPost() {
 	var divTextPanel = document.createElement("div");
 	var divTextPanelHeading = document.createElement("div");
@@ -351,8 +55,8 @@ function addNewTextPost() {
 	spanGlyphiconCog.setAttribute('Title', 'Options');
 	
 	aTextPanelTitle.innerHTML = "groovypeacetimetravel";
-	h1TextTitle.innerHTML = $('#textTitle').val();
-	divTextPanelBody.innerHTML = $('#textAreaPost').val() + "<br><br>";
+	h1TextTitle.innerHTML = $('#textTitle').html();
+	divTextPanelBody.innerHTML = $('#textAreaPost').html() + "<br>";
 	aTextTag.innerHTML = "#" + $('#textTag').val();
 	aDropdownMenuEdit.innerHTML = "Edit";
 	aDropdownMenuDelete.innerHTML = "Delete";
@@ -378,6 +82,26 @@ function addNewTextPost() {
 	
 	var postColumnList = document.getElementById("postColumn");
 	postColumnList.insertBefore(divTextPanel, postColumnList.childNodes[0]);
+	
+	$.ajax({
+    type :  "POST",
+  //  dataType: 'json',
+    data: {
+        'title': $('#textTitle').html(),
+        'text': $('#textAreaPost').html()
+    },
+    url  :  "/textPost",
+     success: function(data){
+    	 console.log("good");
+       console.log(data);
+     },
+     error: function(data){
+    	 console.log("error");
+       console.log(data);     
+     }
+   });
+	
+	
 }
 
 function addNewQuotePost() {
@@ -420,8 +144,9 @@ function addNewQuotePost() {
 	spanGlyphiconCog.setAttribute('Title', 'Options');
 	
 	aQuotePanelTitle.innerHTML = "groovypeacetimetravel";
+	removeQuoteBrMoz(); // remove <br type="_moz"> before
 	pQuote.innerHTML = $('#quoteInput').html();
-	footerQuote.innerHTML = $('#quoteSourceInput').val();
+	footerQuote.innerHTML = $('#quoteSourceInput').html();
 	aQuoteTag.innerHTML = "#" + $('#quoteTag').val();
 	aDropdownMenuEdit.innerHTML = "Edit";
 	aDropdownMenuDelete.innerHTML = "Delete";
@@ -519,7 +244,7 @@ function addNewPhotoPost() {
 	
 }
 
-/* Text Button Modal */
+/* new text modal */
 function textPostModal() {
 	var textPost = [
 		'<div class="modal-content">',
@@ -527,10 +252,10 @@ function textPostModal() {
 		'    <a class="panel-title" id="newPostPanelHeadTitle">groovypeacetimetravel</a>',
 		'    <span class="glyphicon glyphicon-cog pull-right"></span>',
 		'  </div>',
-		'  <div class="modal-body">',
+		'  <div class="modal-body" id="newTextModalBody">',
 		'    <form role="form">',
-		'        <textarea class="form-control" id="textTitle" placeholder="Title" rows="1" data-min-rows="1"></textarea>',
-		'        <textarea class="form-control" id="textAreaPost" placeholder="Your text here" rows="1" data-min-rows="1"></textarea>',
+		'        <span id="textTitle" contenteditable="true"></span>',
+		'        <span id="textAreaPost" contenteditable="true"></span>',
 		'        <input class="form-control" id="textTag" placeholder="#tags" />',
 		'    </form>',
 		'  </div>',
@@ -560,7 +285,7 @@ function textPostModal() {
   });
 }
 
-/* Quote Button Modal */
+/* new quote modal */
 function quotePostModal() {
 	var quotePost = [
 		'<div class="modal-content">',
@@ -577,7 +302,7 @@ function quotePostModal() {
 	  '    	</div>',
 		'      <div id="quotePlaceholder" onclick="focusQuoteInput()">“Quote”</div>',									      
 	  '      <div id="quoteSourceDiv">',
-	  '      	<textarea class="form-control" id="quoteSourceInput" placeholder="Source" rows="1" data-min-rows="1"></textarea>',
+	  '      	<span id="quoteSourceInput" contenteditable="true"></span>',
 	  '    	</div>',
 	  '      <input class="form-control" id="quoteTag" placeholder="#tags">',
 		'    </form>',
@@ -608,7 +333,7 @@ function quotePostModal() {
   });
 }
 
-/* Photo Button Modal */
+/* new photo modal */
 function photoPostModal() {
 	var photoPost = [
 		'<div class="modal-content">',
