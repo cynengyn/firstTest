@@ -1,0 +1,137 @@
+blockquote {
+	border: none;
+	padding: 0px 0px 0px 20px;
+	text-indent: -20px;
+	word-wrap: break-word;
+}
+
+blockquote p {
+	font-family: georgia, serif;
+	font-size: 48px;
+}
+
+blockquote p:before {
+	content: open-quote;
+}
+
+blockquote p:after {
+	content: close-quote;
+}
+
+/* ignore the last break line in the quote post content */
+blockquote p > br:last-child {
+	display:none;
+}
+
+blockquote a, div.panel-body a {
+	font-size: 13px;
+}
+
+blockquote footer {
+	color: #444;
+	font-size: 14px;
+	/* white-space: pre-wrap; */
+}
+
+#closeQuote {
+  color: #464646;
+  display: none;
+  font-family: Georgia,serif;
+  font-size: 48px;
+  min-height: 71px;
+  position: relative;
+  top: 0px;
+  z-index: 2;
+  
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+   user-select: none; /* Non-prefixed version, currently not supported by any browser */
+}
+
+#newQuoteModalBody {
+  padding-top: 0px;
+}
+
+#openQuote {
+  color: #464646;
+  display: none;
+  font-family: Georgia,serif;
+  font-size: 48px;
+  min-height: 71px;
+  position: absolute;
+  top: 0px;
+  z-index: 2;
+}
+
+/* contenteditable div new quote input */ /* display default value: block; */
+#quoteInput {
+  background-color: transparent;
+  display: inline;
+  border: none;
+  font-family: Georgia,serif;
+  font-size: 48px;
+  left: 0px;
+  min-height: 71px;
+  padding: 0px 0px 0px 24px;
+  position: relative;
+  outline: none;
+  top:0px;
+  word-wrap: break-word;
+  z-index: 3;
+}
+
+#quotePlaceholder {
+  color: #a2a2a2;
+  display: block;
+  font-family: Georgia,serif;
+  font-size: 48px;
+  padding-left: 0px;
+  position: absolute;
+  top: 0px;
+  z-index: 1;
+}
+
+#quotePostBody {
+  padding-top: 0px;
+}
+
+#quoteSourceDiv {
+  min-height: 80px;
+  padding-left: 20px;
+  position: relative;
+}
+
+#quoteSourceDiv:before {
+  color: #464646;
+  content: "—";  
+  font-size: 14px;
+  margin-left: -20px;
+  position: absolute;
+}
+
+#quoteSourceInput {
+  border: none;
+  box-shadow: none;
+  display: block;
+  min-height: 80px;
+  padding: 0px;
+  resize: none;
+  outline: none;
+  word-wrap: break-word;
+}
+
+#quoteSourceInput:empty::before {
+  color: #a2a2a2;
+  content: 'Source';
+}
+
+/* new qutoe tag input */
+#quoteTag {
+  border: none;
+  box-shadow: none;
+  font-size: 13px;
+  padding:0px;
+}

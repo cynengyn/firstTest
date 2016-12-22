@@ -29,19 +29,40 @@ $(document)
   }
 });
 
-/*remove <br type="_moz"> created when enter key is pressed*/
+/*remove <br type="_moz"> type attribute created in quoteSourceInput when enter key is pressed*/
 $(document)
+.on('keyup', '#quoteInput', function(event) {
+  var key = event.keyCode || event.charCode;
+
+  if(key == 13) { // enter key is pressed  	
+  	var quoteInput = document.getElementById("quoteInput");
+  	var quoteInputBr = quoteInput.getElementsByTagName('br');
+  	
+  	for(var i = 0; i < quoteInputBr.length; i++) {
+      if(quoteInputBr[i].getAttribute("type") == '_moz') {
+      	quoteInputBr[i].removeAttribute("type");
+      }
+  	}
+  }
+})
 .on('keyup', '#quoteSourceInput', function(event) {
   var key = event.keyCode || event.charCode;
 
   if(key == 13) { // enter key is pressed
-  	var inputs = document.getElementsByTagName('br');
+  	var quoteSourceInput = document.getElementById("quoteSourceInput");
+  	var quoteSourceInputBr = quoteSourceInput.getElementsByTagName('br');
   	
-  	for(var i = 0; i < inputs.length; i++) {
-      if(inputs[i].getAttribute("type") == '_moz') {
-      	inputs[i].removeAttribute("type");
+  	for(var i = 0; i < quoteSourceInputBr.length; i++) {
+      if(quoteSourceInputBr[i].getAttribute("type") == '_moz') {
+      	quoteSourceInputBr[i].removeAttribute("type");
       }
   	}
+  } 
+  else if(key == 8 || key == 46) { // backspace || delete key is pressed
+  	// clear the last <br> left in quoteSourceInput when is empty to show the placeholder with css 
+	  if($("#quoteSourceInput").text() == '' && $("br", "#quoteSourceInput").length == 1) {
+	      $("#quoteSourceInput").empty();
+	  }
   }
 });
 
@@ -95,4 +116,3 @@ function removeQuoteBrMoz() {
 	//replace n number of <br> into one for css can ignore the last break line in the quote post content
 	$('#quoteInput').html($('#quoteInput').html().replace(/(<br>)+/g,"<br>")); 
 }
-

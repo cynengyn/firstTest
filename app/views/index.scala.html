@@ -24,6 +24,9 @@
 	    <script src="assets/javascripts/photo.js"></script>
 	    <script src="assets/javascripts/quote.js"></script>
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/main.css">
+	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/text.css">
+	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/photo.css">
+	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/quote.css">
 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 			<!-- material icons font --><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	  </head>
@@ -55,7 +58,7 @@
 			      	<!-- text button -->
 			        <a class="btn btn-primary btn-lg" onclick="textPostModal()" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-text-size"></span><br>Text</a>			        
 			        <!-- photo button -->
-			        <a class="btn btn-primary btn-lg" onclick="photoPostModal()" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-camera"></span><br>Photo</a>			        
+			        <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-camera"></span><br>Photo</a>			        
 			        <!-- quote button -->
 			        <a class="btn btn-primary btn-lg" onclick="quotePostModal()" data-toggle="modal" data-target="#modalFade"><span class="fa fa-quote-left" aria-hidden="true"></span><br>
 Quote</a>			        
@@ -137,7 +140,7 @@ Quote</a>
 								  });
 									</script> -->
 									
-									<!-- <div class="modal-content">
+									<div class="modal-content">
 										<div class="panel-heading" id="newPostPanelHead">
 									    <a class="panel-title" id="newPostPanelHeadTitle">groovypeacetimetravel</a>
 									    <span class="glyphicon glyphicon-cog pull-right"></span>
@@ -158,7 +161,8 @@ Quote</a>
 													</div>	
 													<div class="row" id="urlPhotoUploadPanel">
 														<div class="col-md-12" id="urlPhotoUploadPanelDiv">
-														  <input id="urlPhotoUploadInput" oninput="validatePhotoURL()" placeholder="Paste a URL"></input>
+															<span class="close" id="urlPhotoUploadPanelClose">&times;</span>
+														  <!--<input id="urlPhotoUploadInput" oninput="validatePhotoURL()" placeholder="Paste a URL"></input>-->
 														  <textarea class="form-control" id="urlPhotoUploadInput" rows="1" data-min-rows="1" oninput="validatePhotoURL()" placeholder="Paste a URL"></textarea>
 														</div>	
 													</div>											
@@ -200,7 +204,7 @@ Quote</a>
 											  </ul>
 											</div>
 									  </div>
-									</div> -->
+									</div>
 			          </div>
 			        </div>
 			        <!-- new posts buttons modal end-->

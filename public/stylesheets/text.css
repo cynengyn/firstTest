@@ -1,0 +1,63 @@
+#newTextModalBody {
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+
+/* new text post textarea */
+#textAreaPost {
+  border: none;
+  box-shadow: none;
+  display: block;
+  margin-bottom:5px;
+  margin-top: 5px;
+  min-height: 80px;
+  padding: 0px;
+  outline: none;
+  word-wrap: break-word;
+}
+
+#textAreaPost:empty::before {
+  color: #a2a2a2;
+  content: 'Your text here';
+}
+
+/* text post title */
+#textPostTitle {
+  background: white;
+  border: none;
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+
+#textPostTitle h1 > br:last-child, #textPostTitle div.panel-body > br:last-child {
+	display:none;
+}
+
+/* new text post text tag placeholder */
+#textTag, #textTag::-moz-placeholder {  
+  border: none;
+  box-shadow: none;
+  font-family: Gibson,Helvetica Neue,HelveticaNeue,Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  padding: 0px;
+}
+
+/* new text title input area */
+#textTitle {
+  border: none;
+  box-shadow: none;
+  display: block;
+  font-family: Gibson,Helvetica Neue,HelveticaNeue,Helvetica,Arial,sans-serif;
+  font-size: 36px;
+  font-weight: 400;
+  min-height: 42px;
+  padding: 0px;
+  outline: none;
+  word-wrap: break-word;
+}
+
+/* new text title input area placeholder */
+#textTitle:empty::before {
+  color: #a2a2a2;
+  content: 'Title';
+}

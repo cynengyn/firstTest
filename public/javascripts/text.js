@@ -1,19 +1,4 @@
-/*remove <br type="_moz"> created when enter key is pressed*/
-/*function removeTextBrMoz() {
-	var inputs = document.getElementsByTagName('br');
-	
-	for(var i = 0; i < inputs.length; i++) {
-    if(inputs[i].getAttribute("type") == '_moz') {
-    	inputs[i].remove();
-    }
-	}
-	
-	//replace n number of <br> into one for css can ignore the last break line in the quote post content
-	$('#textTitle').html($('#textTitle').html().replace(/(<br>)+/g,"<br>"));
-	$('#textAreaPost').html($('#textAreaPost').html().replace(/(<br>)+/g,"<br>"));
-}*/
-
-/*remove <br type="_moz"> created when enter key is pressed*/
+/*remove <br type="_moz"> type attribute created when enter key is pressed*/
 $(document)
 .on('keyup', '#textTitle', function(event) {
   var key = event.keyCode || event.charCode;
@@ -21,11 +6,17 @@ $(document)
   if(key == 13) { // enter key is pressed
   	var inputs = document.getElementsByTagName('br');
   	
-  	for(var i = 0; i < inputs.length; i++) {
+  	for(var i = 0; i < inputs.length; i++) { // remove <br type="_moz"> type attribute
       if(inputs[i].getAttribute("type") == '_moz') {
       	inputs[i].removeAttribute("type");
       }
   	}
+  }
+  else if(key == 8 || key == 46) { // backspace || delete key is pressed
+  	// clear the last <br> left in text area input when is empty to show the placeholder with css 
+	  if($("#textTitle").text() == '') {
+	      $("#textTitle").empty();
+	  }
   }
 })
 .on('keyup', '#textAreaPost', function(event) {
@@ -35,16 +26,15 @@ $(document)
   	var inputs = document.getElementsByTagName('br');
   	
   	for(var i = 0; i < inputs.length; i++) {
-      if(inputs[i].getAttribute("type") == '_moz') {
+      if(inputs[i].getAttribute("type") == '_moz') { // remove <br type="_moz"> type attribute
       	inputs[i].removeAttribute("type");
       }
   	}
-  }
-  
-  if(key == 8) { 
+  }  
+  else if(key == 8 || key == 46) { // backspace || delete key is pressed
+  	// clear the last <br> left in text area input when is empty to show the placeholder with css 
 	  if($("#textAreaPost").text() == '') {
 	      $("#textAreaPost").empty();
 	  }
-  }
-  
+  }  
 });

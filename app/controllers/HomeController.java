@@ -30,17 +30,30 @@ public class HomeController extends Controller {
         return ok(index.render("Your new application is ready."));
     }
     
-  	public Result textPost()  {
+  	public Result textPost() {
   	
   		DynamicForm requestData = formFactory.form().bindFromRequest();
   		String title = requestData.get("title");
   		String text = requestData.get("text");
   		String tag = requestData.get("tag");
 
-  		return ok ("ok this is a test");
+  		return ok ("Title = " + title + "\nText = " + text + "\nTag = " + tag);
   	}
   	
-  	
-  	
+  	public Result photoPost() {
+    	
+  		DynamicForm requestData = formFactory.form().bindFromRequest();
 
+  		return ok ("");
+  	}
+  	
+  	public Result quotePost() {
+    	
+  		DynamicForm requestData = formFactory.form().bindFromRequest();
+  		String quote = requestData.get("quote");
+  		String source = requestData.get("source");
+  		String tag = requestData.get("tag");
+
+  		return ok ("Quote = " + quote + "\nSource = " + source + "\nTag = " + tag);
+  	}
 }
