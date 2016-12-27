@@ -27,9 +27,19 @@ function handlePhotoFiles(files) {
 /*validate and preview photos from web url*/
 function validatePhotoURL() {
 	var img = new Image();
+	var spanRemoveButton = document.createElement("span");	
+	var spanButtonImageGroup = document.createElement("span");	
+	
+	spanRemoveButton.setAttribute('id', 'removeImageButton');
+	spanRemoveButton.innerHTML = "&times;";
+	spanButtonImageGroup.setAttribute('id', 'removeImageButtonGroup');
+	
+	spanButtonImageGroup.appendChild(spanRemoveButton);
+	spanButtonImageGroup.appendChild(img);
+	
   img.onload = function() {
   	img.classList.add("img-responsive");
-  	document.getElementById("newPhotoUploadThumbnail").appendChild(img);
+  	document.getElementById("newPhotoUploadThumbnail").appendChild(spanButtonImageGroup);
     
     var reader = new FileReader(); // asynchronously read the contents of files
     reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
@@ -48,9 +58,19 @@ function validatePhotoURL() {
 /*validate and preview another photo from web url*/
 function validateAnotherPhotoURL() {
 	var img = new Image();
+	var spanRemoveButton = document.createElement("span");	
+	var spanButtonImageGroup = document.createElement("span");	
+	
+	spanRemoveButton.setAttribute('id', 'removeImageButton');
+	spanRemoveButton.innerHTML = "&times;";
+	spanButtonImageGroup.setAttribute('id', 'removeImageButtonGroup');
+	
+	spanButtonImageGroup.appendChild(spanRemoveButton);
+	spanButtonImageGroup.appendChild(img);
+	
   img.onload = function() {
   	img.classList.add("img-responsive");
-  	document.getElementById("newPhotoUploadThumbnail").appendChild(img);
+  	document.getElementById("newPhotoUploadThumbnail").appendChild(spanButtonImageGroup);
     
     var reader = new FileReader(); // asynchronously read the contents of files
     reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
@@ -139,4 +159,26 @@ function photoUrlPanelDisplay() {
 	document.getElementById("newPhotoUploadPanel").style.display = "none";
 	document.getElementById("urlPhotoUploadPanel").style.display = "block";
 	document.getElementById("urlPhotoUploadInput").focus();
+}
+
+function closePhotoUrlPanel() {
+	document.getElementById("newPhotoUploadPanel").style.display = "block";
+	document.getElementById("urlPhotoUploadPanel").style.display = "none";
+}
+
+function localPhotoUpload() {
+	console.log($('#photoFileInput').val());
+	
+	$.ajax({
+	  url: '/localPhoto', 
+	  type: 'POST',
+	  data: $('#photoFileInput').val(), // The form with the file inputs.
+	  processData: false                          // Using FormData, no need to process data.
+	}).done(function(data){
+	  console.log("Success: Files sent!");
+	  console.log(data);
+	}).fail(function(){
+	  console.log("An error occurred, the files couldn't be sent!");
+	});
+	
 }

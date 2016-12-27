@@ -1,4 +1,4 @@
-@*
+	@*
 * This template takes a single argument, a String containing a
 * message to display.
 *@
@@ -146,14 +146,16 @@ Quote</a>
 									    <span class="glyphicon glyphicon-cog pull-right"></span>
 									  </div>
 									  <div class="modal-body" id="newPhotoPostModalBody">
-									    <form role="form">
+											<form id="formWithFiles" role="form" enctype="multipart/form-data">
 									      <div class="container-fluid">
-									      	<input id="photoFileInput" type="file" accept="image/*" multiple="multiple" onchange="handlePhotoFiles(this.files)" />
+									      	<input id="photoFileInput" name="picture" accept="image/*" type="file" onchange="handlePhotoFiles(this.files)"/>
+									      	
 									      	<div class="row" id="newPhotoUploadPanel">
 														<div class="col-md-6" id="photoUploadColumn" onclick="$('#photoFileInput').click()">												       
 														  <div><i class="material-icons" id="photoUploadIcon">add_a_photo</i></div>
 														  <div><span id="photoUploadLabel">Upload photos</span></div>
-														</div>
+														</div>													
+														
 														<div class="col-md-6" id="photoWebColumn" onclick=photoUrlPanelDisplay()>
 															<div><i class="glyphicon glyphicon-globe" id="photoWebIcon"></i></div>
 														 	<div><span id="photoWebLabel">Add photo from web</span></div>
@@ -161,9 +163,8 @@ Quote</a>
 													</div>	
 													<div class="row" id="urlPhotoUploadPanel">
 														<div class="col-md-12" id="urlPhotoUploadPanelDiv">
-															<span class="close" id="urlPhotoUploadPanelClose">&times;</span>
-														  <!--<input id="urlPhotoUploadInput" oninput="validatePhotoURL()" placeholder="Paste a URL"></input>-->
-														  <textarea class="form-control" id="urlPhotoUploadInput" rows="1" data-min-rows="1" oninput="validatePhotoURL()" placeholder="Paste a URL"></textarea>
+															<span id="urlPhotoUploadPanelClose" onclick="closePhotoUrlPanel()">&times;</span>
+														  <input id="urlPhotoUploadInput" oninput="validatePhotoURL()" placeholder="Paste a URL"></input>
 														</div>	
 													</div>											
 													<div class="row" id="newPhotoUploadThumbnail"></div>													
@@ -177,7 +178,6 @@ Quote</a>
 													</div>
 													<div class="row text-center" id="addAnotherPhotoFromWebDiv">
 														<input id="addAnotherPhotoFromWebInput" oninput="validateAnotherPhotoURL()" placeholder="Paste a URL"></input>
-														<textarea class="form-control" id="addAnotherPhotoFromWebInput" rows="1" data-min-rows="1" oninput="validateAnotherPhotoURL()" placeholder="Paste a URL"></textarea>
 													</div>													
 													<div class="row text-center" id="addAgainAnotherPhotoFromWebButton" onclick=displayPhotoURLInput()>
 														<i class="glyphicon glyphicon-globe" id="addAnotherPhotoFromWebIcon"></i>
@@ -187,11 +187,16 @@ Quote</a>
 									        <input class="form-control" id="photoTag" name="tags" placeholder="#tags" type="text" />
 									      </div>
 									    </form>
+									    
+											<!-- <form method="post" enctype="multipart/form-data"  action="/localPhoto">
+									      <input type="file" name="images" id="picture"  />
+									      <button type="submit" id="btn">Upload Files!</button>
+											</form> -->
 									  </div>
 									  <div class="modal-footer" id="newPostPanelFooter">
 									    <button class="btn btn-default pull-left" data-dismiss="modal">Close</button>
 									    <div class="btn-group">
-										    <button class="btn btn-primary" data-dismiss="modal" onclick="addNewPhotoPost()">Post</button>
+										    <button class="btn btn-primary" data-dismiss="modal" onclick="localPhotoUpload()">Post</button>
 										    <button class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
 											    <span class="caret"></span>
 											  </button>

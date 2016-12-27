@@ -122,16 +122,47 @@
   font-size: 60px;
 }
 
+#removeImageButton {
+  -moz-user-select: none;
+  background-color: #d95e40;  
+  border-color: #d95e40;
+  border-radius: 50%;
+  color: #fff;
+  cursor: none;
+  font-size: 20px;
+  height: 21px;
+  line-height: 14px;
+  position: absolute;
+  right: -7px;
+  text-align: center;
+  top: -7px;
+  width: 21px;
+  
+  opacity: 0;
+  transform: scale(0);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0s, opacity 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
+  transition-delay: 0.7s; /* delays for 0.7 second */
+  -webkit-transition-delay: 0.7s; /* for Safari & Chrome */
+}
+
 /* new photo upload left & right side panel icon and label font color */
 #photoUploadIcon, #photoWebIcon, #photoUploadLabel, #photoWebLabel {
   color: #989898;
+}
+
+#removeImageButtonGroup:hover #removeImageButton {
+  cursor: pointer;
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0s, opacity 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
 /* new photo from web url input */
 #urlPhotoUploadInput {
   border: none;
   color: #464646;
-  padding: 20px;
+  padding: 32px 20px 32px 20px;
   width: 100%;
   box-shadow: none;
   resize: none;
@@ -164,6 +195,8 @@
   opacity: 0;
   transform: scale(0);
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0s, opacity 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
+  transition-delay: 0.7s; /* delays for 0.7 second */
+  -webkit-transition-delay: 0.7s; /* for Safari & Chrome */
 }
 
 /* new photo from web url input div */
@@ -177,6 +210,7 @@
 #urlPhotoUploadPanelDiv:hover #urlPhotoUploadPanelClose {
   cursor: pointer;
   opacity: 1;
+  pointer-events: auto;
   transform: scale(1);
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0s, opacity 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 } 

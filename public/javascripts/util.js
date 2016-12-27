@@ -1,5 +1,7 @@
 /*search bar icon background changes to white when focus 
  * and the normal color when blur*/
+loadUpData();
+
 $(document).ready(function(){
     $("#search").focus(function(){
         $("#searchIcon").css("background", "white");
@@ -12,6 +14,54 @@ $(document).ready(function(){
 });
 
 function addNewTextPost() {
+	
+	$.ajax({
+    type :  "POST",
+//    dataType: 'json',
+    data: {
+        'title': $('#textTitle').html(),
+        'text': $('#textAreaPost').html(),
+        'tag': $('#textTag').val()
+    },
+    url  :  "/textPost",
+     success: function(data){
+    	 for(i = data.length-1; i >= 0 ; i-- ) {
+    		 addNewTextPostFromSever(data[i].title, data[i].bodyText, data[i].tagText, 
+  		  		 data[i].creationDate, data[i].userName);    		 
+    	 }    	 
+
+     },
+     error: function(data){
+    	 console.log("error");
+       console.log(data);     
+     }
+   });
+	
+}
+
+function loadUpData() {
+	
+	$.ajax({
+    type :  "GET",
+//    dataType: 'json',
+    url  :  "/loadUpData",
+     success: function(data){
+    	 for(i = data.length-1; i >= 0 ; i-- ) {
+    		 addNewTextPostFromSever(data[i].title, data[i].bodyText, data[i].tagText, 
+  		  		 data[i].creationDate, data[i].userName);    		 
+    	 }    	 
+
+     },
+     error: function(data){
+    	 console.log("error");
+       console.log(data);     
+     }
+   });
+	
+}
+
+
+function addNewTextPostFromSever(titleTxt, bodyText, tagText, creationDate, userName) {
 	var divTextPanel = document.createElement("div");
 	var divTextPanelHeading = document.createElement("div");
 	var divTextPanelTitle = document.createElement("div");
@@ -55,9 +105,9 @@ function addNewTextPost() {
 	spanGlyphiconCog.setAttribute('Title', 'Options');
 	
 	aTextPanelTitle.innerHTML = "groovypeacetimetravel";
-	h1TextTitle.innerHTML = $('#textTitle').html();
-	divTextPanelBody.innerHTML = $('#textAreaPost').html() + "<br>";
-	aTextTag.innerHTML = "#" + $('#textTag').val();
+	h1TextTitle.innerHTML = titleTxt;
+	divTextPanelBody.innerHTML = bodyText + "<br";
+	aTextTag.innerHTML = tagText;
 	aDropdownMenuEdit.innerHTML = "Edit";
 	aDropdownMenuDelete.innerHTML = "Delete";
 	
@@ -83,24 +133,7 @@ function addNewTextPost() {
 	var postColumnList = document.getElementById("postColumn");
 	postColumnList.insertBefore(divTextPanel, postColumnList.childNodes[0]);
 	
-	$.ajax({
-    type :  "POST",
-//    dataType: 'json',
-    data: {
-        'title': $('#textTitle').html(),
-        'text': $('#textAreaPost').html(),
-        'tag': $('#textTag').val()
-    },
-    url  :  "/textPost",
-     success: function(data){
-    	 console.log("good");
-       console.log(data);
-     },
-     error: function(data){
-    	 console.log("error");
-       console.log(data);     
-     }
-   });
+	
 }
 
 function addNewPhotoPost() {
@@ -116,7 +149,7 @@ function addNewPhotoPost() {
 	var aGlyphiconRetweet = document.createElement("a");
 	var aDropdownMenuEdit = document.createElement("a");
 	var aDropdownMenuDelete = document.createElement("a");	
-	var imgPhotoResponsive = document.createElement("img");	
+	var imgPhotoResponsive = document.createElement("img");
 	var spanGlyphiconSend = document.createElement("span");
 	var spanGlyphiconRetweet = document.createElement("span");
 	var spanGlyphiconCog = document.createElement("span");	
@@ -148,6 +181,8 @@ function addNewPhotoPost() {
 	aPhotoTag.innerHTML = "#" + $('#photoTag').val();
 	aDropdownMenuEdit.innerHTML = "Edit";
 	aDropdownMenuDelete.innerHTML = "Delete";
+	
+	$('#name').attr('src');
 	
 	divPhotoPanelHeading.appendChild(aPhotoPanelTitle);
 	divPhotoImgPanelBody.appendChild(imgPhotoResponsive);	
@@ -326,8 +361,8 @@ function photoPostModal() {
 	  '	      </div>',
 	  '	      <div class="row" id="urlPhotoUploadPanel">',
 	  '	        <div class="col-md-12" id="urlPhotoUploadPanelDiv">',
+	  '						<span class="close" id="urlPhotoUploadPanelClose" onclick="closePhotoUrlPanel()">&times;</span>',
 	  '	          <input id="urlPhotoUploadInput" oninput="validatePhotoURL()" placeholder="Paste a URL"></input>',
-	  '	          <!-- <textarea class="form-control" id="urlPhotoUploadInput" rows="1" data-min-rows="1" oninput="validatePhotoURL()" placeholder="Paste a URL"></textarea> -->',
 	  '	        </div>',
 	  '	      </div>',
 	  '	      <div class="row" id="newPhotoUploadThumbnail"></div>',
@@ -339,7 +374,6 @@ function photoPostModal() {
 	  '	      </div>',
 	  '	      <div class="row text-center" id="addAnotherPhotoFromWebDiv">',
 	  '	        <input id="addAnotherPhotoFromWebInput" oninput="validateAnotherPhotoURL()" placeholder="Paste a URL"></input>',
-	  '	        <!-- <textarea class="form-control" id="addAnotherPhotoFromWebInput" rows="1" data-min-rows="1" oninput="validateAnotherPhotoURL()" placeholder="Paste a URL"></textarea> -->',
 	  '	      </div>',
 	  '	      <div class="row text-center" id="addAgainAnotherPhotoFromWebButton" onclick=displayPhotoURLInput()>',
 	  '	        <i class="glyphicon glyphicon-globe" id="addAnotherPhotoFromWebIcon"></i> Add another',
