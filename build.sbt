@@ -14,5 +14,6 @@ libraryDependencies ++= Seq(
   cache,
   javaWs,
   "org.postgresql" % "postgresql" % "9.4.1212.jre7",
-  "org.avaje" % "ebean" % "2.8.1"
+  "org.avaje" % "ebean" % "2.8.1",
+  "commons-io" % "commons-io" % "2.5"
 )

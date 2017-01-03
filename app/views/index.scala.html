@@ -1,4 +1,4 @@
-	@*
+		@*
 * This template takes a single argument, a String containing a
 * message to display.
 *@
@@ -146,10 +146,9 @@ Quote</a>
 									    <span class="glyphicon glyphicon-cog pull-right"></span>
 									  </div>
 									  <div class="modal-body" id="newPhotoPostModalBody">
-											<form id="formWithFiles" role="form" enctype="multipart/form-data">
+											<form id="formWithFiles" method="post" enctype="multipart/form-data">
+												<input id="photoFileInput" name="photoFileInput" accept="image/*" type="file" onchange="handlePhotoFiles(this.files)"/>
 									      <div class="container-fluid">
-									      	<input id="photoFileInput" name="picture" accept="image/*" type="file" onchange="handlePhotoFiles(this.files)"/>
-									      	
 									      	<div class="row" id="newPhotoUploadPanel">
 														<div class="col-md-6" id="photoUploadColumn" onclick="$('#photoFileInput').click()">												       
 														  <div><i class="material-icons" id="photoUploadIcon">add_a_photo</i></div>
@@ -187,16 +186,11 @@ Quote</a>
 									        <input class="form-control" id="photoTag" name="tags" placeholder="#tags" type="text" />
 									      </div>
 									    </form>
-									    
-											<!-- <form method="post" enctype="multipart/form-data"  action="/localPhoto">
-									      <input type="file" name="images" id="picture"  />
-									      <button type="submit" id="btn">Upload Files!</button>
-											</form> -->
 									  </div>
 									  <div class="modal-footer" id="newPostPanelFooter">
 									    <button class="btn btn-default pull-left" data-dismiss="modal">Close</button>
 									    <div class="btn-group">
-										    <button class="btn btn-primary" data-dismiss="modal" onclick="localPhotoUpload()">Post</button>
+										    <button class="btn btn-primary" id="photoPostButton" data-dismiss="modal" onclick="addNewLocalPhotoPost()">Post</button>
 										    <button class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
 											    <span class="caret"></span>
 											  </button>

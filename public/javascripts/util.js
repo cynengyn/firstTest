@@ -1,11 +1,29 @@
-/*search bar icon background changes to white when focus 
- * and the normal color when blur*/
 loadUpData();
 
+function loadUpData() {	
+	$.ajax({
+		type: "GET",
+//    dataType: 'json',
+    url: "/loadUpData",
+     success: function(data) {
+    	 for(i = data.length-1; i >= 0 ; i-- ) {
+    		 addTextPostFromSever(data[i].title, data[i].bodyText, data[i].tagText, 
+  				 data[i].creationDate, data[i].userName);    		 
+    	 }
+     },
+     error: function(data) {
+    	 console.log("error");
+       console.log(data);     
+     }
+	});
+}
+
+/*search bar icon background changes to white when focus 
+ * and the normal color when blur*/
 $(document).ready(function(){
     $("#search").focus(function(){
-        $("#searchIcon").css("background", "white");
-        $("#glyphiconSearch").css("color", "#444444");
+			$("#searchIcon").css("background", "white");
+			$("#glyphiconSearch").css("color", "#444444");
     });
     $("#search").blur(function(){
       $("#searchIcon").css("background", "#2F3D51");
@@ -13,55 +31,30 @@ $(document).ready(function(){
 		});
 });
 
-function addNewTextPost() {
-	
+function addNewTextPost() {	
 	$.ajax({
-    type :  "POST",
+		type: "POST",
 //    dataType: 'json',
     data: {
-        'title': $('#textTitle').html(),
-        'text': $('#textAreaPost').html(),
-        'tag': $('#textTag').val()
+    	'title': $('#textTitle').html(),
+    	'text': $('#textAreaPost').html(),
+    	'tag': $('#textTag').val()
     },
-    url  :  "/textPost",
-     success: function(data){
-    	 for(i = data.length-1; i >= 0 ; i-- ) {
-    		 addNewTextPostFromSever(data[i].title, data[i].bodyText, data[i].tagText, 
-  		  		 data[i].creationDate, data[i].userName);    		 
-    	 }    	 
-
-     },
-     error: function(data){
-    	 console.log("error");
-       console.log(data);     
-     }
-   });
-	
+    url: "/textPost",
+  	success: function(data) {
+			for(i = data.length-1; i >= 0 ; i-- ) {
+				addTextPostFromSever(data[i].title, data[i].bodyText, data[i].tagText, 
+															data[i].creationDate, data[i].userName);    		 
+			}
+  	},
+		error: function(data) {
+			console.log("error");
+			console.log(data);     
+		}
+	});	
 }
 
-function loadUpData() {
-	
-	$.ajax({
-    type :  "GET",
-//    dataType: 'json',
-    url  :  "/loadUpData",
-     success: function(data){
-    	 for(i = data.length-1; i >= 0 ; i-- ) {
-    		 addNewTextPostFromSever(data[i].title, data[i].bodyText, data[i].tagText, 
-  		  		 data[i].creationDate, data[i].userName);    		 
-    	 }    	 
-
-     },
-     error: function(data){
-    	 console.log("error");
-       console.log(data);     
-     }
-   });
-	
-}
-
-
-function addNewTextPostFromSever(titleTxt, bodyText, tagText, creationDate, userName) {
+function addTextPostFromSever(titleText, bodyText, tagText, creationDate, userName) {
 	var divTextPanel = document.createElement("div");
 	var divTextPanelHeading = document.createElement("div");
 	var divTextPanelTitle = document.createElement("div");
@@ -105,9 +98,9 @@ function addNewTextPostFromSever(titleTxt, bodyText, tagText, creationDate, user
 	spanGlyphiconCog.setAttribute('Title', 'Options');
 	
 	aTextPanelTitle.innerHTML = "groovypeacetimetravel";
-	h1TextTitle.innerHTML = titleTxt;
-	divTextPanelBody.innerHTML = bodyText + "<br";
-	aTextTag.innerHTML = tagText;
+	h1TextTitle.innerHTML = titleText;
+	divTextPanelBody.innerHTML = bodyText + "<br>";
+	aTextTag.innerHTML = "#" + tagText;
 	aDropdownMenuEdit.innerHTML = "Edit";
 	aDropdownMenuDelete.innerHTML = "Delete";
 	
@@ -131,12 +124,101 @@ function addNewTextPostFromSever(titleTxt, bodyText, tagText, creationDate, user
 	divTextPanel.appendChild(divTextPanelFooter);
 	
 	var postColumnList = document.getElementById("postColumn");
-	postColumnList.insertBefore(divTextPanel, postColumnList.childNodes[0]);
-	
-	
+	postColumnList.insertBefore(divTextPanel, postColumnList.childNodes[0]);	
 }
 
-function addNewPhotoPost() {
+function addNewLocalPhotoPost() {	
+	$.ajax({
+		type: "POST",
+//    dataType: 'json',
+    data: {
+    	'caption': $('#photoCaption').html(),
+    	'tag': $('#photoTag').val()
+    },
+    url: "/localPhoto",
+  	success: function(data) {
+  			for(i = data.length-1; i >= 0 ; i-- ) {
+  				addLocalPhotoPostFromServer(data[i].photoSaveDirectory, data[i].photoCaption, data[i].photoTag, data[i].imageFileName, data[i].imageFileType);    		 
+  			}
+  	},
+		error: function(data) {
+		 console.log("error");
+		 console.log(data);     
+		}
+   });	
+}
+
+function addLocalPhotoPostFromServer(photoSaveDirectory, photoCaption, photoTag, imageFileName, imageFileType) {
+	var divPhotoPanel = document.createElement("div");
+	var divPhotoPanelHeading = document.createElement("div");
+	var divPhotoImgPanelBody = document.createElement("div");
+	var divPhotoTextPanelBody = document.createElement("div");
+	var divPhotoPanelFooter = document.createElement("div");
+	var divPhotoPanelFooterDropdown = document.createElement("div");	
+	var aPhotoPanelTitle = document.createElement("a");
+	var aPhotoTag = document.createElement("a");
+	var aGlyphiconSend = document.createElement("a");
+	var aGlyphiconRetweet = document.createElement("a");
+	var aDropdownMenuEdit = document.createElement("a");
+	var aDropdownMenuDelete = document.createElement("a");	
+	var imgPhotoResponsive = document.createElement("img");
+	var spanGlyphiconSend = document.createElement("span");
+	var spanGlyphiconRetweet = document.createElement("span");
+	var spanGlyphiconCog = document.createElement("span");	
+	var ulDropdownMenu = document.createElement("ul");	
+	var liDropdownMenuEdit = document.createElement("li");
+	var liDropdownMenuDelete = document.createElement("li");
+	
+	divPhotoPanel.setAttribute('class', 'panel panel-default');
+	divPhotoPanelHeading.setAttribute('class', 'panel-heading');
+	divPhotoImgPanelBody.setAttribute('class', 'photo-panel-body');
+	divPhotoTextPanelBody.setAttribute('class', 'panel-body');
+	divPhotoPanelFooter.setAttribute('class', 'panel-footer');
+	divPhotoPanelFooterDropdown.setAttribute('class', 'dropdown');
+	aPhotoPanelTitle.setAttribute('class', 'panel-title');
+	imgPhotoResponsive.setAttribute('class', 'img-responsive');
+	spanGlyphiconSend.setAttribute('class', 'glyphicon glyphicon-send');
+	spanGlyphiconRetweet.setAttribute('class', 'glyphicon glyphicon-retweet');
+	spanGlyphiconCog.setAttribute('class', 'glyphicon glyphicon-cog dropdown-toggle');
+	ulDropdownMenu.setAttribute('class', 'dropdown-menu dropdown-menu-right');
+	imgPhotoResponsive.setAttribute('id', 'imgResponsive');
+	spanGlyphiconCog.setAttribute('data-toggle', 'dropdown');
+	/*imgPhotoResponsive.setAttribute('src', document.getElementById("photoPreview").src);*/
+	imgPhotoResponsive.setAttribute('src', photoSaveDirectory+imageFileName+imageFileType);
+	spanGlyphiconSend.setAttribute('Title', 'Share');
+	spanGlyphiconRetweet.setAttribute('Title', 'Reblog');
+	spanGlyphiconCog.setAttribute('Title', 'Options');
+	
+	aPhotoPanelTitle.innerHTML = "groovypeacetimetravel";
+	divPhotoTextPanelBody.innerHTML = photoCaption + "<br><br>";
+	aPhotoTag.innerHTML = "#" + photoTag;
+	aDropdownMenuEdit.innerHTML = "Edit";
+	aDropdownMenuDelete.innerHTML = "Delete";
+	
+	divPhotoPanelHeading.appendChild(aPhotoPanelTitle);
+	divPhotoImgPanelBody.appendChild(imgPhotoResponsive);	
+	divPhotoTextPanelBody.appendChild(aPhotoTag);
+	aGlyphiconSend.appendChild(spanGlyphiconSend);
+	aGlyphiconRetweet.appendChild(spanGlyphiconRetweet);
+	liDropdownMenuEdit.appendChild(aDropdownMenuEdit);
+	liDropdownMenuDelete.appendChild(aDropdownMenuDelete);
+	ulDropdownMenu.appendChild(liDropdownMenuEdit);
+	ulDropdownMenu.appendChild(liDropdownMenuDelete);	
+	divPhotoPanelFooterDropdown.appendChild(aGlyphiconSend);
+	divPhotoPanelFooterDropdown.appendChild(aGlyphiconRetweet);
+	divPhotoPanelFooterDropdown.appendChild(spanGlyphiconCog);
+	divPhotoPanelFooterDropdown.appendChild(ulDropdownMenu);	
+	divPhotoPanelFooter.appendChild(divPhotoPanelFooterDropdown);	
+	divPhotoPanel.appendChild(divPhotoPanelHeading);
+	divPhotoPanel.appendChild(divPhotoImgPanelBody);
+	divPhotoPanel.appendChild(divPhotoTextPanelBody);
+	divPhotoPanel.appendChild(divPhotoPanelFooter);
+	
+	var postColumnList = document.getElementById("postColumn");
+	postColumnList.insertBefore(divPhotoPanel, postColumnList.childNodes[0]);	
+}
+
+function addNewWebPhotoPost() {
 	var divPhotoPanel = document.createElement("div");
 	var divPhotoPanelHeading = document.createElement("div");
 	var divPhotoImgPanelBody = document.createElement("div");
@@ -181,8 +263,6 @@ function addNewPhotoPost() {
 	aPhotoTag.innerHTML = "#" + $('#photoTag').val();
 	aDropdownMenuEdit.innerHTML = "Edit";
 	aDropdownMenuDelete.innerHTML = "Delete";
-	
-	$('#name').attr('src');
 	
 	divPhotoPanelHeading.appendChild(aPhotoPanelTitle);
 	divPhotoImgPanelBody.appendChild(imgPhotoResponsive);	

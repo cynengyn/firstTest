@@ -22,6 +22,7 @@ function handlePhotoFiles(files) {
   
   displayFormAfterPhotosUpload();
   document.getElementById("photoCaption").focus();
+  /*document.getElementById("photoPostButton").setAttribute("onclick", "addNewLocalPhotoPost();");*/
 }
 
 /*validate and preview photos from web url*/
@@ -53,6 +54,7 @@ function validatePhotoURL() {
 //  	alert('Image onload=' + false);
   };
   img.src = document.getElementById("urlPhotoUploadInput").value;
+  /*document.getElementById("photoPostButton").setAttribute("onclick", "addNewWebPhotoPost();");*/
 }
 
 /*validate and preview another photo from web url*/
@@ -84,6 +86,7 @@ function validateAnotherPhotoURL() {
 //	alert('Image onload=' + false);
   };
   img.src = document.getElementById("addAnotherPhotoFromWebInput").value;
+  /*document.getElementById("photoPostButton").setAttribute("onclick", "addNewWebPhotoPost();");*/
 }
 
 /*display photo post caption and tag form after photos selected*/
@@ -166,19 +169,28 @@ function closePhotoUrlPanel() {
 	document.getElementById("urlPhotoUploadPanel").style.display = "none";
 }
 
-function localPhotoUpload() {
-	console.log($('#photoFileInput').val());
-	
+function localPhotoUpload() {  
+	var file = document.getElementById("photoFileInput");
+	var formData = new FormData();
+	formData.append("photoFileInput", file.files[0]);
+
 	$.ajax({
 	  url: '/localPhoto', 
 	  type: 'POST',
-	  data: $('#photoFileInput').val(), // The form with the file inputs.
-	  processData: false                          // Using FormData, no need to process data.
+	  data: formData, // The form with the file inputs.
+	  processData: false, // Using FormData, no need to process data.
+    contentType: false,
 	}).done(function(data){
 	  console.log("Success: Files sent!");
 	  console.log(data);
 	}).fail(function(){
 	  console.log("An error occurred, the files couldn't be sent!");
-	});
-	
+	});	
 }
+
+
+
+
+
+
+
