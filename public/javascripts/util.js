@@ -1,4 +1,5 @@
 loadUpData();
+loadUpPhotoPost();
 
 function loadUpData() {	
 	$.ajax({
@@ -8,7 +9,25 @@ function loadUpData() {
      success: function(data) {
     	 for(i = data.length-1; i >= 0 ; i-- ) {
     		 addTextPostFromSever(data[i].title, data[i].bodyText, data[i].tagText, 
-  				 data[i].creationDate, data[i].userName);    		 
+    				 data[i].creationDate, data[i].userName);
+    	 }
+     },
+     error: function(data) {
+    	 console.log("error");
+       console.log(data);     
+     }
+	});
+}
+
+function loadUpPhotoPost() {	
+	$.ajax({
+		type: "GET",
+//    dataType: 'json',
+    url: "/loadUpPhotoPost",
+     success: function(data) {
+    	 for(i = data.length-1; i >= 0 ; i-- ) {
+    		 addLocalPhotoPostFromServer(data[i].photoSaveDirectory, data[i].photoCaption, 
+    				 data[i].photoTag, data[i].imageFileName);
     	 }
      },
      error: function(data) {
@@ -41,17 +60,15 @@ function addNewTextPost() {
     	'tag': $('#textTag').val()
     },
     url: "/textPost",
-  	success: function(data) {
+		}).done(function(data) {
 			for(i = data.length-1; i >= 0 ; i-- ) {
 				addTextPostFromSever(data[i].title, data[i].bodyText, data[i].tagText, 
 															data[i].creationDate, data[i].userName);    		 
 			}
-  	},
-		error: function(data) {
+		}).fail(function() {
 			console.log("error");
-			console.log(data);     
-		}
-	});	
+			console.log(data);
+		});	
 }
 
 function addTextPostFromSever(titleText, bodyText, tagText, creationDate, userName) {
@@ -127,28 +144,31 @@ function addTextPostFromSever(titleText, bodyText, tagText, creationDate, userNa
 	postColumnList.insertBefore(divTextPanel, postColumnList.childNodes[0]);	
 }
 
-function addNewLocalPhotoPost() {	
+function addNewLocalPhotoPost() {  
+	var file = document.getElementById("photoFileInput");
+	var formData = new FormData();
+	formData.append("photoFileInput", file.files[0]);
+	formData.append("photoCaption", $('#photoCaption').html());
+	formData.append("photoTag", $('#photoTag').val());
+	
 	$.ajax({
-		type: "POST",
-//    dataType: 'json',
-    data: {
-    	'caption': $('#photoCaption').html(),
-    	'tag': $('#photoTag').val()
-    },
     url: "/localPhoto",
-  	success: function(data) {
-  			for(i = data.length-1; i >= 0 ; i-- ) {
-  				addLocalPhotoPostFromServer(data[i].photoSaveDirectory, data[i].photoCaption, data[i].photoTag, data[i].imageFileName, data[i].imageFileType);    		 
-  			}
-  	},
-		error: function(data) {
-		 console.log("error");
-		 console.log(data);     
+		type: "POST",
+		data: formData, // The form with the file inputs.
+		processData: false, // Using FormData, no need to process data.
+    contentType: false,
+	}).done(function(data) {
+		for(i = data.length-1; i >= 0 ; i-- ) {
+			addLocalPhotoPostFromServer(data[i].photoSaveDirectory, data[i].photoCaption, data[i].photoTag, data[i].imageFileName);
+			console.log("Success: Files sent!");
+		  console.log(data);
 		}
-   });	
+	}).fail(function() {
+		console.log("An error occurred, the files couldn't be sent!");
+	});	
 }
 
-function addLocalPhotoPostFromServer(photoSaveDirectory, photoCaption, photoTag, imageFileName, imageFileType) {
+function addLocalPhotoPostFromServer(photoSaveDirectory, photoCaption, photoTag, imageFileName) {
 	var divPhotoPanel = document.createElement("div");
 	var divPhotoPanelHeading = document.createElement("div");
 	var divPhotoImgPanelBody = document.createElement("div");
@@ -184,13 +204,13 @@ function addLocalPhotoPostFromServer(photoSaveDirectory, photoCaption, photoTag,
 	imgPhotoResponsive.setAttribute('id', 'imgResponsive');
 	spanGlyphiconCog.setAttribute('data-toggle', 'dropdown');
 	/*imgPhotoResponsive.setAttribute('src', document.getElementById("photoPreview").src);*/
-	imgPhotoResponsive.setAttribute('src', photoSaveDirectory+imageFileName+imageFileType);
+	imgPhotoResponsive.setAttribute('src', photoSaveDirectory+imageFileName);
 	spanGlyphiconSend.setAttribute('Title', 'Share');
 	spanGlyphiconRetweet.setAttribute('Title', 'Reblog');
 	spanGlyphiconCog.setAttribute('Title', 'Options');
 	
 	aPhotoPanelTitle.innerHTML = "groovypeacetimetravel";
-	divPhotoTextPanelBody.innerHTML = photoCaption + "<br><br>";
+	divPhotoTextPanelBody.innerHTML = photoCaption + "<br>";
 	aPhotoTag.innerHTML = "#" + photoTag;
 	aDropdownMenuEdit.innerHTML = "Edit";
 	aDropdownMenuDelete.innerHTML = "Delete";
@@ -218,7 +238,27 @@ function addLocalPhotoPostFromServer(photoSaveDirectory, photoCaption, photoTag,
 	postColumnList.insertBefore(divPhotoPanel, postColumnList.childNodes[0]);	
 }
 
-function addNewWebPhotoPost() {
+function addNewWebPhotoPost() {	
+	$.ajax({
+		type: "POST",
+    data: {
+    	'photoUrl': document.getElementById("urlPhotoUploadInput").value,
+    	'photoCaption': $('#photoCaption').html(),
+    	'photoTag': $('#photoTag').val()
+    },
+    url: "/webPhoto",
+		}).done(function(data) {
+			for(i = data.length-1; i >= 0 ; i-- ) {
+				addTextPostFromSever(data[i].title, data[i].bodyText, data[i].tagText, 
+															data[i].creationDate, data[i].userName);    		 
+			}
+		}).fail(function() {
+			console.log("error");
+			console.log(data);
+		});	
+}
+
+function addNewWebPhotoPostFromServer() {
 	var divPhotoPanel = document.createElement("div");
 	var divPhotoPanelHeading = document.createElement("div");
 	var divPhotoImgPanelBody = document.createElement("div");
@@ -259,7 +299,7 @@ function addNewWebPhotoPost() {
 	spanGlyphiconCog.setAttribute('Title', 'Options');
 	
 	aPhotoPanelTitle.innerHTML = "groovypeacetimetravel";
-	divPhotoTextPanelBody.innerHTML = $('#photoCaption').val() + "<br><br>";
+	divPhotoTextPanelBody.innerHTML = $('#photoCaption').html() + "<br>";
 	aPhotoTag.innerHTML = "#" + $('#photoTag').val();
 	aDropdownMenuEdit.innerHTML = "Edit";
 	aDropdownMenuDelete.innerHTML = "Delete";

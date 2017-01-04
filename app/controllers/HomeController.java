@@ -1,21 +1,11 @@
 package controllers;
 
-import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Date;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
@@ -62,6 +52,17 @@ public class HomeController extends Controller {
   		}
   		return ok (resJson);		
   	}
+  	
+  	public Result loadUpPhotoPost() {
+  		// find last 10 post
+  		List<PhotoPost> res = PhotoPost.find.orderBy().desc("id").setMaxRows(10).findList();      
+  		ArrayNode resJson = play.libs.Json.newArray();
+  		
+  		for(PhotoPost p: res) {
+  		  resJson.add(play.libs.Json.toJson(p));	
+  		}
+  		return ok (resJson);		
+  	}
     
   	public Result textPost() {  	
   		DynamicForm requestData = formFactory.form().bindFromRequest();
@@ -89,19 +90,40 @@ public class HomeController extends Controller {
   		
   		return ok (resJson);
   	}
-  	
-  	public Result photoPost() {    	
+
+  	public Result localPhoto() {
   		DynamicForm requestData = formFactory.form().bindFromRequest();
-  		String caption = requestData.get("caption");
-  		String tag = requestData.get("tag");
+  		MultipartFormData<File> body = request().body().asMultipartFormData();
+  		FilePart<File> picture = body.getFile("photoFileInput");  		
+  		String caption = requestData.get("photoCaption");
+  		String tag = requestData.get("photoTag");  		
+  		String fileName, saveDirectory;
   		
-  		PhotoPost post = new PhotoPost();
-  		
-  		post.photoCaption = caption;
-  		post.photoTag = tag;
-  		post.creationDate = new Date();
-  		post.save();
-  		
+  		if (picture != null) {  	    	
+        saveDirectory = "public/images/upload/";
+  			fileName = picture.getFilename();
+        File file = picture.getFile();  
+        
+        PhotoPost post = new PhotoPost();
+        post.photoSaveDirectory = saveDirectory;
+    		post.photoCaption = caption;
+    		post.photoTag = tag;
+    		post.creationDate = new Date();
+    		post.imageFileName = fileName;
+    		post.imageFileType = FilenameUtils.getExtension(fileName);
+    		post.save();
+
+        File destDir = new File(saveDirectory + fileName);
+
+        try {
+					FileUtils.copyFile(file, destDir);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
+        /*return ok("File uploaded " + fileName);*/
+  		}
+
   		List<PhotoPost> res = PhotoPost.find.orderBy().desc("id").setMaxRows(10).findList();
       
   		ArrayNode resJson = play.libs.Json.newArray();
@@ -111,7 +133,7 @@ public class HomeController extends Controller {
   		}
 
   		return ok (resJson);
-  	}
+		}
   	
   	public Result quotePost() {    	
   		DynamicForm requestData = formFactory.form().bindFromRequest();
@@ -121,74 +143,4 @@ public class HomeController extends Controller {
 
   		return ok ("Quote = " + quote + "\nSource = " + source + "\nTag = " + tag);
   	}
-
-  	public Result localPhoto() {
-  		DynamicForm requestData = formFactory.form().bindFromRequest();
-  		MultipartFormData<File> body = request().body().asMultipartFormData();
-  		FilePart<File> picture = body.getFile("photoFileInput");
-  		
-  		String caption = requestData.get("caption");
-  		String tag = requestData.get("tag");
-  		String fileName, contentType, saveDirectory;
-  		
-  		if (picture != null) {  	    	
-        saveDirectory = "/home/augusto/git/firstTest/public/images/";
-  			fileName = picture.getFilename();
-        contentType = picture.getContentType();
-        File file = picture.getFile();        
-        
-        PhotoPost post = new PhotoPost();
-        post.photoSaveDirectory = saveDirectory;
-    		post.photoCaption = caption;
-    		post.photoTag = tag;
-    		post.creationDate = new Date();
-    		post.imageFileName = fileName;
-    		post.imageFileType = FilenameUtils.getExtension(contentType);
-    		post.save();
-    		
-        fileName += FilenameUtils.getExtension(contentType);
-        File destDir = new File(saveDirectory + fileName);
-
-        try {
-					FileUtils.copyFile(file, destDir);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}	
-        return ok("File uploaded " + fileName + " " + contentType + " " + file.getAbsolutePath());
-  		}
-
-  		List<PhotoPost> res = PhotoPost.find.orderBy().desc("id").setMaxRows(10).findList();
-      
-  		ArrayNode resJson = play.libs.Json.newArray();
-  		
-  		for(PhotoPost p: res) {
-  		  resJson.add(play.libs.Json.toJson(p));	
-  		}
-
-  		return ok (resJson);
-
-  		/*MultipartFormData<File> body = request().body().asMultipartFormData();
-	    FilePart<File> picture = body.getFile("photoFileInput");
-	    if (picture != null) {  	    	
-	        String fileName = picture.getFilename();
-	        String contentType = picture.getContentType();
-	        File file = picture.getFile();
-	        
-	        String saveDirectory = "/home/augusto/git/firstTest/public/images/";
-	        fileName += FilenameUtils.getExtension(contentType);
-	        File destDir = new File(saveDirectory+fileName);
-
-	        try {
-						FileUtils.copyFile(file, destDir);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}	
-	        return ok("File uploaded " + fileName + " " + contentType + " " + file.getAbsolutePath());
-	    } else {
-	        flash("error", "Missing file");
-	        return badRequest();
-	    }*/
-		}
 }

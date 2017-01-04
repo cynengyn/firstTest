@@ -60,8 +60,7 @@
 			        <!-- photo button -->
 			        <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-camera"></span><br>Photo</a>			        
 			        <!-- quote button -->
-			        <a class="btn btn-primary btn-lg" onclick="quotePostModal()" data-toggle="modal" data-target="#modalFade"><span class="fa fa-quote-left" aria-hidden="true"></span><br>
-Quote</a>			        
+			        <a class="btn btn-primary btn-lg" onclick="quotePostModal()" data-toggle="modal" data-target="#modalFade"><span class="fa fa-quote-left" aria-hidden="true"></span><br>Quote</a>			        
 			        
 			        <a class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-link"></span><br>Link</a>
 			        <a class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-comment"></span><br>Chat</a>
@@ -182,15 +181,16 @@ Quote</a>
 														<i class="glyphicon glyphicon-globe" id="addAnotherPhotoFromWebIcon"></i>
 														Add another
 													</div>													
-									        <textarea class="form-control" id="photoCaption" rows="1" data-min-rows="1" placeholder="Add a caption, if you like"></textarea>
-									        <input class="form-control" id="photoTag" name="tags" placeholder="#tags" type="text" />
+									        <!-- <textarea class="form-control" id="photoCaption" name="photoCaption" rows="1" data-min-rows="1" placeholder="Add a caption, if you like"></textarea> -->
+									        <span id="photoCaption" contenteditable="true"></span>
+									        <input class="form-control" id="photoTag" name="photoTag" placeholder="#tags" type="text" />
 									      </div>
 									    </form>
 									  </div>
 									  <div class="modal-footer" id="newPostPanelFooter">
 									    <button class="btn btn-default pull-left" data-dismiss="modal">Close</button>
 									    <div class="btn-group">
-										    <button class="btn btn-primary" id="photoPostButton" data-dismiss="modal" onclick="addNewLocalPhotoPost()">Post</button>
+										    <button class="btn btn-primary" id="photoPostButton" data-dismiss="modal" onclick="addNewWebPhotoPost()">Post</button>
 										    <button class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
 											    <span class="caret"></span>
 											  </button>

@@ -59,13 +59,29 @@
 }
 
 /*new photo upload caption*/
-#photoCaption {
+/* #photoCaption {
   border: none;
   box-shadow: none;
   display: none;
   margin-top: 20px;
   padding: 0px;
   resize: none;
+} */
+#photoCaption {
+  border: none;
+  box-shadow: none;
+  display: none;
+  margin-top: 20px;
+  min-height: 80px;
+  padding: 0px;
+  outline: none;
+  resize: none;
+  word-wrap: break-word;
+}
+
+#photoCaption:empty::before {
+  color: #a2a2a2;
+  content: 'Add a caption, if you like';
 }
 
 /* hide photo file <input> element */

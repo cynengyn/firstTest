@@ -169,7 +169,7 @@ function closePhotoUrlPanel() {
 	document.getElementById("urlPhotoUploadPanel").style.display = "none";
 }
 
-function localPhotoUpload() {  
+/*function localPhotoUpload() {  
 	var file = document.getElementById("photoFileInput");
 	var formData = new FormData();
 	formData.append("photoFileInput", file.files[0]);
@@ -186,9 +186,29 @@ function localPhotoUpload() {
 	}).fail(function(){
 	  console.log("An error occurred, the files couldn't be sent!");
 	});	
-}
+}*/
 
+/*remove <br type="_moz"> type attribute created when enter key is pressed*/
+$(document)
+.on('keyup', '#photoCaption', function(event) {
+  var key = event.keyCode || event.charCode;
 
+  if(key == 13) { // enter key is pressed
+  	var inputs = document.getElementsByTagName('br');
+  	
+  	for(var i = 0; i < inputs.length; i++) { // remove <br type="_moz"> type attribute
+      if(inputs[i].getAttribute("type") == '_moz') {
+      	inputs[i].removeAttribute("type");
+      }
+  	}
+  }
+  else if(key == 8 || key == 46) { // backspace || delete key is pressed
+  	// clear the last <br> left in text area input when is empty to show the placeholder with css 
+	  if($("#photoCaption").text() == '') {
+	      $("#photoCaption").empty();
+	  }
+  }
+});
 
 
 

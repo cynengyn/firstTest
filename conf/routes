@@ -7,7 +7,7 @@ GET     /                           controllers.HomeController.index
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code
-GET     /message                    controllers.AsyncController.message
+GET     /message        controllers.AsyncController.message
 
 POST		/textPost									controllers.HomeController.textPost
 POST		/photoPost									controllers.HomeController.photoPost
@@ -16,5 +16,6 @@ POST		/localPhoto									controllers.HomeController.localPhoto
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
-
-GET		/loadUpData				controllers.HomeController.loadUpData
+GET		/loadUpData					controllers.HomeController.loadUpData
+GET		/loadUpPhotoPost			controllers.HomeController.loadUpPhotoPost
+GET     /public/images/upload/*file			controllers.Assets.at(path="/public/images/upload", file)
