@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import models.PhotoPost;
 import models.TextPost;
+import models.WebPhotoPost;
 import play.data.DynamicForm;
 import play.mvc.*;
 import play.mvc.Http.MultipartFormData;
@@ -59,6 +60,17 @@ public class HomeController extends Controller {
   		ArrayNode resJson = play.libs.Json.newArray();
   		
   		for(PhotoPost p: res) {
+  		  resJson.add(play.libs.Json.toJson(p));	
+  		}
+  		return ok (resJson);		
+  	}
+  	
+  	public Result loadUpWebPhotoPost() {
+  		// find last 10 post
+  		List<WebPhotoPost> res = WebPhotoPost.find.orderBy().desc("web_photo_post_id").setMaxRows(10).findList();      
+  		ArrayNode resJson = play.libs.Json.newArray();
+  		
+  		for(WebPhotoPost p: res) {
   		  resJson.add(play.libs.Json.toJson(p));	
   		}
   		return ok (resJson);		
@@ -129,6 +141,33 @@ public class HomeController extends Controller {
   		ArrayNode resJson = play.libs.Json.newArray();
   		
   		for(PhotoPost p: res) {
+  		  resJson.add(play.libs.Json.toJson(p));	
+  		}
+
+  		return ok (resJson);
+		}
+  	
+  	public Result webPhoto() {
+  		DynamicForm requestData = formFactory.form().bindFromRequest();
+  		String url = requestData.get("webPhotoUrl");
+  		String caption = requestData.get("webPhotoCaption");
+  		String tag = requestData.get("webPhotoTag");  		
+  		String fileName = url.substring(url.lastIndexOf('/')+1);
+      
+      WebPhotoPost post = new WebPhotoPost();
+      post.webPhotoUrl = url;
+  		post.webPhotoCaption = caption;
+  		post.webPhotoPostTag = tag;
+  		post.webPhotoPostCreationDate = new Date();
+  		post.webPhotoImageFileName = fileName;
+  		post.webPhotoImageFileType = FilenameUtils.getExtension(fileName);
+  		post.save();  		
+
+  		List<WebPhotoPost> res = WebPhotoPost.find.orderBy().desc("web_photo_post_id").setMaxRows(10).findList();
+      
+  		ArrayNode resJson = play.libs.Json.newArray();
+  		
+  		for(WebPhotoPost p: res) {
   		  resJson.add(play.libs.Json.toJson(p));	
   		}
 

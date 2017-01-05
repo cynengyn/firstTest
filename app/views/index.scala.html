@@ -58,7 +58,7 @@
 			      	<!-- text button -->
 			        <a class="btn btn-primary btn-lg" onclick="textPostModal()" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-text-size"></span><br>Text</a>			        
 			        <!-- photo button -->
-			        <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-camera"></span><br>Photo</a>			        
+			        <a class="btn btn-primary btn-lg" onclick="photoPostModal()" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-camera"></span><br>Photo</a>			        
 			        <!-- quote button -->
 			        <a class="btn btn-primary btn-lg" onclick="quotePostModal()" data-toggle="modal" data-target="#modalFade"><span class="fa fa-quote-left" aria-hidden="true"></span><br>Quote</a>			        
 			        
@@ -139,7 +139,7 @@
 								  });
 									</script> -->
 									
-									<div class="modal-content">
+									<!-- <div class="modal-content">
 										<div class="panel-heading" id="newPostPanelHead">
 									    <a class="panel-title" id="newPostPanelHeadTitle">groovypeacetimetravel</a>
 									    <span class="glyphicon glyphicon-cog pull-right"></span>
@@ -180,8 +180,7 @@
 													<div class="row text-center" id="addAgainAnotherPhotoFromWebButton" onclick=displayPhotoURLInput()>
 														<i class="glyphicon glyphicon-globe" id="addAnotherPhotoFromWebIcon"></i>
 														Add another
-													</div>													
-									        <!-- <textarea class="form-control" id="photoCaption" name="photoCaption" rows="1" data-min-rows="1" placeholder="Add a caption, if you like"></textarea> -->
+													</div>	
 									        <span id="photoCaption" contenteditable="true"></span>
 									        <input class="form-control" id="photoTag" name="photoTag" placeholder="#tags" type="text" />
 									      </div>
@@ -190,7 +189,7 @@
 									  <div class="modal-footer" id="newPostPanelFooter">
 									    <button class="btn btn-default pull-left" data-dismiss="modal">Close</button>
 									    <div class="btn-group">
-										    <button class="btn btn-primary" id="photoPostButton" data-dismiss="modal" onclick="addNewWebPhotoPost()">Post</button>
+										    <button class="btn btn-primary" id="photoPostButton" data-dismiss="modal" onclick="">Post</button>
 										    <button class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
 											    <span class="caret"></span>
 											  </button>
@@ -203,7 +202,8 @@
 											  </ul>
 											</div>
 									  </div>
-									</div>
+									</div> -->
+									
 			          </div>
 			        </div>
 			        <!-- new posts buttons modal end-->

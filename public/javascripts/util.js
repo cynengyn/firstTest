@@ -1,5 +1,6 @@
 loadUpData();
 loadUpPhotoPost();
+loadUpWebPhotoPost();
 
 function loadUpData() {	
 	$.ajax({
@@ -22,12 +23,27 @@ function loadUpData() {
 function loadUpPhotoPost() {	
 	$.ajax({
 		type: "GET",
-//    dataType: 'json',
     url: "/loadUpPhotoPost",
      success: function(data) {
     	 for(i = data.length-1; i >= 0 ; i-- ) {
     		 addLocalPhotoPostFromServer(data[i].photoSaveDirectory, data[i].photoCaption, 
     				 data[i].photoTag, data[i].imageFileName);
+    	 }
+     },
+     error: function(data) {
+    	 console.log("error");
+       console.log(data);     
+     }
+	});
+}
+
+function loadUpWebPhotoPost() {	
+	$.ajax({
+		type: "GET",
+    url: "/loadUpWebPhotoPost",
+     success: function(data) {
+    	 for(i = data.length-1; i >= 0 ; i-- ) {
+    		 addNewWebPhotoPostFromServer(data[i].webPhotoUrl, data[i].webPhotoCaption, data[i].webPhotoPostTag);
     	 }
      },
      error: function(data) {
@@ -242,15 +258,14 @@ function addNewWebPhotoPost() {
 	$.ajax({
 		type: "POST",
     data: {
-    	'photoUrl': document.getElementById("urlPhotoUploadInput").value,
-    	'photoCaption': $('#photoCaption').html(),
-    	'photoTag': $('#photoTag').val()
+    	'webPhotoUrl': document.getElementById("urlPhotoUploadInput").value,
+    	'webPhotoCaption': $('#photoCaption').html(),
+    	'webPhotoTag': $('#photoTag').val()
     },
     url: "/webPhoto",
 		}).done(function(data) {
 			for(i = data.length-1; i >= 0 ; i-- ) {
-				addTextPostFromSever(data[i].title, data[i].bodyText, data[i].tagText, 
-															data[i].creationDate, data[i].userName);    		 
+				addNewWebPhotoPostFromServer(data[i].webPhotoUrl, data[i].webPhotoCaption, data[i].webPhotoPostTag);    		 
 			}
 		}).fail(function() {
 			console.log("error");
@@ -258,7 +273,7 @@ function addNewWebPhotoPost() {
 		});	
 }
 
-function addNewWebPhotoPostFromServer() {
+function addNewWebPhotoPostFromServer(webPhotoUrl, webPhotoCaption, webPhotoPostTag) {
 	var divPhotoPanel = document.createElement("div");
 	var divPhotoPanelHeading = document.createElement("div");
 	var divPhotoImgPanelBody = document.createElement("div");
@@ -293,14 +308,14 @@ function addNewWebPhotoPostFromServer() {
 	ulDropdownMenu.setAttribute('class', 'dropdown-menu dropdown-menu-right');
 	imgPhotoResponsive.setAttribute('id', 'imgResponsive');
 	spanGlyphiconCog.setAttribute('data-toggle', 'dropdown');
-	imgPhotoResponsive.setAttribute('src', document.getElementById("urlPhotoUploadInput").value);
+	imgPhotoResponsive.setAttribute('src', webPhotoUrl);
 	spanGlyphiconSend.setAttribute('Title', 'Share');
 	spanGlyphiconRetweet.setAttribute('Title', 'Reblog');
 	spanGlyphiconCog.setAttribute('Title', 'Options');
 	
 	aPhotoPanelTitle.innerHTML = "groovypeacetimetravel";
-	divPhotoTextPanelBody.innerHTML = $('#photoCaption').html() + "<br>";
-	aPhotoTag.innerHTML = "#" + $('#photoTag').val();
+	divPhotoTextPanelBody.innerHTML = webPhotoCaption + "<br>";
+	aPhotoTag.innerHTML = "#" + webPhotoPostTag;
 	aDropdownMenuEdit.innerHTML = "Edit";
 	aDropdownMenuDelete.innerHTML = "Delete";
 	
@@ -467,8 +482,8 @@ function photoPostModal() {
 	  '	</div>',
 	  '	<div class="modal-body" id="newPhotoPostModalBody">',
 	  '	  <form role="form">',
+	  '			<input id="photoFileInput" name="photoFileInput" accept="image/*" type="file" onchange="handlePhotoFiles(this.files)"/>',
 	  '	    <div class="container-fluid">',
-	  '	      <input id="photoFileInput" type="file" accept="image/*" multiple="multiple" onchange="handlePhotoFiles(this.files)" />',
 	  '	      <div class="row" id="newPhotoUploadPanel">',
 	  '	        <div class="col-md-6" id="photoUploadColumn" onclick="$(\'#photoFileInput\').click()">',
 	  '	          <div><i class="material-icons" id="photoUploadIcon">add_a_photo</i></div>',
@@ -498,7 +513,7 @@ function photoPostModal() {
 	  '	      <div class="row text-center" id="addAgainAnotherPhotoFromWebButton" onclick=displayPhotoURLInput()>',
 	  '	        <i class="glyphicon glyphicon-globe" id="addAnotherPhotoFromWebIcon"></i> Add another',
 	  '	      </div>',
-	  '	      <textarea class="form-control" id="photoCaption" rows="1" data-min-rows="1" placeholder="Add a caption, if you like"></textarea>',
+	  '	      <span id="photoCaption" contenteditable="true"></span>',
 	  '	      <input class="form-control" id="photoTag" name="tags" placeholder="#tags" type="text" />',
 	  '	    </div>',
 	  '	  </form>',
@@ -506,7 +521,7 @@ function photoPostModal() {
 	  '	<div class="modal-footer" id="newPostPanelFooter">',
 	  '	  <button class="btn btn-default pull-left" data-dismiss="modal">Close</button>',
 	  '	  <div class="btn-group">',
-	  '	    <button class="btn btn-primary" data-dismiss="modal" onclick="addNewPhotoPost()">Post</button>',
+	  '	    <button class="btn btn-primary" id="photoPostButton" data-dismiss="modal" onclick="">Post</button>',
 	  '	    <button class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">',
 		'				<span class="caret"></span>',
 		'			</button>',

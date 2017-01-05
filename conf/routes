@@ -9,13 +9,14 @@ GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code
 GET     /message        controllers.AsyncController.message
 
-POST		/textPost									controllers.HomeController.textPost
-POST		/photoPost									controllers.HomeController.photoPost
-POST		/quotePost									controllers.HomeController.quotePost
 POST		/localPhoto									controllers.HomeController.localPhoto
+POST		/quotePost									controllers.HomeController.quotePost
+POST		/textPost									controllers.HomeController.textPost
+POST		/webPhoto									controllers.HomeController.webPhoto
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
-GET		/loadUpData					controllers.HomeController.loadUpData
-GET		/loadUpPhotoPost			controllers.HomeController.loadUpPhotoPost
-GET     /public/images/upload/*file			controllers.Assets.at(path="/public/images/upload", file)
+GET     /assets/*file               					controllers.Assets.versioned(path="/public", file: Asset)
+GET		/loadUpData										controllers.HomeController.loadUpData
+GET		/loadUpPhotoPost								controllers.HomeController.loadUpPhotoPost
+GET		/loadUpWebPhotoPost								controllers.HomeController.loadUpWebPhotoPost
+GET     /public/images/upload/*file						controllers.Assets.at(path="/public/images/upload", file)

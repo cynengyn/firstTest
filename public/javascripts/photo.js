@@ -12,81 +12,92 @@ function handlePhotoFiles(files) {
     img.classList.add("img-responsive");
     img.id = "photoPreview"
     img.file = file;
-    document.getElementById("newPhotoUploadThumbnail").appendChild(img);
+    
+    var spanRemoveButton = document.createElement("span");	
+		var spanButtonImageGroup = document.createElement("span");
+		
+		spanRemoveButton.setAttribute('id', 'removeImageButton');
+		spanRemoveButton.setAttribute('onclick', 'removePhotoUrl()');
+		spanRemoveButton.innerHTML = "&times;";
+		spanButtonImageGroup.setAttribute('id', 'removeImageButtonGroup');			
+		
+		spanButtonImageGroup.appendChild(spanRemoveButton);
+		spanButtonImageGroup.appendChild(img);
+		
+    document.getElementById("newPhotoUploadThumbnail").appendChild(spanButtonImageGroup);
     
     /*using FileReader to display the image content*/
     var reader = new FileReader(); // asynchronously read the contents of files
-    reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
+    reader.onload = (function(aImg) { 
+    	return function(e) { 
+    		aImg.src = e.target.result;
+  		};
+    })(img);
     reader.readAsDataURL(file);
   }
   
   displayFormAfterPhotosUpload();
   document.getElementById("photoCaption").focus();
-  /*document.getElementById("photoPostButton").setAttribute("onclick", "addNewLocalPhotoPost();");*/
+  document.getElementById("photoPostButton").setAttribute("onclick", "addNewLocalPhotoPost();");
 }
 
 /*validate and preview photos from web url*/
 function validatePhotoURL() {
-	var img = new Image();
-	var spanRemoveButton = document.createElement("span");	
-	var spanButtonImageGroup = document.createElement("span");	
+	var urlregex = new RegExp("\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]\\.(bmp|gif|jpe?g|png)$", "i");
 	
-	spanRemoveButton.setAttribute('id', 'removeImageButton');
-	spanRemoveButton.innerHTML = "&times;";
-	spanButtonImageGroup.setAttribute('id', 'removeImageButtonGroup');
-	
-	spanButtonImageGroup.appendChild(spanRemoveButton);
-	spanButtonImageGroup.appendChild(img);
-	
-  img.onload = function() {
-  	img.classList.add("img-responsive");
-  	document.getElementById("newPhotoUploadThumbnail").appendChild(spanButtonImageGroup);
-    
-    var reader = new FileReader(); // asynchronously read the contents of files
-    reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
-//    reader.readAsDataURL(file);
-    
-    displayFormAfterPhotoURL();
-    document.getElementById("photoCaption").focus();
-  };
-  
-  img.onerror = function() {
-//  	alert('Image onload=' + false);
-  };
-  img.src = document.getElementById("urlPhotoUploadInput").value;
-  /*document.getElementById("photoPostButton").setAttribute("onclick", "addNewWebPhotoPost();");*/
+	if(urlregex.test(document.getElementById("urlPhotoUploadInput").value)) {
+		var img = new Image();
+		img.src = document.getElementById("urlPhotoUploadInput").value;
+		
+		img.onload = function() {
+			var spanRemoveButton = document.createElement("span");	
+			var spanButtonImageGroup = document.createElement("span");
+			
+			spanRemoveButton.setAttribute('id', 'removeImageButton');
+			spanRemoveButton.setAttribute('onclick', 'removePhotoUrl()');
+			spanRemoveButton.innerHTML = "&times;";
+			spanButtonImageGroup.setAttribute('id', 'removeImageButtonGroup');			
+			
+			spanButtonImageGroup.appendChild(spanRemoveButton);
+			spanButtonImageGroup.appendChild(img);
+			
+			img.classList.add("img-responsive");
+	  	document.getElementById("newPhotoUploadThumbnail").appendChild(spanButtonImageGroup);
+
+	    displayFormAfterPhotoURL();
+	    document.getElementById("photoCaption").focus();			
+	    document.getElementById("photoPostButton").setAttribute("onclick", "addNewWebPhotoPost();");
+		};
+	}
 }
 
 /*validate and preview another photo from web url*/
 function validateAnotherPhotoURL() {
-	var img = new Image();
-	var spanRemoveButton = document.createElement("span");	
-	var spanButtonImageGroup = document.createElement("span");	
+	var urlregex = new RegExp("\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]\\.(bmp|gif|jpe?g|png)$", "i");
 	
-	spanRemoveButton.setAttribute('id', 'removeImageButton');
-	spanRemoveButton.innerHTML = "&times;";
-	spanButtonImageGroup.setAttribute('id', 'removeImageButtonGroup');
-	
-	spanButtonImageGroup.appendChild(spanRemoveButton);
-	spanButtonImageGroup.appendChild(img);
-	
-  img.onload = function() {
-  	img.classList.add("img-responsive");
-  	document.getElementById("newPhotoUploadThumbnail").appendChild(spanButtonImageGroup);
-    
-    var reader = new FileReader(); // asynchronously read the contents of files
-    reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
-//  reader.readAsDataURL(file);
-    
-    displayAgainAddAnotherPhotoFromWebButton();
-    document.getElementById("photoCaption").focus();
-  };
-  
-  img.onerror = function() {
-//	alert('Image onload=' + false);
-  };
-  img.src = document.getElementById("addAnotherPhotoFromWebInput").value;
-  /*document.getElementById("photoPostButton").setAttribute("onclick", "addNewWebPhotoPost();");*/
+	if(urlregex.test(document.getElementById("addAnotherPhotoFromWebInput").value)) {
+		var img = new Image();
+		img.src = document.getElementById("addAnotherPhotoFromWebInput").value;
+		
+		img.onload = function() {
+			var spanRemoveButton = document.createElement("span");	
+			var spanButtonImageGroup = document.createElement("span");
+			
+			spanRemoveButton.setAttribute('id', 'removeImageButton');
+			spanRemoveButton.innerHTML = "&times;";
+			spanButtonImageGroup.setAttribute('id', 'removeImageButtonGroup');
+			
+			spanButtonImageGroup.appendChild(spanRemoveButton);
+			spanButtonImageGroup.appendChild(img);
+			
+	  	img.classList.add("img-responsive");
+	  	document.getElementById("newPhotoUploadThumbnail").appendChild(spanButtonImageGroup);
+	    
+	    displayAgainAddAnotherPhotoFromWebButton();
+	    document.getElementById("photoCaption").focus();	    
+	    document.getElementById("photoPostButton").setAttribute("onclick", "addNewWebPhotoPost();");
+	  };
+	}
 }
 
 /*display photo post caption and tag form after photos selected*/
@@ -118,12 +129,14 @@ function displayAgainAddAnotherPhotoFromWebButton() {
 }
 
 /*photo upload using drag and drop $("#modalFade").on("shown.bs.modal", function()*/
-$(document).ready(function() {
-/*$("#modalFade").on("shown.bs.modal", function() {*/
+/*$(document).ready(function() {*/
+$("#modalFade").on("shown.bs.modal", function() {
+	console.log("OPEN");
 	var dropboxPhotoUploadColumn;
 	var dropboxNewPhotoUploadThumbnail;
 	
 	if(document.getElementById("photoUploadColumn") != null) {
+		console.log("IN");
 		dropboxPhotoUploadColumn = document.getElementById("photoUploadColumn");
 		dropboxPhotoUploadColumn.addEventListener("dragenter", dragenter, false);
 		dropboxPhotoUploadColumn.addEventListener("dragover", dragover, false);
@@ -169,24 +182,18 @@ function closePhotoUrlPanel() {
 	document.getElementById("urlPhotoUploadPanel").style.display = "none";
 }
 
-/*function localPhotoUpload() {  
-	var file = document.getElementById("photoFileInput");
-	var formData = new FormData();
-	formData.append("photoFileInput", file.files[0]);
-
-	$.ajax({
-	  url: '/localPhoto', 
-	  type: 'POST',
-	  data: formData, // The form with the file inputs.
-	  processData: false, // Using FormData, no need to process data.
-    contentType: false,
-	}).done(function(data){
-	  console.log("Success: Files sent!");
-	  console.log(data);
-	}).fail(function(){
-	  console.log("An error occurred, the files couldn't be sent!");
-	});	
-}*/
+function removePhotoUrl() {
+	document.getElementById("newPhotoUploadPanel").style.display = "block";
+	document.getElementById("urlPhotoUploadPanel").style.display = "none";
+	document.getElementById("removeImageButtonGroup").remove();
+	document.getElementById("addAnotherPhotoFromWebButton").style.display = "none";
+	document.getElementById("addAnotherPhotoButton").style.display = "none";
+	/*document.getElementById("photoCaption").style.display = "none";
+	document.getElementById("photoTag").style.display = "none";*/
+	document.getElementById("urlPhotoUploadInput").value = "";
+	/*document.getElementById("photoCaption").innerHTML = "";
+	document.getElementById("photoTag").value = "";*/
+}
 
 /*remove <br type="_moz"> type attribute created when enter key is pressed*/
 $(document)
