@@ -2,18 +2,78 @@
 function handlePhotoFiles(files) {
   for (var i = 0; i < files.length; i++) {
     var file = files[i];
-    var imageType = /^image\//;
+    var extension = file.name.substring(file.name.lastIndexOf('.'));
+    var validFileType = ".bmp, .gif, .jpg, .jpeg, .png"; // white list of extension
+    var imageType = /image.*/; // image matching pattern for MIME types
     
-    if (!imageType.test(file.type)) {
-      continue;
+    /*check image file size*/
+    /*if(file.size > 5 * 1024 * 1024) { //5 MB file size limit
+    	alert("Image file exceeds the limit of 5MB.");
+    }*/
+    
+    /*check with the white list of extension*/
+    if (validFileType.toLowerCase().indexOf(extension) < 0) {
+      alert("Image file with " + extension + " extension is not allowed.");
     }
     
-    var img = document.createElement("img");
+    /*check with a white list of MIME types*/
+    else if (!file.type.match(imageType)) {
+    	alert("Image file with " + file.type + " MIME type is not allowed.");
+    }
+
+    /*check if the filename extension can match with the signature that belongs to it*/
+    else {
+    	checkFileSignature(file, function(result) {
+    		if(result) {
+    			var img = document.createElement("img");
+    	    img.classList.add("img-responsive");
+    	    img.id = "photoPreview"
+    	    img.file = file;
+    	    
+    	    var spanRemoveButton = document.createElement("span");	
+    			var spanButtonImageGroup = document.createElement("span");
+    			
+    			spanRemoveButton.setAttribute('id', 'removeImageButton');
+    			spanRemoveButton.setAttribute('onclick', 'removePhotoUrl()');
+    			spanRemoveButton.innerHTML = "&times;";
+    			spanButtonImageGroup.setAttribute('id', 'removeImageButtonGroup');			
+    			
+    			spanButtonImageGroup.appendChild(spanRemoveButton);
+    			spanButtonImageGroup.appendChild(img);
+    			
+    	    document.getElementById("newPhotoUploadThumbnail").appendChild(spanButtonImageGroup);
+    	    
+    	    var reader = new FileReader(); // asynchronously read the contents of files
+    	    reader.onload = (function(aImg) { 
+    	    	return function(e) { 
+    	    		aImg.src = e.target.result;
+    	  		};
+    	    })(img);
+    	    reader.readAsDataURL(file);
+    	    
+      		/*document.getElementById("newPhotoUploadThumbnail").appendChild(img);*/
+    	    displayFormAfterPhotosUpload();
+    	    document.getElementById("photoCaption").focus();
+    	    document.getElementById("photoPostButton").setAttribute("onclick", "addNewLocalPhotoPost();");
+    		}
+	  		else {
+	  			/*alert(file.name + "\nError uploading photo.");*/
+	  			swal({
+	  			  title: "",
+	  			  text: file.name + "\nError uploading photo.",
+	  			  confirmButtonText: "OK"
+	  			});
+				}
+    	});
+    }
+  	
+    
+    /*var img = document.createElement("img");
     img.classList.add("img-responsive");
     img.id = "photoPreview"
-    img.file = file;
+    img.file = file;*/
     
-    var spanRemoveButton = document.createElement("span");	
+    /* var spanRemoveButton = document.createElement("span");	
 		var spanButtonImageGroup = document.createElement("span");
 		
 		spanRemoveButton.setAttribute('id', 'removeImageButton');
@@ -24,21 +84,115 @@ function handlePhotoFiles(files) {
 		spanButtonImageGroup.appendChild(spanRemoveButton);
 		spanButtonImageGroup.appendChild(img);
 		
-    document.getElementById("newPhotoUploadThumbnail").appendChild(spanButtonImageGroup);
+    document.getElementById("newPhotoUploadThumbnail").appendChild(spanButtonImageGroup);*/
     
     /*using FileReader to display the image content*/
-    var reader = new FileReader(); // asynchronously read the contents of files
+    /*var reader = new FileReader(); // asynchronously read the contents of files
     reader.onload = (function(aImg) { 
     	return function(e) { 
     		aImg.src = e.target.result;
   		};
     })(img);
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file);*/
   }
-  
-  displayFormAfterPhotosUpload();
+  /*document.getElementById("newPhotoUploadThumbnail").appendChild(img);*/
+  /*displayFormAfterPhotosUpload();
   document.getElementById("photoCaption").focus();
-  document.getElementById("photoPostButton").setAttribute("onclick", "addNewLocalPhotoPost();");
+  document.getElementById("photoPostButton").setAttribute("onclick", "addNewLocalPhotoPost();");*/
+}
+
+function alert2(message, title, buttonText) {
+
+  buttonText = (buttonText == undefined) ? "Ok" : buttonText;
+  title = (title == undefined) ? "The page says:" : title;
+
+  var div = $('<div>');
+  div.html(message);
+  div.attr('title', title);
+  div.dialog({
+      autoOpen: true,
+      modal: true,
+      draggable: false,
+      resizable: false,
+      buttons: [{
+          text: buttonText,
+          click: function () {
+              $(this).dialog("close");
+              div.remove();
+          }
+      }]
+  });
+}
+
+/*get the extension of a file*/
+function getFileExtension(fileName) {
+  var matches = fileName && fileName.match(/\.([^.]+)$/);
+  if (matches) {
+    return matches[1].toLowerCase();
+  }
+  return '';
+}
+
+/*detect if the format of the extension can match with the signature that belongs to*/
+function checkFileSignature(file, callback) {
+	var signature = {
+    jpg: {
+      signature: ["FFD8FFE0","FFD8FFE1","FFD8FFE8"],
+      offset: 0,
+      sizet: 4
+    },
+		jpeg: {
+      signature: "FFD8FFE0",
+      offset: 0,
+      sizet: 4
+    },
+    gif: {
+    	signature: "47494638",
+      offset: 0,
+      sizet: 4
+    },
+    png: {
+    	signature: "89504E47",
+      offset: 0,
+      sizet: 4
+    },
+    bmp: {
+    	signature: "424D",
+      offset: 0,
+      sizet: 2
+    }
+	}
+  var ext = getFileExtension(file.name);
+	var fileSign = signature[ext];
+  var slice = file.slice(fileSign.offset, fileSign.offset + fileSign.sizet); // slice file from offset to sizet
+  var reader = new FileReader();  
+  reader.onload = function(e) {
+    var buffer = reader.result, // The result ArrayBuffer
+        view = new DataView(buffer), // Get access to the result bytes
+        signature; // Read 4 or 2 bytes
+
+    // get Hex String of file Signature, 32bit only contain 4 bytes
+    if(view.byteLength == 4) {
+      signature = view.getUint32(0, false).toString(16);
+    }
+    else if(view.byteLength == 2) {
+      signature = view.getUint16(0, false).toString(16);
+    }
+    else {
+      callback(false);
+      return ;
+    }
+    signature = signature.toUpperCase();
+
+    // check signature in file signature
+    if (!jQuery.isArray(fileSign.signature)) {
+      fileSign.signature = [fileSign.signature];
+    }
+    if (jQuery.inArray(signature, fileSign.signature) !== -1) {
+      callback(true);
+    }
+  };
+  reader.readAsArrayBuffer(slice); // Read the slice of the file
 }
 
 /*validate and preview photos from web url*/

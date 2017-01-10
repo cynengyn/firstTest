@@ -475,7 +475,7 @@ function textPostModal() {
 /* new photo modal */
 function photoPostModal() {
 	var photoPost = [
-		'<div class="modal-content">',
+		'<div class="modal-content" id="newPhotoPostModal">',
 	  '	<div class="panel-heading" id="newPostPanelHead">',
 	  ' 	 <a class="panel-title" id="newPostPanelHeadTitle">groovypeacetimetravel</a>',
 	  ' 	 <span class="glyphicon glyphicon-cog pull-right"></span>',
