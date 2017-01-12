@@ -173,7 +173,6 @@ body.stop-scrolling {
     opacity: 0;
     visibility: hidden; }
   .sweet-alert button {
-    animation: 1s ease 0s normal both infinite running pulse-opacity;
     background-color: #529ecc;
     color: #fff;
     border: medium none;

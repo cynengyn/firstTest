@@ -1,12 +1,16 @@
 package controllers;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -109,31 +113,34 @@ public class HomeController extends Controller {
   		FilePart<File> picture = body.getFile("photoFileInput");  		
   		String caption = requestData.get("photoCaption");
   		String tag = requestData.get("photoTag");  		
-  		String fileName, saveDirectory;
+  		String fileName, saveDirectory, newFileName;
   		
   		if (picture != null) {  	    	
         saveDirectory = "public/images/upload/";
   			fileName = picture.getFilename();
-        File file = picture.getFile();  
+        File file = picture.getFile();
+        // generate a random file name
+        newFileName = UUID.randomUUID().toString().replaceAll("-", "") + new SimpleDateFormat("yyyyMMddHHmmssSSS'.'").format(new Date()) + FilenameUtils.getExtension(fileName);
         
         PhotoPost post = new PhotoPost();
         post.photoSaveDirectory = saveDirectory;
     		post.photoCaption = caption;
     		post.photoTag = tag;
     		post.creationDate = new Date();
-    		post.imageFileName = fileName;
+    		post.imageFileName = newFileName;
+    		post.imageOriginalFileName = fileName;
     		post.imageFileType = FilenameUtils.getExtension(fileName);
     		post.save();
 
-        File destDir = new File(saveDirectory + fileName);
-
         try {
-					FileUtils.copyFile(file, destDir);
+        	// read image in and write it back, metadata isn't read
+					BufferedImage image = ImageIO.read(file);
+					ImageIO.write(image, post.imageFileType, new File(saveDirectory + post.imageFileName)); // new image without metadata
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}	
-        /*return ok("File uploaded " + fileName);*/
+        /*System.out.println("Success");*/
   		}
 
   		List<PhotoPost> res = PhotoPost.find.orderBy().desc("id").setMaxRows(10).findList();

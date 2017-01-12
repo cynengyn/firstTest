@@ -25,6 +25,8 @@ public class PhotoPost extends Model {
   public String imageFileName;
   
   public String imageFileType;
+  
+  public String imageOriginalFileName;
 
   public static Finder<Long, PhotoPost> find = new Finder<Long, PhotoPost>(PhotoPost.class);
 }

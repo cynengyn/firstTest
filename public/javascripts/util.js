@@ -226,7 +226,7 @@ function addLocalPhotoPostFromServer(photoSaveDirectory, photoCaption, photoTag,
 	spanGlyphiconCog.setAttribute('Title', 'Options');
 	
 	aPhotoPanelTitle.innerHTML = "groovypeacetimetravel";
-	divPhotoTextPanelBody.innerHTML = photoCaption + "<br>";
+	divPhotoTextPanelBody.innerHTML = photoCaption + "<br><br>";
 	aPhotoTag.innerHTML = "#" + photoTag;
 	aDropdownMenuEdit.innerHTML = "Edit";
 	aDropdownMenuDelete.innerHTML = "Delete";
@@ -314,7 +314,7 @@ function addNewWebPhotoPostFromServer(webPhotoUrl, webPhotoCaption, webPhotoPost
 	spanGlyphiconCog.setAttribute('Title', 'Options');
 	
 	aPhotoPanelTitle.innerHTML = "groovypeacetimetravel";
-	divPhotoTextPanelBody.innerHTML = webPhotoCaption + "<br>";
+	divPhotoTextPanelBody.innerHTML = webPhotoCaption + "<br><br>";
 	aPhotoTag.innerHTML = "#" + webPhotoPostTag;
 	aDropdownMenuEdit.innerHTML = "Edit";
 	aDropdownMenuDelete.innerHTML = "Delete";

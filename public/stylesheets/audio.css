@@ -1,0 +1,173 @@
+#audioDescription {
+  border: none;
+  box-shadow: none;
+  display: none;
+  font-size: 14px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
+  min-height: 80px;
+  outline: none;
+  word-wrap: break-word;
+}
+
+#audioDescription:empty::before {
+  color: #a2a2a2;
+  content: 'Add a description, if you like';
+}
+
+/* hide audio file <input> element */
+#audioFileInput {
+  display: none;
+}
+
+#audioPlayerButton {
+  cursor: pointer;
+  font-size: 25px;
+  margin-bottom: 29px;
+  margin-left: 29px;
+  margin-top: 29px;
+}
+
+#audioTag {
+  border: none;
+  box-shadow: none;
+  display: none;
+  font-size: 13px;
+  margin-bottom: 4px;
+  padding-bottom: 0px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-top: 0px;
+  width: 100%;
+}
+
+#audioUrl span {
+  overflow: hidden;  
+  white-space: nowrap;
+}
+
+#audioUrl span:empty::before {
+  color: #a2a2a2;
+  content: 'Add a caption, if you like';
+}
+
+#audioUrlGlyphiconPlus {
+  color:#8f8f8f;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#audioUrlGlyphiconSearch {
+  color: #8f8f8f;
+  font-size: 14px;
+}
+
+#audioUrlInputGroup {
+  margin-left:20px;
+  margin-right:25px;
+}
+
+#audioUrlSearchIcon {
+  background-color: white;
+  border: none;
+  cursor: auto;
+  padding-left: 0px;
+}
+
+#audioLocalFileIcon {
+  background-color: white;
+  border: none;
+  cursor: auto;
+  padding-right: 0px;
+}
+
+#newAudioPostModalBody {
+  border-bottom: 1px solid rgba(68, 68, 68, 0.07);
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 0px;
+}
+
+#progressBar {
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	/* color: #fff; */
+	/* background-color: #000;
+	opacity: 0; */
+	height: 20px;
+}
+
+#progress {
+	background: rgba(0, 0, 0, 0.05) none repeat scroll 0 0;;
+	cursor: pointer;
+	/* opacity: 0; */
+	height: 20px;
+	display: inline-block;
+}
+
+/* new audio from web url input */
+#urlAudioUploadInput {
+  border: none;
+  box-shadow: none;
+  color: #444;
+  cursor: auto;
+  font-size: 14px;
+  min-height: 40px;
+  width: 100%;
+}
+
+#urlAudioUploadInput::-moz-placeholder {
+  color: #A2A2A2;
+}
+
+/* new audio upload panel */
+#newAudioUploadPanel {
+  /* background-color: #f2f2f2; */
+  /* border-bottom: 2px dashed #cfcfcf;
+  border-top: 2px dashed #cfcfcf; */
+  /* color: #989898;
+  cursor: pointer; */
+}
+
+#newAudioUploadPreview {
+  /* display: none; */
+  border:1px solid;
+  margin-left: 0px;
+  margin-right: 0px;
+  min-height: 87px;
+}
+
+#newAudioUploadPreview #removeAudioGroup audio {
+  margin-left: 19px;
+}
+
+#removeAudioButton {
+  -moz-user-select: none;
+  background-color: #d95e40;  
+  border-color: #d95e40;
+  border-radius: 50%;
+  color: #fff;
+  cursor: none;
+  font-size: 20px;
+  height: 21px;
+  line-height: 14px;
+  position: absolute;
+  right: -7px;
+  text-align: center;
+  top: -7px;
+  width: 21px;
+  
+  opacity: 0;
+  transform: scale(0);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0s, opacity 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
+  transition-delay: 0.7s; /* delays for 0.7 second */
+  -webkit-transition-delay: 0.7s; /* for Safari & Chrome */
+}
+
+#removeAudioGroup:hover #removeAudioButton {
+  cursor: pointer;
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0s, opacity 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
+}

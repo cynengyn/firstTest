@@ -24,13 +24,16 @@
 	    <script src="assets/javascripts/text.js"></script>
 	    <script src="assets/javascripts/photo.js"></script>
 	    <script src="assets/javascripts/quote.js"></script>
+	    <script src="assets/javascripts/audio.js"></script>
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/sweetalert.css">
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/main.css">
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/text.css">
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/photo.css">
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/quote.css">
+	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/audio.css">
 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-			<!-- material icons font --><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+			<!-- material icons font -->
+			<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	  </head>
 	  <body>
 	  
@@ -66,7 +69,7 @@
 			        
 			        <a class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-link"></span><br>Link</a>
 			        <a class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-comment"></span><br>Chat</a>
-			        <a class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-headphones"></span><br>Audio</a>
+			        <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-headphones"></span><br>Audio</a>
 			        <a class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-facetime-video"></span><br>Video</a>
 			        </div>
 			        <!-- new posts buttons modal start-->
@@ -205,6 +208,64 @@
 											</div>
 									  </div>
 									</div> -->
+									
+									<div class="modal-content">
+										<div class="panel-heading" id="newPostPanelHead">
+									    <a class="panel-title" id="newPostPanelHeadTitle">groovypeacetimetravel</a>
+									    <span class="glyphicon glyphicon-cog pull-right"></span>
+									  </div>
+									  <div class="modal-body" id="newAudioPostModalBody" style="padding: 0px;">
+											<form method="post" enctype="multipart/form-data">
+												<input id="audioFileInput" name="audioFileInput" accept=".mp3" type="file" onchange="handlePhotoFiles(this.files)"/>
+									      <div class="container-fluid">
+									      	<div class="row" id="newAudioUploadPanel">
+														<!--<div class="col-md-6" id="photoUploadColumn" onclick="$('#photoFileInput').click()">												       
+														  <div><i class="material-icons" id="photoUploadIcon">add_a_photo</i></div>
+														  <div><span id="photoUploadLabel">Upload photos</span></div>
+														</div>-->
+														<!--<div class="col-md-12" id="urlPhotoUploadPanelDiv">
+														  <input id="#urlAudioUploadInput" style="" oninput="validatePhotoURL()" placeholder="Search for a song or paste a URL"></input>
+														</div>-->
+														<!--<div id="audioUrl" style="" contenteditable="true">
+														<span>​</span>
+														</div>-->
+														<div class="input-group" id="audioUrlInputGroup">
+															<span class="input-group-addon" id="audioUrlSearchIcon"><i class="glyphicon glyphicon-search" id="audioUrlGlyphiconSearch"></i></span>
+															<input id="urlAudioUploadInput" oninput="validateAudioURL()" placeholder="Search for a song or paste a URL" type="url"></input>
+															<span class="input-group-addon" id="audioLocalFileIcon"><i class="glyphicon glyphicon-plus" id="audioUrlGlyphiconPlus" title="No file selected." onclick="$('#audioFileInput').click()"></i></span>
+										        </div>
+										        <div class="row" id="newAudioUploadPreview">
+										        	<div id="controls">
+																<div id="progressBar"><span id="progress"></span></div>
+																<i class="glyphicon glyphicon-play" id="audioPlayerButton" onclick="togglePlayPause()"></i>
+															</div>
+										        </div>
+										        <span id="audioDescription" contenteditable="true"></span>
+										        <div class="col-md-12">
+										        	<input class="form-control" id="audioTag" name="audioTag" placeholder="#tags" type="text" />
+										        </div>
+										    	</div>
+									      </div>
+									    </form>
+									  </div>
+									  <div class="modal-footer" id="newPostPanelFooter">
+									    <button class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+									    <div class="btn-group">
+										    <button class="btn btn-primary" id="photoPostButton" data-dismiss="modal" onclick="">Post</button>
+										    <button class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+											    <span class="caret"></span>
+											  </button>
+											  <ul class="dropdown-menu" id="photoUploadPostDropDown">
+											    <li><a href="">Post now</a></li>
+											    <li><a href="">Add to queue</a></li>
+											    <li><a href="">Save as draft</a></li>
+											    <li><a href="">Post privately</a></li>
+											    <li><a href="">Schedule</a></li>
+											  </ul>
+											</div>
+									  </div>
+									</div>
+									
 									
 			          </div>
 			        </div>

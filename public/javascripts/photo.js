@@ -4,21 +4,23 @@ function handlePhotoFiles(files) {
     var file = files[i];
     var extension = file.name.substring(file.name.lastIndexOf('.'));
     var validFileType = ".bmp, .gif, .jpg, .jpeg, .png"; // white list of extension
-    var imageType = /image.*/; // image matching pattern for MIME types
     
     /*check image file size*/
-    /*if(file.size > 5 * 1024 * 1024) { //5 MB file size limit
-    	alert("Image file exceeds the limit of 5MB.");
-    }*/
-    
-    /*check with the white list of extension*/
-    if (validFileType.toLowerCase().indexOf(extension) < 0) {
-      alert("Image file with " + extension + " extension is not allowed.");
+    if(file.size > 10 * 1024 * 1024) { // 10MB file size limit
+    	swal({
+			  title: "",
+			  text: "The file is too big. Squish it \n down, and try again!",
+			  confirmButtonText: "OK"
+			});
     }
     
-    /*check with a white list of MIME types*/
-    else if (!file.type.match(imageType)) {
-    	alert("Image file with " + file.type + " MIME type is not allowed.");
+    /*check with the white list of extension*/
+    else if (validFileType.toLowerCase().indexOf(extension) < 0) {
+    	swal({
+			  title: "",
+			  text: file.name + "\n Nice image, but we don't support \n that format. Try resaving it as a \n gif, jpg, or png.",
+			  confirmButtonText: "OK"
+			});
     }
 
     /*check if the filename extension can match with the signature that belongs to it*/
@@ -43,6 +45,7 @@ function handlePhotoFiles(files) {
     			
     	    document.getElementById("newPhotoUploadThumbnail").appendChild(spanButtonImageGroup);
     	    
+    	    /*using FileReader to display the image content*/
     	    var reader = new FileReader(); // asynchronously read the contents of files
     	    reader.onload = (function(aImg) { 
     	    	return function(e) { 
@@ -50,14 +53,12 @@ function handlePhotoFiles(files) {
     	  		};
     	    })(img);
     	    reader.readAsDataURL(file);
-    	    
-      		/*document.getElementById("newPhotoUploadThumbnail").appendChild(img);*/
+
     	    displayFormAfterPhotosUpload();
     	    document.getElementById("photoCaption").focus();
     	    document.getElementById("photoPostButton").setAttribute("onclick", "addNewLocalPhotoPost();");
     		}
 	  		else {
-	  			/*alert(file.name + "\nError uploading photo.");*/
 	  			swal({
 	  			  title: "",
 	  			  text: file.name + "\nError uploading photo.",
@@ -66,62 +67,7 @@ function handlePhotoFiles(files) {
 				}
     	});
     }
-  	
-    
-    /*var img = document.createElement("img");
-    img.classList.add("img-responsive");
-    img.id = "photoPreview"
-    img.file = file;*/
-    
-    /* var spanRemoveButton = document.createElement("span");	
-		var spanButtonImageGroup = document.createElement("span");
-		
-		spanRemoveButton.setAttribute('id', 'removeImageButton');
-		spanRemoveButton.setAttribute('onclick', 'removePhotoUrl()');
-		spanRemoveButton.innerHTML = "&times;";
-		spanButtonImageGroup.setAttribute('id', 'removeImageButtonGroup');			
-		
-		spanButtonImageGroup.appendChild(spanRemoveButton);
-		spanButtonImageGroup.appendChild(img);
-		
-    document.getElementById("newPhotoUploadThumbnail").appendChild(spanButtonImageGroup);*/
-    
-    /*using FileReader to display the image content*/
-    /*var reader = new FileReader(); // asynchronously read the contents of files
-    reader.onload = (function(aImg) { 
-    	return function(e) { 
-    		aImg.src = e.target.result;
-  		};
-    })(img);
-    reader.readAsDataURL(file);*/
   }
-  /*document.getElementById("newPhotoUploadThumbnail").appendChild(img);*/
-  /*displayFormAfterPhotosUpload();
-  document.getElementById("photoCaption").focus();
-  document.getElementById("photoPostButton").setAttribute("onclick", "addNewLocalPhotoPost();");*/
-}
-
-function alert2(message, title, buttonText) {
-
-  buttonText = (buttonText == undefined) ? "Ok" : buttonText;
-  title = (title == undefined) ? "The page says:" : title;
-
-  var div = $('<div>');
-  div.html(message);
-  div.attr('title', title);
-  div.dialog({
-      autoOpen: true,
-      modal: true,
-      draggable: false,
-      resizable: false,
-      buttons: [{
-          text: buttonText,
-          click: function () {
-              $(this).dialog("close");
-              div.remove();
-          }
-      }]
-  });
 }
 
 /*get the extension of a file*/
@@ -177,6 +123,14 @@ function checkFileSignature(file, callback) {
     }
     else if(view.byteLength == 2) {
       signature = view.getUint16(0, false).toString(16);
+      swal({
+			  title: "",
+			  text: file.name + "\n Nice image, but we don't support \n that format. Try resaving it as a \n gif, jpg, or png.",
+			  confirmButtonText: "OK",
+			  animation: true
+			});
+      $('.confirm').focus();
+      return ;
     }
     else {
       callback(false);
@@ -190,6 +144,14 @@ function checkFileSignature(file, callback) {
     }
     if (jQuery.inArray(signature, fileSign.signature) !== -1) {
       callback(true);
+    }
+    else {
+    	swal({
+			  title: "",
+			  text: file.name + "\n Nice image, but we don't support \n that format. Try resaving it as a \n gif, jpg, or png.",
+			  confirmButtonText: "OK"
+			});
+      return ;
     }
   };
   reader.readAsArrayBuffer(slice); // Read the slice of the file
