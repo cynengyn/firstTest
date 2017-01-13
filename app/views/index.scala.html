@@ -234,10 +234,21 @@
 															<input id="urlAudioUploadInput" oninput="validateAudioURL()" placeholder="Search for a song or paste a URL" type="url"></input>
 															<span class="input-group-addon" id="audioLocalFileIcon"><i class="glyphicon glyphicon-plus" id="audioUrlGlyphiconPlus" title="No file selected." onclick="$('#audioFileInput').click()"></i></span>
 										        </div>
-										        <div class="row" id="newAudioUploadPreview">
-										        	<div id="controls">
-																<div id="progressBar"><span id="progress"></span></div>
+										        <div id="newAudioUploadPreview">
+										        	<div id="audioPreviewControl">
+																<div id="progressBar" style=""><span id="playProgress"></span><i id="playHead"></i></div>
 																<i class="glyphicon glyphicon-play" id="audioPlayerButton" onclick="togglePlayPause()"></i>
+																<input class="glyphicon" id="audioTrackInput" style="" onclick="">
+																<label class="glyphicon" id="audioTrackLabel">Track</label>
+																<input class="glyphicon" id="audioArtistInput" style="" onclick="">
+																<label class="glyphicon" id="audioArtistLabel">Artist</label>
+																<input class="glyphicon" id="audioAlbumInput" style="" onclick="">
+																<label class="glyphicon" id="audioAlbumLabel">Album</label>
+															</div>
+															<div id="audioAlbumArtDiv">
+																<div id="selectAudioAlbumArtDiv">
+																	<span class="text-center">Select album art</span>
+																</div>
 															</div>
 										        </div>
 										        <span id="audioDescription" contenteditable="true"></span>

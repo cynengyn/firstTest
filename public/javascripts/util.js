@@ -48,7 +48,7 @@ function loadUpWebPhotoPost() {
      },
      error: function(data) {
     	 console.log("error");
-       console.log(data);     
+       console.log(data);
      }
 	});
 }

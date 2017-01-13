@@ -1,4 +1,4 @@
-
+var audio = document.getElementById("urlAudio");
 
 $("#modalFade").on("shown.bs.modal", function() {
   $(this).find('#urlAudioUploadInput').focus();
@@ -96,12 +96,15 @@ function togglePlayPause() {
 
 function updateProgress() {
 	var audio = document.getElementById("urlAudio");
-	var progress = document.getElementById("progress");
+	var progress = document.getElementById("playProgress");
+	var head = document.getElementById("playHead");
 	var value = 0;
 	if (audio.currentTime > 0) {
-		value = Math.floor((100 / audio.duration) * audio.currentTime);
+		/*value = Math.floor((100 / audio.duration) * audio.currentTime);*/
+		value = 100 * (audio.currentTime / audio.duration);
 	}
 	progress.style.width = value + "%";
+	head.style.left = value + "%";
 }
 
 function seek(e) {
@@ -110,3 +113,4 @@ function seek(e) {
   audio.currentTime = percent * audio.duration;
   progressBar.value = percent / 100;
 }
+

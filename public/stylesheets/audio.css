@@ -21,12 +21,21 @@
   display: none;
 }
 
+#audioLocalFileIcon {
+  background-color: white;
+  border: none;
+  cursor: auto;
+  padding-right: 0px;
+}
+
 #audioPlayerButton {
   cursor: pointer;
+  display: inline;
   font-size: 25px;
-  margin-bottom: 29px;
-  margin-left: 29px;
-  margin-top: 29px;
+  margin-bottom: 5.1%; /* 30px; */
+  margin-left: 5.1%; /* 30px; */
+  margin-top: 5.1%; /* 30px; */
+  position: absolute;
 }
 
 #audioTag {
@@ -40,6 +49,128 @@
   padding-left: 5px;
   padding-top: 0px;
   width: 100%;
+}
+
+#audioAlbumArtDiv {
+  background-color: #f8f8f8;
+  border: 1px solid;
+  border-color: rgba(0, 0, 0, 0.15);
+  float: right;
+  height: 87px;
+  width: 14.6%;
+}
+
+#audioAlbumInput {
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background: transparent none repeat scroll 0 0;
+  border-color: -moz-use-text-color -moz-use-text-color rgba(68, 68, 68, 0.07);
+  border-style: none none solid;
+  border-width: 0 0 1px;
+  color: #222;
+  display: inline;
+  font-family: Helvetica Neue,HelveticaNeue,Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  height: 25px;
+  line-height: 25px;
+  margin-left: 15%; /* 90px; */
+  padding: 0px 45px 0px 2px;
+  position: absolute;
+  top: 23%;
+  width: 68%;
+}
+
+#audioAlbumLabel {
+  color: #a2a2a2;
+  font-family: Helvetica;
+  font-size: 11px;
+  font-style: italic;
+  line-height: 25px;
+  margin-right: 16.4%; /* 98px; */
+  padding: 0 2px;
+  position: absolute;
+  right: 0;
+  top: 23%;
+}
+
+#audioArtistInput {
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background: transparent none repeat scroll 0 0;
+  border-color: -moz-use-text-color -moz-use-text-color rgba(68, 68, 68, 0.07);
+  border-style: none none solid;
+  border-width: 0 0 1px;
+  color: #222;
+  display: inline;
+  font-family: Helvetica Neue,HelveticaNeue,Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  height: 25px;
+  line-height: 25px;
+  margin-left: 15%; /* 90px; */
+  padding: 0px 45px 0px 2px;
+  position: absolute;
+  top: 12%;
+  width: 68%;
+}
+
+#audioArtistLabel {
+  color: #a2a2a2;
+  font-family: Helvetica;
+  font-size: 11px;
+  font-style: italic;
+  line-height: 25px;
+  margin-right: 16.4%; /* 98px; */
+  padding: 0 2px;
+  position: absolute;
+  right: 0;
+  top: 12%;
+}
+
+#audioPreviewControl {
+  border:1px solid;
+  border-color: rgba(0, 0, 0, 0.15);
+  float: left;
+  width:85.40%;
+}
+
+#audioTrackInput {
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background: transparent none repeat scroll 0 0;
+  border-color: -moz-use-text-color -moz-use-text-color rgba(68, 68, 68, 0.07);
+  border-style: none none solid;
+  border-width: 0 0 1px;
+  color: #222;
+  display: inline;
+  font-family: Helvetica Neue,HelveticaNeue,Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  height: 25px;
+  line-height: 25px;
+  margin-left: 15%; /* 90px; */
+  padding: 0px 45px 0px 2px;
+  position: absolute;
+  top: 1%;
+  width: 68%;
+}
+
+#audioTrackLabel {
+  color: #a2a2a2;
+  font-family: Helvetica;
+  font-size: 11px;
+  font-style: italic;
+  line-height: 25px;
+  margin-right: 16.4%; /* 98px; */
+  padding: 0 2px;
+  position: absolute;
+  right: 0;
+  top: 1%;
 }
 
 #audioUrl span {
@@ -75,49 +206,11 @@
   padding-left: 0px;
 }
 
-#audioLocalFileIcon {
-  background-color: white;
-  border: none;
-  cursor: auto;
-  padding-right: 0px;
-}
-
 #newAudioPostModalBody {
   border-bottom: 1px solid rgba(68, 68, 68, 0.07);
   padding-left: 0px;
   padding-right: 0px;
   padding-top: 0px;
-}
-
-#progressBar {
-	border: 1px solid rgba(0, 0, 0, 0.15);
-	/* color: #fff; */
-	/* background-color: #000;
-	opacity: 0; */
-	height: 20px;
-}
-
-#progress {
-	background: rgba(0, 0, 0, 0.05) none repeat scroll 0 0;;
-	cursor: pointer;
-	/* opacity: 0; */
-	height: 20px;
-	display: inline-block;
-}
-
-/* new audio from web url input */
-#urlAudioUploadInput {
-  border: none;
-  box-shadow: none;
-  color: #444;
-  cursor: auto;
-  font-size: 14px;
-  min-height: 40px;
-  width: 100%;
-}
-
-#urlAudioUploadInput::-moz-placeholder {
-  color: #A2A2A2;
 }
 
 /* new audio upload panel */
@@ -130,8 +223,9 @@
 }
 
 #newAudioUploadPreview {
-  /* display: none; */
-  border:1px solid;
+  display: none;
+  /* border:1px solid;
+  border-color: rgba(0, 0, 0, 0.15); */
   margin-left: 0px;
   margin-right: 0px;
   min-height: 87px;
@@ -139,6 +233,47 @@
 
 #newAudioUploadPreview #removeAudioGroup audio {
   margin-left: 19px;
+}
+
+#playHead {
+  background: rgba(0, 0, 0, 0.1) none repeat scroll 0 0;
+  /* background: yellow; */
+  height: 85px;
+  position: absolute;
+  margin-left: -1px;
+  width: 1px;
+}
+
+/* #playHead:FOCUS {
+  background: rgba(0, 0, 0, 0.2) none repeat scroll 0 0;
+  cursor: webkit-grabbing;
+  cursor: -moz-grabbing;
+  margin-left: -2px;
+  width: 3px;
+}
+
+#playHead:hover {
+  background: rgba(0, 0, 0, 0.2) none repeat scroll 0 0;
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+  margin-left: -2px;
+  width: 3px;
+} */
+
+#playProgress {
+	background: rgba(0, 0, 0, 0.05) none repeat scroll 0 0;
+	/* background: red; */
+	display: inline;
+	cursor: pointer;
+	height: 85px;
+	position: absolute;
+}
+
+#progressBar {
+	/* border: 1px solid rgba(0, 0, 0, 0.15); */
+	background-color: #f8f8f8;
+	height: 85px;
+	position: relative;
 }
 
 #removeAudioButton {
@@ -170,4 +305,37 @@
   pointer-events: auto;
   transform: scale(1);
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0s, opacity 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
+}
+
+#selectAudioAlbumArtDiv {
+  align-items: center;
+  background-color: #f2f2f2;
+  border-color: #cfcfcf;
+  border-style: dashed;
+  border-width: 2px;
+  color: #989898;
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  height: 73px;
+  line-height: 18px;
+  margin-left: 7%;
+  margin-top:8%;
+  text-align: center;
+  width: 86%;
+}
+
+/* new audio from web url input */
+#urlAudioUploadInput {
+  border: none;
+  box-shadow: none;
+  color: #444;
+  cursor: auto;
+  font-size: 14px;
+  min-height: 40px;
+  width: 100%;
+}
+
+#urlAudioUploadInput::-moz-placeholder {
+  color: #A2A2A2;
 }
