@@ -18,6 +18,7 @@
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	    <script src="assets/javascripts/bootstrap-toggle.js"></script>
 	    <script src="assets/javascripts/sweetalert.min.js"></script>
 	    <script src="assets/javascripts/util.js"></script>
 	    <script src="assets/javascripts/text_area_auto_expand.js"></script>
@@ -25,6 +26,12 @@
 	    <script src="assets/javascripts/photo.js"></script>
 	    <script src="assets/javascripts/quote.js"></script>
 	    <script src="assets/javascripts/audio.js"></script>
+	    <script src="assets/javascripts/id3-minimized.js"></script>
+	    <script src="assets/javascripts/handle_audio_local_file.js"></script>
+	    <script src="assets/javascripts/handle_audio_album_art.js"></script>
+	    <script src="assets/javascripts/audio_post_player_control.js"></script>
+	    <script src="assets/javascripts/add_new_audio_post.js"></script>
+	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/bootstrap-toggle.css">
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/sweetalert.css">
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/main.css">
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/text.css">
@@ -69,7 +76,7 @@
 			        
 			        <a class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-link"></span><br>Link</a>
 			        <a class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-comment"></span><br>Chat</a>
-			        <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-headphones"></span><br>Audio</a>
+			        <a class="btn btn-primary btn-lg" onclick="audioPostModal()" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-headphones"></span><br>Audio</a>
 			        <a class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-facetime-video"></span><br>Video</a>
 			        </div>
 			        <!-- new posts buttons modal start-->
@@ -209,26 +216,16 @@
 									  </div>
 									</div> -->
 									
-									<div class="modal-content">
+									<!--<div class="modal-content">
 										<div class="panel-heading" id="newPostPanelHead">
 									    <a class="panel-title" id="newPostPanelHeadTitle">groovypeacetimetravel</a>
 									    <span class="glyphicon glyphicon-cog pull-right"></span>
 									  </div>
-									  <div class="modal-body" id="newAudioPostModalBody" style="padding: 0px;">
+									  <div class="modal-body" id="newAudioPostModalBody">
 											<form method="post" enctype="multipart/form-data">
-												<input id="audioFileInput" name="audioFileInput" accept=".mp3" type="file" onchange="handlePhotoFiles(this.files)"/>
+												<input id="audioFileInput" name="audioFileInput" accept=".mp3" type="file" onchange="handleAudioFiles(this.files)"/>
 									      <div class="container-fluid">
 									      	<div class="row" id="newAudioUploadPanel">
-														<!--<div class="col-md-6" id="photoUploadColumn" onclick="$('#photoFileInput').click()">												       
-														  <div><i class="material-icons" id="photoUploadIcon">add_a_photo</i></div>
-														  <div><span id="photoUploadLabel">Upload photos</span></div>
-														</div>-->
-														<!--<div class="col-md-12" id="urlPhotoUploadPanelDiv">
-														  <input id="#urlAudioUploadInput" style="" oninput="validatePhotoURL()" placeholder="Search for a song or paste a URL"></input>
-														</div>-->
-														<!--<div id="audioUrl" style="" contenteditable="true">
-														<span>​</span>
-														</div>-->
 														<div class="input-group" id="audioUrlInputGroup">
 															<span class="input-group-addon" id="audioUrlSearchIcon"><i class="glyphicon glyphicon-search" id="audioUrlGlyphiconSearch"></i></span>
 															<input id="urlAudioUploadInput" oninput="validateAudioURL()" placeholder="Search for a song or paste a URL" type="url"></input>
@@ -236,23 +233,37 @@
 										        </div>
 										        <div id="newAudioUploadPreview">
 										        	<div id="audioPreviewControl">
-																<div id="progressBar" style=""><span id="playProgress"></span><i id="playHead"></i></div>
+																<div id="progressBar"><span id="playProgress"></span><i id="playHead"></i></div>
 																<i class="glyphicon glyphicon-play" id="audioPlayerButton" onclick="togglePlayPause()"></i>
-																<input class="glyphicon" id="audioTrackInput" style="" onclick="">
+																<input class="glyphicon" id="audioTrackInput">
 																<label class="glyphicon" id="audioTrackLabel">Track</label>
-																<input class="glyphicon" id="audioArtistInput" style="" onclick="">
+																<input class="glyphicon" id="audioArtistInput">
 																<label class="glyphicon" id="audioArtistLabel">Artist</label>
-																<input class="glyphicon" id="audioAlbumInput" style="" onclick="">
+																<input class="glyphicon" id="audioAlbumInput">
 																<label class="glyphicon" id="audioAlbumLabel">Album</label>
 															</div>
+															<input id="selectAlbumArtInput" name="selectAlbumArtInput" accept="image/*" type="file" onchange="handleAlbumArt(this.files)"/>
 															<div id="audioAlbumArtDiv">
 																<div id="selectAudioAlbumArtDiv">
-																	<span class="text-center">Select album art</span>
+																	<span class="text-center" onclick="$('#selectAlbumArtInput').click()">Select album art</span>
 																</div>
+																<div id="audioAlbumArtPreview"></div>
 															</div>
+										        </div>										        
+										        <div id="audioPermission">
+															<label class="binary_switch">
+																<input id="audioPermissionCheckBox" type="checkbox">
+																<span class="binary_switch_track"></span>
+																<span class="binary_switch_button"></span>
+															</label>
+															<span onclick="$('#audioPermissionCheckBox').click()">
+																This is my original work, or I <a> have permission </a> to post this.
+															</span>
+														</div>
+										        <div id="audioDescriptionDiv">
+										        	<span id="audioDescription" contenteditable="true"></span>
 										        </div>
-										        <span id="audioDescription" contenteditable="true"></span>
-										        <div class="col-md-12">
+										        <div>
 										        	<input class="form-control" id="audioTag" name="audioTag" placeholder="#tags" type="text" />
 										        </div>
 										    	</div>
@@ -262,11 +273,11 @@
 									  <div class="modal-footer" id="newPostPanelFooter">
 									    <button class="btn btn-default pull-left" data-dismiss="modal">Close</button>
 									    <div class="btn-group">
-										    <button class="btn btn-primary" id="photoPostButton" data-dismiss="modal" onclick="">Post</button>
+										    <button class="btn btn-primary" id="audioPostButton" data-dismiss="modal" onclick="">Post</button>
 										    <button class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
 											    <span class="caret"></span>
 											  </button>
-											  <ul class="dropdown-menu" id="photoUploadPostDropDown">
+											  <ul class="dropdown-menu" id="audioUploadPostDropDown">
 											    <li><a href="">Post now</a></li>
 											    <li><a href="">Add to queue</a></li>
 											    <li><a href="">Save as draft</a></li>
@@ -275,7 +286,7 @@
 											  </ul>
 											</div>
 									  </div>
-									</div>
+									</div>-->
 									
 									
 			          </div>
@@ -293,6 +304,42 @@
 	    	<div class="row">
 	    		<div class="col-sm-1"></div>
 	      	<div class="col-sm-7" id="postColumn">
+	      	
+	      		<!-- audio test start -->
+						<div class="panel panel-default">
+						  <div class="panel-heading">
+						    <a class="panel-title">groovypeacetimetravel</a>
+						  </div>
+						  <div class="panel-body" id="audioPostPanelBody">
+						    <audio id="urlAudio" src="http://www.stephaniequinn.com/Music/Pachelbel%20-%20Canon%20in%20D%20Major.mp3" onloadedmetadata="initilizeUrlAudioPostControl(this)"></audio>
+						    <div id="audioPostPlayControl">
+									<div id="audioPostProgressBar"><span id="playProgress"></span><i id="playHead"></i></div>
+									<i class="glyphicon glyphicon-play" id="audioPostPlayerButton" onclick="togglePlayPauseAudioPost()"></i>
+									<li class="glyphicon" id="audioPostTrack">"Canon" (in D-Major)</li>
+									<li class="glyphicon" id="audioPostArtist">Pachebel</li>
+									<li class="glyphicon" id="audioPostAlbum">Classical</li>
+								</div>
+								<div id="audioPostAlbumArtDiv">
+									<img class="img-responsive" src="assets/images/Transformer-Open-and-Short-Circuit-Tests.png">
+								</div>
+						  </div>						  
+						  <div class="panel-body" id="audioPostDesciptionTagPanelBody">						  	
+						    03 - “Canon” (in D-Major), Pachebel<br><br>Sample<br><br>
+						    <a>#sampletest</a>
+						  </div>
+						  <div class="panel-footer">
+						  	<div class="dropdown">
+							    <a href=""><span class="glyphicon glyphicon-send" title="Share"></span></a>
+							    <a href=""><span class="glyphicon glyphicon-retweet" title="Reblog"></span></a>
+							    <span class="glyphicon glyphicon-cog dropdown-toggle" data-toggle="dropdown" title="Options"></span>
+							    <ul class="dropdown-menu dropdown-menu-right">
+							      <li><a href="">Edit</a></li>
+							      <li><a href="">Delete</a></li>
+							    </ul>		
+								</div>					    
+						  </div>
+					  </div>
+					  <!-- audio test end -->
 					  
 					  <!-- photo test start -->
 						<div class="panel panel-default">

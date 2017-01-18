@@ -16,6 +16,13 @@
   word-wrap: break-word;
 }
 
+#textAreaPost:empty {
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */ 
+}
+
 #textAreaPost:empty::before {
   color: #a2a2a2;
   content: 'Your text here';
@@ -54,6 +61,13 @@
   padding: 0px;
   outline: none;
   word-wrap: break-word;
+}
+
+#textTitle:empty {
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */ 
 }
 
 /* new text title input area placeholder */

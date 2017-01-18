@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import models.PhotoPost;
 import models.TextPost;
+import models.WebAudioPost;
 import models.WebPhotoPost;
 import play.data.DynamicForm;
 import play.mvc.*;
@@ -80,6 +81,17 @@ public class HomeController extends Controller {
   		return ok (resJson);		
   	}
     
+  	public Result loadUpWebAudioPost() {
+  		// find last 10 post
+  		List<WebAudioPost> res = WebAudioPost.find.orderBy().desc("web_audio_post_id").setMaxRows(10).findList();      
+  		ArrayNode resJson = play.libs.Json.newArray();
+  		
+  		for(WebAudioPost p: res) {
+  		  resJson.add(play.libs.Json.toJson(p));	
+  		}
+  		return ok (resJson);		
+  	}
+  	
   	public Result textPost() {  	
   		DynamicForm requestData = formFactory.form().bindFromRequest();
   		String title = requestData.get("title");

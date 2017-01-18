@@ -59,14 +59,6 @@
 }
 
 /*new photo upload caption*/
-/* #photoCaption {
-  border: none;
-  box-shadow: none;
-  display: none;
-  margin-top: 20px;
-  padding: 0px;
-  resize: none;
-} */
 #photoCaption {
   border: none;
   box-shadow: none;
@@ -77,6 +69,13 @@
   outline: none;
   resize: none;
   word-wrap: break-word;
+}
+
+#photoCaption:empty {
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */ 
 }
 
 #photoCaption:empty::before {

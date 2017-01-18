@@ -1,6 +1,8 @@
 loadUpData();
 loadUpPhotoPost();
 loadUpWebPhotoPost();
+loadUpWebAudioPost();
+loadUpLocalAudioPost();
 
 function loadUpData() {	
 	$.ajax({
@@ -44,6 +46,38 @@ function loadUpWebPhotoPost() {
      success: function(data) {
     	 for(i = data.length-1; i >= 0 ; i-- ) {
     		 addNewWebPhotoPostFromServer(data[i].webPhotoUrl, data[i].webPhotoCaption, data[i].webPhotoPostTag);
+    	 }
+     },
+     error: function(data) {
+    	 console.log("error");
+       console.log(data);
+     }
+	});
+}
+
+function loadUpWebAudioPost() {	
+	$.ajax({
+		type: "GET",
+    url: "/loadUpWebAudioPost",
+     success: function(data) {
+    	 for(i = data.length-1; i >= 0 ; i-- ) {
+    		 addNewWebAudioPostFromServer(data[i].webAudioUrl, data[i].webAudioPostDescription, data[i].webAudioPostTag, data[i].webAudioTrack, data[i].webAudioArtist, data[i].webAudioAlbum, data[i].webAudioAlbumArtDirectory, data[i].webAudioAlbumArtFileName);
+    	 }
+     },
+     error: function(data) {
+    	 console.log("error");
+       console.log(data);
+     }
+	});
+}
+
+function loadUpLocalAudioPost() {	
+	$.ajax({
+		type: "GET",
+    url: "/loadUpLocalAudioPost",
+     success: function(data) {
+    	 for(i = data.length-1; i >= 0 ; i-- ) {
+    		 addNewLocalAudioPostFromServer(data[i].webAudioUrl, data[i].webAudioPostDescription, data[i].webAudioPostTag, data[i].webAudioTrack, data[i].webAudioArtist, data[i].webAudioAlbum, data[i].webAudioAlbumArtDirectory, data[i].webAudioAlbumArtFileName);
     	 }
      },
      error: function(data) {

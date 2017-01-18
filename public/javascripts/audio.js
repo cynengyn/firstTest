@@ -1,12 +1,6 @@
-var audio = document.getElementById("urlAudio");
-
-$("#modalFade").on("shown.bs.modal", function() {
-  $(this).find('#urlAudioUploadInput').focus();
-});
-
 /*validate and preview audio from web url*/
 function validateAudioURL() {
-	var urlregex = new RegExp("\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]\\.(mp3)$", "i");
+	var urlregex = new RegExp("\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|!:,.;]\\.(mp3)$", "i");
 	
 	if(urlregex.test(document.getElementById("urlAudioUploadInput").value)) {
 		var audio = document.createElement('audio');
@@ -14,7 +8,7 @@ function validateAudioURL() {
 		audio.src = document.getElementById("urlAudioUploadInput").value;
 		
 		audio.onloadedmetadata = function() {
-			var spanRemoveButton = document.createElement("span");	
+			var spanRemoveButton = document.createElement("span");
 			var divAudioGroup = document.createElement("div");
 			
 			spanRemoveButton.setAttribute('id', 'removeAudioButton');
@@ -27,22 +21,23 @@ function validateAudioURL() {
 
 	  	document.getElementById("newAudioUploadPreview").appendChild(divAudioGroup);
 
-	  	displayAudioFormAfterPhotoURL();
-	    document.getElementById("audioDescription").focus();
 	    initilizeUrlAudioControl(audio);
-	    /*document.getElementById("photoPostButton").setAttribute("onclick", "addNewWebPhotoPost();");*/
+	    displayAudioFormAfterAudioURL();
+	    document.getElementById("audioDescription").focus();
+	    document.getElementById("audioPostButton").setAttribute("onclick", "addNewWebAudioPost();");
 		};
 	}
 }
 
-/*display photo post caption and tag form after add photo from web*/
-function displayAudioFormAfterPhotoURL() {
+/*display audio post description and tag form after add audio from web url*/
+function displayAudioFormAfterAudioURL() {
 	document.getElementById("audioDescription").style.display = "block";
 	document.getElementById("audioTag").style.display = "block";
-	document.getElementById("audioUrlInputGroup").style.display = "none"; // hide the normal add photo from web panel
+	document.getElementById("audioUrlInputGroup").style.display = "none";
 	document.getElementById("newAudioUploadPreview").style.display = "block";
 }
 
+/*clear and hide all necessary fields when audio url is removed*/
 function removeAudioUrl() {
 	document.getElementById("audioUrlInputGroup").style.display = "table";
 	document.getElementById("newAudioUploadPreview").style.display = "none";
@@ -52,12 +47,21 @@ function removeAudioUrl() {
 	document.getElementById("urlAudioUploadInput").value = "";
 	document.getElementById("audioDescription").innerHTML = "";
 	document.getElementById("audioTag").value = "";
+	document.getElementById("playProgress").style.width = "";
+	document.getElementById("playHead").style.left = "";
+
+	if(document.getElementById("albumArtPreview"))
+		document.getElementById("albumArtPreview").remove();
+  document.getElementById("audioAlbumArtPreview").style.display = "none";
+  document.getElementById("selectAudioAlbumArtDiv").style.display = "flex";
+  document.getElementById("audioPermission").style.display = "none";
+  document.getElementById("audioTrackInput").value = "";
+  document.getElementById("audioArtistInput").value = "";
+  document.getElementById("audioAlbumInput").value = "";
 }
 
 /*custom audio control*/
 function initilizeUrlAudioControl(audio) {
-	/*var audio = document.createElement('audio');
-	audio.src = document.getElementById("urlAudioUploadInput").value;*/
 	audio.controls = false;
 	
 	audio.addEventListener("timeupdate", updateProgress, false);
@@ -80,7 +84,7 @@ function initilizeUrlAudioControl(audio) {
 	progressBar.addEventListener("click", seek);
 }
 
-/*change button to play or pause the audio*/
+/*play or pause audio*/
 function togglePlayPause() {
 	var audio = document.getElementById("urlAudio");
   var playpause = document.getElementById("audioPlayerButton");
@@ -94,6 +98,7 @@ function togglePlayPause() {
   }
 }
 
+/*update play progress when audio is playing*/
 function updateProgress() {
 	var audio = document.getElementById("urlAudio");
 	var progress = document.getElementById("playProgress");
@@ -107,6 +112,7 @@ function updateProgress() {
 	head.style.left = value + "%";
 }
 
+/*move or skip to a new position in the audio*/
 function seek(e) {
 	var audio = document.getElementById("urlAudio");
   var percent = e.offsetX / this.offsetWidth;
@@ -114,3 +120,24 @@ function seek(e) {
   progressBar.value = percent / 100;
 }
 
+/*remove <br type="_moz"> type attribute created when enter key is pressed*/
+$(document)
+.on('keyup', '#audioDescription', function(event) {
+  var key = event.keyCode || event.charCode;
+
+  if(key == 13) { // enter key is pressed
+  	var inputs = document.getElementsByTagName('br');
+  	
+  	for(var i = 0; i < inputs.length; i++) { // remove <br type="_moz"> type attribute
+      if(inputs[i].getAttribute("type") == '_moz') {
+      	inputs[i].removeAttribute("type");
+      }
+  	}
+  }
+  else if(key == 8 || key == 46) { // backspace || delete key is pressed
+  	// clear the last <br> left in text area input when is empty to show the placeholder with css 
+	  if($("#textTitle").text() == '') {
+	      $("#textTitle").empty();
+	  }
+  }
+});

@@ -13,10 +13,16 @@ POST		/localPhoto									controllers.HomeController.localPhoto
 POST		/quotePost									controllers.HomeController.quotePost
 POST		/textPost									controllers.HomeController.textPost
 POST		/webPhoto									controllers.HomeController.webPhoto
+POST		/webAudio									controllers.AudioPostController.webAudio
+POST		/localAudio									controllers.AudioPostController.localAudio
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               					controllers.Assets.versioned(path="/public", file: Asset)
 GET		/loadUpData										controllers.HomeController.loadUpData
 GET		/loadUpPhotoPost								controllers.HomeController.loadUpPhotoPost
 GET		/loadUpWebPhotoPost								controllers.HomeController.loadUpWebPhotoPost
+GET		/loadUpWebAudioPost								controllers.AudioPostController.loadUpWebAudioPost
+GET		/loadUpLocalAudioPost							controllers.AudioPostController.loadUpLocalAudioPost
 GET     /public/images/upload/*file						controllers.Assets.at(path="/public/images/upload", file)
+GET		/public/upload/audio/audio_album_art/*file		controllers.Assets.at(path="/public/upload/audio/audio_album_art", file)
+GET		/public/upload/audio/audio_file/*file			controllers.Assets.at(path="/public/upload/audio/audio_file", file)
