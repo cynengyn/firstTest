@@ -10,17 +10,17 @@ import com.avaje.ebean.Model;
 @Entity
 public class TextPost extends Model {
 	@Id
-  public Long id;
+  public Long textPostId;
 
-  public String title;
+  public String textPostUsername;
   
-  public String bodyText;
-  
-  public String tagText;
+  public Date textPostCreationDate;
 
-  public String username;
+  public String textPostTitle;
   
-  public Date creationDate = new Date();
+  public String textPostText;
+  
+  public String textPostTag;
 
   public static Finder<Long, TextPost> find = new Finder<Long,TextPost>(TextPost.class);
 }

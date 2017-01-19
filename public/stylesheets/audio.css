@@ -72,8 +72,8 @@
   display: inline;
   font-size: 25px;
   margin-bottom: 5.1%; /* 30px; */
-  margin-left: 5.1%; /* 30px; */
-  margin-top: 5.1%; /* 30px; */
+  margin-left: 22px; /* 30px; */
+  margin-top: 29px; /* 29px; */
   position: absolute;
 }
 
@@ -187,7 +187,7 @@ padding-right: 0px; */
   background: transparent none repeat scroll 0 0;
   border: none; */
   color: rgba(0, 0, 0, 0.73);
-  /* display: inline; */
+  display: none;
   font-family: Helvetica Neue,HelveticaNeue,Helvetica,Arial,sans-serif;
   font-size: 13px;
   /* height: 25px; */
@@ -195,7 +195,7 @@ padding-right: 0px; */
   margin-left: 70px;
   /* padding: 0px; */
   position: absolute;
-  top: 51px; /* 60%; */
+  top: 66%; /* 60%; 51px;*/
   /* width: 68%; */
 }
 
@@ -234,8 +234,18 @@ padding-right: 0px; */
   margin-left: 70px;
   /* padding: 0px; */
   position: absolute;
-  top: 30px; /* 36%; */
+  top: 44%; /* 36%; 30px;*/
   /* width: 68%; */
+}
+
+#audioPostDefault {
+  color: rgba(0, 0, 0, 0.73);
+  font-family: Helvetica Neue,HelveticaNeue,Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 25px;
+  margin-left: 70px;
+  position: absolute;
+  top: 35%; /* 35%; 29px;*/
 }
 
 #audioPostDesciptionTagPanelBody{
@@ -243,7 +253,7 @@ padding-right: 0px; */
   position: relative;
 }
 
-#audioPostPlayerButton { 
+.audioPostPlayerButton, #audioPostPlayerButton { 
   margin-bottom: 28px;
   margin-top: 29px;
   z-index: 1;
@@ -258,7 +268,7 @@ padding-right: 0px; */
   width:85.40%;
 }
 
-#audioPostProgressBar {
+.audioPostProgressBar, #audioPostProgressBar {
 	background-color: transparent;
 	height: 85px;
 	position: relative;
@@ -271,6 +281,11 @@ padding-right: 0px; */
   float: left;
   /* position: relative; */
   width:85.40%;
+}
+
+#audioPostTagDiv {
+  font-size: 13px;
+  margin-top: 22px;
 }
 
 #audioPostTrack {
@@ -298,7 +313,7 @@ padding-right: 0px; */
   margin-left: 70px;
   /* padding: 0px; */
   position: absolute;
-  top: 10px; /* 12%; */
+  top: 22%; /* 12%; 10px;*/
   /* width: 68%; */
 }
 
@@ -408,7 +423,7 @@ padding-right: 0px; */
   margin-left: 19px;
 } */
 
-#playHead {
+.playHead, #playHead {
   background: rgba(0, 0, 0, 0.1) none repeat scroll 0 0;
   /* background: yellow; */
   height: 85px;
@@ -433,7 +448,7 @@ padding-right: 0px; */
   width: 3px;
 } */
 
-#playProgress {
+.playProgress, #playProgress {
 	background: rgba(0, 0, 0, 0.05) none repeat scroll 0 0;
 	/* background: red; */
 	display: inline;

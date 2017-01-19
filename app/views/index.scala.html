@@ -18,10 +18,8 @@
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	    <script src="assets/javascripts/bootstrap-toggle.js"></script>
 	    <script src="assets/javascripts/sweetalert.min.js"></script>
 	    <script src="assets/javascripts/util.js"></script>
-	    <script src="assets/javascripts/text_area_auto_expand.js"></script>
 	    <script src="assets/javascripts/text.js"></script>
 	    <script src="assets/javascripts/photo.js"></script>
 	    <script src="assets/javascripts/quote.js"></script>
@@ -30,8 +28,10 @@
 	    <script src="assets/javascripts/handle_audio_local_file.js"></script>
 	    <script src="assets/javascripts/handle_audio_album_art.js"></script>
 	    <script src="assets/javascripts/audio_post_player_control.js"></script>
+	    <script src="assets/javascripts/add_new_text_post.js"></script>
+	    <script src="assets/javascripts/add_new_photo_post.js"></script>
+	    <script src="assets/javascripts/add_new_quote_post.js"></script>
 	    <script src="assets/javascripts/add_new_audio_post.js"></script>
-	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/bootstrap-toggle.css">
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/sweetalert.css">
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/main.css">
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/text.css">
@@ -117,7 +117,7 @@
 									    <form role="form">
 							        	<div id="openQuote">“</div>
 							        	<div id="quoteInputDiv" onclick="focusQuoteInput()">
-								        	<span id="quoteInput" onclick="" contenteditable="true"></span>
+								        	<span id="quoteInput" contenteditable="true"></span>
 													<div id="closeQuote">”</div>
 							        	</div>
 									      <div id="quotePlaceholder" onclick="focusQuoteInput()">“Quote”</div>									      
@@ -324,8 +324,8 @@
 								</div>
 						  </div>						  
 						  <div class="panel-body" id="audioPostDesciptionTagPanelBody">						  	
-						    03 - “Canon” (in D-Major), Pachebel<br><br>Sample<br><br>
-						    <a>#sampletest</a>
+						    03 - “Canon” (in D-Major), Pachebel<br><br>Sample<br>
+						    <div id="audioPostTagDiv"><a>#sampletest</a></div>
 						  </div>
 						  <div class="panel-footer">
 						  	<div class="dropdown">
@@ -350,8 +350,8 @@
 						    <img class="img-responsive" id="imgResponsive" src="assets/images/Caution-Border-02--Arvin61r58.png" alt="">
 						  </div>
 						  <div class="panel-body">
-						    Test image<br><br>
-						    <a>#test image</a>
+						    Test image<br>
+						    <div id="photoPostTagDiv"><a>#test image</a></div>
 						  </div>
 						  <div class="panel-footer">
 						  	<div class="dropdown">
@@ -377,7 +377,7 @@
 								  <p>Test Quote</p>
 								  <footer>Testing Source</footer>
 								</blockquote>							    
-						    <a>#test tag</a>
+						    <div id="photoPostTagDiv"><a>#test tag</a></div>
 						  </div>
 						  <div class="panel-footer">
 						  	<div class="dropdown">
@@ -403,7 +403,7 @@
 						  </div>
 						  <div class="panel-body">
 						    Text2<br><br>
-						    <a>#test2</a>
+						    <div id="textPostTagDiv"><a>#test2</a></div>
 						  </div>
 						  <div class="panel-footer">
 						  	<div class="dropdown">

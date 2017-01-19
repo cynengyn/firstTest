@@ -75,12 +75,23 @@ blockquote footer {
   font-size: 48px;
   left: 0px;
   min-height: 71px;
-  padding: 0px 0px 0px 24px;
+  padding: 0px 0px 0px 20px;
   position: relative;
   outline: none;
   top:0px;
   word-wrap: break-word;
   z-index: 3;
+}
+
+#quoteInput:empty {
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */ 
+}
+
+#quoteInputDiv {
+  cursor: text;
 }
 
 #quotePlaceholder {
@@ -92,10 +103,20 @@ blockquote footer {
   position: absolute;
   top: 0px;
   z-index: 1;
+  
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */ 
 }
 
 #quotePostBody {
   padding-top: 0px;
+}
+
+#quotePostTagDiv {
+  font-size: 13px;
+  margin-top: 22px;
 }
 
 #quoteSourceDiv {
@@ -121,6 +142,13 @@ blockquote footer {
   resize: none;
   outline: none;
   word-wrap: break-word;
+}
+
+#quoteSourceInput:empty {
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */ 
 }
 
 #quoteSourceInput:empty::before {

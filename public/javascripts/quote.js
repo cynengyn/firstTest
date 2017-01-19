@@ -7,7 +7,7 @@ $(document)
 		document.getElementById("quotePlaceholder").style.display = "none"; // hide quote placeholer
 		document.getElementById("openQuote").style.display = "inline"; // show left quote
 		document.getElementById("closeQuote").style.display = "inline";  // show right quote
-		document.getElementById("quoteInput").style.left = "24px";
+		document.getElementById("quoteInput").style.left = "20px";
 		document.getElementById("quoteInput").style.paddingLeft = "0px";
 		document.getElementById("quoteInput").style.paddingRight = "22px";
 	}	
@@ -23,8 +23,8 @@ $(document)
   		document.getElementById("openQuote").style.display = "none"; // hide left quote
   		document.getElementById("closeQuote").style.display = "none"; // hide right quote
   		document.getElementById("quoteInput").style.left = "0px";
-  		document.getElementById("quoteInput").style.paddingLeft = "24px";
-  		document.getElementById("quoteInput").style.paddingReft = "0px";
+  		document.getElementById("quoteInput").style.paddingLeft = "20px";
+  		document.getElementById("quoteInput").style.paddingRight = "0px";
   	}
   }
 });

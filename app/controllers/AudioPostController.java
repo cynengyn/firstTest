@@ -87,6 +87,7 @@ public class AudioPostController extends Controller {
       // generate a random file name
       newAlbumArtFileName = UUID.randomUUID().toString().replaceAll("-", "") + new SimpleDateFormat("yyyyMMddHHmmssSSS'.'").format(new Date()) + FilenameUtils.getExtension(albumArtFileName);
       
+      post.webAudioAlbumArtDirectory = albumArtSaveDirectory;
       post.webAudioAlbumArtFileName = newAlbumArtFileName;
   		post.webAudioAlbumArtOriginalFileName = albumArtFileName;
   		post.webAudioAlbumArtFileType = FilenameUtils.getExtension(albumArtFileName);
@@ -168,6 +169,7 @@ public class AudioPostController extends Controller {
 	      newAlbumArtFileName = UUID.randomUUID().toString().replaceAll("-", "") + new SimpleDateFormat("yyyyMMddHHmmssSSS'.'").format(new Date()) + FilenameUtils.getExtension(albumArtFileName);
 	      File albumArtfile = albumArt.getFile();
 	      
+	      post.localAudioAlbumArtSaveDirectory = albumArtSaveDirectory;
 	      post.localAudioAlbumArtFileName = newAlbumArtFileName;
 	  		post.localAudioAlbumArtOriginalFileName = albumArtFileName;
 	  		post.localAudioAlbumArtFileType = FilenameUtils.getExtension(albumArtFileName);
@@ -196,7 +198,3 @@ public class AudioPostController extends Controller {
 		return ok (resJson);
 	}
 }
-	
-	
-	
-	

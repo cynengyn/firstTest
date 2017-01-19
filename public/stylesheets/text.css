@@ -28,6 +28,11 @@
   content: 'Your text here';
 }
 
+#textPostTagDiv {
+  font-size: 13px;
+  margin-top: 22px;
+}
+
 /* text post title */
 #textPostTitle {
   background: white;

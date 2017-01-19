@@ -88,6 +88,11 @@
   display: none;
 }
 
+#photoPostTagDiv {
+  font-size: 13px;
+  margin-top: 22px;
+}
+
 #photoTag {
   border: none;
   box-shadow: none;
