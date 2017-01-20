@@ -2,9 +2,7 @@
 function handleAudioFiles(files) {
   var audioFile = files[0];
   var extension = audioFile.name.substring(audioFile.name.lastIndexOf('.'));
-  var validFileType = ".mp3"; // white list of extension
-  
-  
+  var validFileType = ".mp3"; // white list of extension  
 
   /*check audio file size*/
   if(audioFile.size > 10 * 1024 * 1024) { // 10MB file size limit

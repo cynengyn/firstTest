@@ -182,12 +182,13 @@ body.stop-scrolling {
     -webkit-border-radius: 4px;
     /* border-radius: 5px; */
     height: 45px;
-    width: 260px;
+    /* width: 260px; */
+    min-width: 140px;
     /* padding: 10px 32px; */
+    padding: 0 20px;
     margin: 26px 5px 0 5px;
     cursor: pointer; }
     .sweet-alert button:focus {
-      animation: 1s ease 0s normal both infinite running pulse-opacity;
       outline: none;
       box-shadow: 0 0 2px rgba(128, 179, 235, 0.5), inset 0 0 0 1px rgba(0, 0, 0, 0.05); }
     .sweet-alert button:hover {
