@@ -24,6 +24,7 @@
 	    <script src="assets/javascripts/photo.js"></script>
 	    <script src="assets/javascripts/quote.js"></script>
 	    <script src="assets/javascripts/audio.js"></script>
+	    <script src="assets/javascripts/video.js"></script>
 	    <script src="assets/javascripts/id3-minimized.js"></script>
 	    <script src="assets/javascripts/handle_audio_local_file.js"></script>
 	    <script src="assets/javascripts/handle_audio_album_art.js"></script>
@@ -296,43 +297,28 @@
 									    <a class="panel-title" id="newPostPanelHeadTitle">groovypeacetimetravel</a>
 									    <span class="glyphicon glyphicon-cog pull-right"></span>
 									  </div>
-									  <div class="modal-body" id="newPhotoPostModalBody">
+									  <div class="modal-body" id="newVideoPostModalBody">
 											<form id="formWithFiles" method="post" enctype="multipart/form-data">
-												<input id="photoFileInput" name="photoFileInput" accept=".mp4" type="file" onchange="handleVideoFiles(this.files)"/>
+												<input id="videoFileInput" name="videoFileInput" accept=".mp4" type="file" onchange="handleVideoFiles(this.files)"/>
 									      <div class="container-fluid">
-									      	<div class="row" id="newPhotoUploadPanel">
-														<div class="col-md-6" id="photoUploadColumn" onclick="$('#photoFileInput').click()">												       
-														  <div style="margin-bottom: 10px;"><i class="fa fa-file-video-o" id="photoUploadIcon"></i></div>
-														  <div><span id="photoUploadLabel">Upload a video</span></div>
+									      	<div class="row" id="newVideoUploadPanel">
+														<div class="col-md-6" id="videoUploadColumn" onclick="$('#videoFileInput').click()">												       
+														  <div id="videoUploadIconDiv"><i class="fa fa-file-video-o" id="videoUploadIcon"></i></div>
+														  <div><span id="videoUploadLabel">Upload a video</span></div>
 														</div>													
 														
-														<div class="col-md-6" id="photoWebColumn" onclick=photoUrlPanelDisplay()>
-															<div style="margin-bottom: 10px;"><i class="glyphicon glyphicon-globe" id="photoWebIcon"></i></div>
-														 	<div><span id="photoWebLabel">Add video from web</span></div>
+														<div class="col-md-6" id="videoWebColumn" onclick=videoUrlPanelDisplay()>
+															<div id="videoUploadIconDiv"><i class="glyphicon glyphicon-globe" id="videoWebIcon"></i></div>
+														 	<div><span id="videoWebLabel">Add video from web</span></div>
 														</div>
 													</div>	
-													<div class="row" id="urlPhotoUploadPanel">
-														<div class="col-md-12" id="urlPhotoUploadPanelDiv">
-															<span id="urlPhotoUploadPanelClose" onclick="closePhotoUrlPanel()">&times;</span>
-														  <input id="urlPhotoUploadInput" oninput="validatePhotoURL()" placeholder="Paste a URL or embed code" style="margin-top: 3px; margin-bottom: 3px;"></input>
+													<div class="row" id="urlVideoUploadPanel">
+														<div class="col-md-12" id="urlVideoUploadPanelDiv">
+															<span id="urlVideoUploadPanelClose" onclick="closeVideoUrlPanel()">&times;</span>
+														  <input id="urlVideoUploadInput" oninput="validateVideoURL()" placeholder="Paste a URL or embed code"></input>
 														</div>	
 													</div>											
-													<div class="row" id="newVideoUploadPreview"></div>													
-													<div class="row text-center" id="addAnotherPhotoButton" onclick="$('#photoFileInput').click()">
-														<i class="material-icons" id="addAnotherPhotoIcon">add_a_photo</i>
-														Add another
-													</div>													
-													<div class="row text-center" id="addAnotherPhotoFromWebButton" onclick=displayPhotoURLInput()>
-														<i class="glyphicon glyphicon-globe" id="addAnotherPhotoFromWebIcon"></i>
-														Add another
-													</div>
-													<div class="row text-center" id="addAnotherPhotoFromWebDiv">
-														<input id="addAnotherPhotoFromWebInput" oninput="validateAnotherPhotoURL()" placeholder="Paste a URL"></input>
-													</div>													
-													<div class="row text-center" id="addAgainAnotherPhotoFromWebButton" onclick=displayPhotoURLInput()>
-														<i class="glyphicon glyphicon-globe" id="addAnotherPhotoFromWebIcon"></i>
-														Add another
-													</div>	
+													<div class="row" id="newVideoUploadPreview"></div>
 									        <span id="photoCaption" contenteditable="true"></span>
 									        <input class="form-control" id="photoTag" name="photoTag" placeholder="#tags" type="text" />
 									      </div>

@@ -26,7 +26,44 @@ function handleVideoFiles(files) {
   }
 
   /*check if the filename extension can match with the signature that belongs to it*/
-  checkVideoFileSignature(videoFile)
+  else {
+  	checkVideoFileSignature(videoFile, function(result) {
+  		if(result) {
+  			var video = document.createElement('video');
+  			video.setAttribute('id', 'urlVideo');
+  			video.setAttribute('controls', 'true');
+  			video.file = videoFile;
+  			
+  			var spanRemoveButton = document.createElement("span");	
+				var divVideoGroup = document.createElement("div");
+				
+				spanRemoveButton.setAttribute('id', 'removeAudioButton');
+				spanRemoveButton.setAttribute('onclick', 'removeAudioUrl()');
+				spanRemoveButton.innerHTML = "&times;";
+				divVideoGroup.setAttribute('id', 'removeVideoGroup');
+				
+				divVideoGroup.appendChild(spanRemoveButton);
+				divVideoGroup.appendChild(video);
+				
+				document.getElementById("newVideoUploadPreview").appendChild(divVideoGroup);
+				
+				var reader = new FileReader();
+  	    reader.onload = (function(video) { 
+  	    	return function(e) { 
+  	    		video.src = e.target.result;
+  	  		};
+  	    })(video);
+  	    reader.readAsDataURL(videoFile);
+  		}
+  		else {
+  			swal({
+  			  title: "",
+  			  text: "This is not valid .mp4 video file.",
+  			  confirmButtonText: "OK"
+  			});
+			}
+  	});
+  }
 }
 
 /*display video post description and tag form after add video from web url*/
@@ -39,34 +76,24 @@ function displayFormAfterLocalVideoSelected() {
 	document.getElementById("newvideoUploadPreview").style.display = "block";
 }
 
-/*get the extension of a file*/
-function getFileExtension(fileName) {
-  var matches = fileName && fileName.match(/\.([^.]+)$/);
-  if (matches) {
-    return matches[1].toLowerCase();
-  }
-  return '';
-}
-
-/*detect if the format of the extension can match with the signature that belongs to*/
-function checkVideoFileSignature(file) {
-	var mp4box;	
-	var fileinput;
+/*check if the format of the extension can match with mp4 file*/
+function checkVideoFileSignature(file, callback) {
+	var mp4box;
 	var chunkSize = 1024 * 1024; // bytes
 	var fileSize = file.size;
 	var offset = 0;
-	var self = this; // we need a reference to the current object
 	var readBlock = null;
-	var startDate = new Date();
+	var dimensions = [240, 360, 480]; // video file's dimensions can be no larger than 500 pixels high
 	
 	mp4box = new MP4Box(false);
 	
 	mp4box.onError = function (e) {
     console.log("mp4box failed to parse data.");
+    callback(false);
+    return ;
 	};
 	
 	var onparsedbuffer = function (mp4box, buffer) {
-    /*console.log("Appending buffer with offset " + offset);*/
     buffer.fileStart = offset;
     mp4box.appendBuffer(buffer);
 	}
@@ -75,28 +102,56 @@ function checkVideoFileSignature(file) {
     if (evt.target.error == null) {
         onparsedbuffer(mp4box, evt.target.result); // callback for handling read chunk
         offset += evt.target.result.byteLength;
-    		swal({
+        swal({
     		  title: "",
-    		  text: "Loading \n" + Math.ceil(100 * offset / fileSize) + " %",
-    		  timer: Math.ceil(100 * offset / fileSize)
-    			});
+    		  text: "Reading video file... \n" + Math.ceil(100 * offset / fileSize) + "%",
+    		  showConfirmButton: false
+    		});
+        if(Math.ceil(100 * offset / fileSize)==100) {
+        	setTimeout(function(){swal.close();}, 3000); // wait for 3 seconds after finished reading video file and close
+        }
+        
     } else {
         console.log("Read error: " + evt.target.error);
-        return;
+        callback(false);
+        return ;
     }
     if (offset >= fileSize) {
         /*console.log("Done reading file (" + fileSize + " bytes) in " + (new Date() - startDate) + " ms");*/
         mp4box.flush();
         if (!mp4box || !mp4box.moovStartSent) {
-          console.log("negative");
-          return false;
+          callback(false);
+          return ;
         }
         else {
         	var info = mp4box.getInfo();
           var videoLength = 0;
-          console.log(info.duration);
+          var videoHeight = info.tracks[0].video.height
+
+          if(info.duration > 300000) { // 5 minutes limit of video in millisecond
+          	swal({
+      			  title: "",
+      			  text: "Video is too long",
+      			  confirmButtonText: "OK"
+      			});
+            return ;
+          }
+
+          if (videoHeight) {
+          	if(dimensions.indexOf(videoHeight) != -1) {
+          		callback(true);
+          		return ;
+          	}
+            else {
+            	swal({
+        			  title: "",
+        			  text: "Video reading failed",
+        			  confirmButtonText: "OK"
+        			});
+            	return;
+            }
+          }
         }
-        return true;
     }
 
     readBlock(offset, chunkSize, file);

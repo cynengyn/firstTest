@@ -1,4 +1,81 @@
-video {
-    width: 100%;
-    height: auto;
+/* new video panel body*/
+#newVideoPostModalBody {
+  padding: 0px;
+}
+
+/* new video upload panel */
+#newVideoUploadPanel {
+  background-color: #f2f2f2;
+  border-bottom: 2px dashed #cfcfcf;
+  border-top: 2px dashed #cfcfcf;
+  color: #989898;
+  cursor: pointer;
+}
+
+/* new video from web url input */
+#urlVideoUploadInput {
+  border: none;
+  color: #464646;
+  padding: 32px 20px 32px 20px;
+  width: 100%;
+  box-shadow: none;
+  resize: none;
+  
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+/* new video from web url input panel */
+#urlVideoUploadPanel {  
+  border-bottom: 2px dashed #cfcfcf;
+  border-top: 2px dashed #cfcfcf;
+  color: #989898;
+  display: none;
+}
+
+/* new video from web url input div */
+#urlVideoUploadPanelDiv {
+  padding-bottom: 63px;
+  padding-left: 0px;
+  padding-right: 0px;  
+  padding-top: 63px;
+}
+
+#urlVideoUploadPanelDiv:hover #urlVideoUploadPanelClose {
+  cursor: pointer;
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0s, opacity 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
+}
+
+/* hide video file <input> element */
+#videoFileInput {
+  display: none;
+}
+
+/* new video upload left & right side panel */
+#videoUploadColumn, #videoWebColumn {
+  border-right: 1px solid #cfcfcf;
+  cursor: pointer;
+  float: left;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  padding: 42.5px;
+  text-align: center;
+  width: 50%;
+}
+
+/* disable mouse text selection on new video upload panel */
+#videoUploadIcon, #videoUploadLabel, #videoWebIcon, #videoWebLabel {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+   user-select: none; /* Non-prefixed version, currently not supported by any browser */
+}
+
+#videoUploadIconDiv {
+  margin-bottom: 10px;
 }
