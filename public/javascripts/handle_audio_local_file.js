@@ -80,7 +80,7 @@ function handleAudioFiles(files) {
   }
 }
 
-/*display audio post description and tag form after add audio from web url*/
+/*display audio post description and tag form after local audio is selected*/
 function displayFormAfterLocalAudioSelected() {
 	document.getElementById("audioPermission").style.display = "block";
 	document.getElementById("audioDescription").style.display = "block";

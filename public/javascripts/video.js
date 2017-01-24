@@ -10,6 +10,31 @@ function closeVideoUrlPanel() {
 	document.getElementById("urlVideoUploadPanel").style.display = "none";
 }
 
+/*display video post description and tag form after local video is selected*/
+function displayFormAfterLocalVideoSelected() {
+	document.getElementById("videoPermission").style.display = "block";
+	document.getElementById("videoCaption").style.display = "block";
+	document.getElementById("videoTag").style.display = "block";
+	document.getElementById("newVideoUploadPanel").style.display = "none";
+	document.getElementById("newVideoUploadPreview").style.display = "block";
+}
+
+/*clear and hide all necessary fields when video url is removed*/
+function removeLocalVideoPreview() {
+	document.getElementById("newVideoUploadPanel").style.display = "block";
+	document.getElementById("newVideoUploadPreview").style.display = "none";
+	document.getElementById("urlVideo").pause();
+	document.getElementById("urlVideo").src = "";
+	document.getElementById("removeVideoGroup").remove();
+	document.getElementById("videoCaption").style.display = "none";
+	document.getElementById("videoTag").style.display = "none";
+	/*document.getElementById("urlVideoUploadInput").value = "";*/
+	document.getElementById("videoCaption").innerHTML = "";
+	document.getElementById("videoTag").value = "";
+  document.getElementById("videoPermission").style.display = "none";
+}
+
+
 
 /*validate and preview photos from web url*/
 function validateVideoURL() {

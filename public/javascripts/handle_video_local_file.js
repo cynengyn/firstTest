@@ -27,33 +27,58 @@ function handleVideoFiles(files) {
 
   /*check if the filename extension can match with the signature that belongs to it*/
   else {
-  	checkVideoFileSignature(videoFile, function(result) {
+  	checkVideoFileSignature(videoFile, function(result) {  		
   		if(result) {
   			var video = document.createElement('video');
   			video.setAttribute('id', 'urlVideo');
   			video.setAttribute('controls', 'true');
-  			video.file = videoFile;
-  			
-  			var spanRemoveButton = document.createElement("span");	
-				var divVideoGroup = document.createElement("div");
-				
-				spanRemoveButton.setAttribute('id', 'removeAudioButton');
-				spanRemoveButton.setAttribute('onclick', 'removeAudioUrl()');
-				spanRemoveButton.innerHTML = "&times;";
-				divVideoGroup.setAttribute('id', 'removeVideoGroup');
-				
-				divVideoGroup.appendChild(spanRemoveButton);
-				divVideoGroup.appendChild(video);
-				
-				document.getElementById("newVideoUploadPreview").appendChild(divVideoGroup);
-				
-				var reader = new FileReader();
+  			video.src = URL.createObjectURL(videoFile);
+  			URL.revokeObjectURL(videoFile);
+
+  	    video.oncanplay = function() {
+  	    	if(video.duration <= 300) { // 5 minutes limit of video in second
+
+  	    		var spanRemoveButton = document.createElement("span");	
+  					var divVideoGroup = document.createElement("div");
+
+  					spanRemoveButton.setAttribute('id', 'removeVideoButton');
+  					spanRemoveButton.setAttribute('onclick', 'removeLocalVideoPreview()');
+  					spanRemoveButton.innerHTML = "&times;";
+  					divVideoGroup.setAttribute('id', 'removeVideoGroup');
+
+  					divVideoGroup.appendChild(spanRemoveButton);
+  					divVideoGroup.appendChild(video);
+
+  					document.getElementById("newVideoUploadPreview").appendChild(divVideoGroup);	
+
+  					displayFormAfterLocalVideoSelected();
+  					document.getElementById("videoCaption").focus();
+  	    	}
+  	    	else
+  	    		swal({
+      			  title: "",
+      			  text: "Video is too long",
+      			  confirmButtonText: "OK"
+      			});
+  	    }
+  	    video.onerror = function() {
+  	    	if(video.src != "http://localhost:9000/")
+	  	    	swal({
+	    			  title: "",
+	    			  text: "Video could not be decoded.",
+	    			  confirmButtonText: "OK"
+	    			});
+  	    }
+
+				/*var reader = new FileReader();
   	    reader.onload = (function(video) { 
   	    	return function(e) { 
+  	    		console.log("0");
   	    		video.src = e.target.result;
   	  		};
   	    })(video);
-  	    reader.readAsDataURL(videoFile);
+  	    reader.readAsDataURL(videoFile);*/
+  	    /*console.log(reader.readAsDataURL(videoFile));*/
   		}
   		else {
   			swal({
@@ -66,16 +91,6 @@ function handleVideoFiles(files) {
   }
 }
 
-/*display video post description and tag form after add video from web url*/
-function displayFormAfterLocalVideoSelected() {
-	document.getElementById("videoPermission").style.display = "block";
-	document.getElementById("videoDescription").style.display = "block";
-	document.getElementById("videoDescription").style.marginTop = "40px";
-	document.getElementById("videoTag").style.display = "block";
-	document.getElementById("videoUrlInputGroup").style.display = "none";
-	document.getElementById("newvideoUploadPreview").style.display = "block";
-}
-
 /*check if the format of the extension can match with mp4 file*/
 function checkVideoFileSignature(file, callback) {
 	var mp4box;
@@ -83,7 +98,6 @@ function checkVideoFileSignature(file, callback) {
 	var fileSize = file.size;
 	var offset = 0;
 	var readBlock = null;
-	var dimensions = [240, 360, 480]; // video file's dimensions can be no larger than 500 pixels high
 	
 	mp4box = new MP4Box(false);
 	
@@ -108,7 +122,7 @@ function checkVideoFileSignature(file, callback) {
     		  showConfirmButton: false
     		});
         if(Math.ceil(100 * offset / fileSize)==100) {
-        	setTimeout(function(){swal.close();}, 3000); // wait for 3 seconds after finished reading video file and close
+        	setTimeout(function(){swal.close();}, 1000); // wait for 3 seconds after finished reading video file and close
         }
         
     } else {
@@ -117,43 +131,17 @@ function checkVideoFileSignature(file, callback) {
         return ;
     }
     if (offset >= fileSize) {
-        /*console.log("Done reading file (" + fileSize + " bytes) in " + (new Date() - startDate) + " ms");*/
         mp4box.flush();
         if (!mp4box || !mp4box.moovStartSent) {
           callback(false);
           return ;
         }
         else {
-        	var info = mp4box.getInfo();
-          var videoLength = 0;
-          var videoHeight = info.tracks[0].video.height
-
-          if(info.duration > 300000) { // 5 minutes limit of video in millisecond
-          	swal({
-      			  title: "",
-      			  text: "Video is too long",
-      			  confirmButtonText: "OK"
-      			});
-            return ;
-          }
-
-          if (videoHeight) {
-          	if(dimensions.indexOf(videoHeight) != -1) {
-          		callback(true);
-          		return ;
-          	}
-            else {
-            	swal({
-        			  title: "",
-        			  text: "Video reading failed",
-        			  confirmButtonText: "OK"
-        			});
-            	return;
-            }
-          }
+        	callback(true);
+      		return ;
         }
     }
-
+    
     readBlock(offset, chunkSize, file);
 	}
 	

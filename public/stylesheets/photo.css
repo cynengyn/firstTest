@@ -122,6 +122,10 @@
    user-select: none; /* Non-prefixed version, currently not supported by any browser */
 }
 
+#photoUploadIconDiv {
+  margin-bottom: 10px;
+}
+
 #photoUploadPostDropDown {
   margin-top: 8px;
   left: -26%;
@@ -186,6 +190,9 @@
   width: 100%;
   box-shadow: none;
   resize: none;
+  
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 
 /* new photo from web url input panel */
