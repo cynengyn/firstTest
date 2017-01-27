@@ -30,11 +30,14 @@
 	    <script src="assets/javascripts/handle_audio_album_art.js"></script>
 	    <script src="assets/javascripts/audio_post_player_control.js"></script>
 	    <script src="assets/javascripts/handle_video_local_file.js"></script>
+	    <script src="assets/javascripts/handle_video_youtube_vimeo.js"></script>
 	    <script src="assets/javascripts/add_new_text_post.js"></script>
 	    <script src="assets/javascripts/add_new_photo_post.js"></script>
 	    <script src="assets/javascripts/add_new_quote_post.js"></script>
 	    <script src="assets/javascripts/add_new_audio_post.js"></script>
+     	<script src="assets/javascripts/add_new_video_post.js"></script>
 	    <script src="assets/javascripts/mp4box.all.min.js"></script>
+	    <script src="assets/javascripts/vissense.min.js"></script>
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/sweetalert.css">
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/main.css">
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/text.css">
@@ -81,7 +84,7 @@
 			        <a class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-link"></span><br>Link</a>
 			        <a class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-comment"></span><br>Chat</a>
 			        <a class="btn btn-primary btn-lg" onclick="audioPostModal()" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-headphones"></span><br>Audio</a>
-			        <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-facetime-video"></span><br>Video</a>
+			        <a class="btn btn-primary btn-lg" onclick="videoPostModal()" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-facetime-video"></span><br>Video</a>
 			        </div>
 			        <!-- new posts buttons modal start-->
 			        <div class="modal fade" id="modalFade" role="dialog">
@@ -292,7 +295,7 @@
 									  </div>
 									</div>-->
 									
-									<div class="modal-content">
+									<!--<div class="modal-content">
 										<div class="panel-heading" id="newPostPanelHead">
 									    <a class="panel-title" id="newPostPanelHeadTitle">groovypeacetimetravel</a>
 									    <span class="glyphicon glyphicon-cog pull-right"></span>
@@ -350,7 +353,7 @@
 											  </ul>
 											</div>
 									  </div>
-									</div>
+									</div>-->
 									
 									
 			          </div>
@@ -368,6 +371,110 @@
 	    	<div class="row">
 	    		<div class="col-sm-1"></div>
 	      	<div class="col-sm-7" id="postColumn">
+					  
+					  <!-- vimeo video test start -->
+						<div class="panel panel-default">
+						  <div class="panel-heading">
+						    <a class="panel-title">groovypeacetimetravel</a>
+						  </div>
+						  <div class="panel-body" id="videoPostPanelBody">
+						    <iframe src="//player.vimeo.com/video/19339941" frameborder="0" allowfullscreen></iframe>
+						  </div>
+						  <div class="panel-body">
+						    Test video<br>
+						    <div id="videoPostTagDiv"><a>#test video</a></div>
+						  </div>
+						  <div class="panel-footer">
+						  	<div class="dropdown">
+							    <a href=""><span class="glyphicon glyphicon-send" title="Share"></span></a>
+							    <a href=""><span class="glyphicon glyphicon-retweet" title="Reblog"></span></a>
+							    <span class="glyphicon glyphicon-cog dropdown-toggle" data-toggle="dropdown" title="Options"></span>
+							    <ul class="dropdown-menu dropdown-menu-right">
+							      <li><a href="">Edit</a></li>
+							      <li><a href="">Delete</a></li>
+							    </ul>		
+								</div>					    
+						  </div>
+					  </div> 
+					  <!-- vimeo video test end -->
+					  
+					  <!-- youtube video test start -->
+						<div class="panel panel-default">
+						  <div class="panel-heading">
+						    <a class="panel-title">groovypeacetimetravel</a>
+						  </div>
+						  <div class="panel-body" id="videoPostPanelBody">
+						    <iframe src="//www.youtube.com/embed/M7lc1UVf-VE" frameborder="0" allowfullscreen></iframe>
+						  </div>
+						  <div class="panel-body">
+						    Test video<br>
+						    <div id="videoPostTagDiv"><a>#test video</a></div>
+						  </div>
+						  <div class="panel-footer">
+						  	<div class="dropdown">
+							    <a href=""><span class="glyphicon glyphicon-send" title="Share"></span></a>
+							    <a href=""><span class="glyphicon glyphicon-retweet" title="Reblog"></span></a>
+							    <span class="glyphicon glyphicon-cog dropdown-toggle" data-toggle="dropdown" title="Options"></span>
+							    <ul class="dropdown-menu dropdown-menu-right">
+							      <li><a href="">Edit</a></li>
+							      <li><a href="">Delete</a></li>
+							    </ul>		
+								</div>					    
+						  </div>
+					  </div> 
+					  <!-- youtube video test end -->
+					  
+					  <!-- video test start -->
+						<div class="panel panel-default">
+						  <div class="panel-heading">
+						    <a class="panel-title">groovypeacetimetravel</a>
+						  </div>
+						  <div class="panel-body" id="videoPostPanelBody">
+						    <video controls src="assets/upload/video/big_buck_bunny_480p_30mb.mp4">
+						  </div>
+						  <div class="panel-body">
+						    Test video<br>
+						    <div id="videoPostTagDiv"><a>#test video</a></div>
+						  </div>
+						  <div class="panel-footer">
+						  	<div class="dropdown">
+							    <a href=""><span class="glyphicon glyphicon-send" title="Share"></span></a>
+							    <a href=""><span class="glyphicon glyphicon-retweet" title="Reblog"></span></a>
+							    <span class="glyphicon glyphicon-cog dropdown-toggle" data-toggle="dropdown" title="Options"></span>
+							    <ul class="dropdown-menu dropdown-menu-right">
+							      <li><a href="">Edit</a></li>
+							      <li><a href="">Delete</a></li>
+							    </ul>		
+								</div>					    
+						  </div>
+					  </div> 
+					  <!-- video test end -->
+					  
+					  <!-- video test start -->
+						<div class="panel panel-default">
+						  <div class="panel-heading">
+						    <a class="panel-title">groovypeacetimetravel</a>
+						  </div>
+						  <div class="panel-body" id="videoPostPanelBody">
+						    <video id="urlVideo" controls src="assets/upload/video/big_buck_bunny_480p_30mb.mp4">
+						  </div>
+						  <div class="panel-body">
+						    Test video<br>
+						    <div id="videoPostTagDiv"><a>#test video</a></div>
+						  </div>
+						  <div class="panel-footer">
+						  	<div class="dropdown">
+							    <a href=""><span class="glyphicon glyphicon-send" title="Share"></span></a>
+							    <a href=""><span class="glyphicon glyphicon-retweet" title="Reblog"></span></a>
+							    <span class="glyphicon glyphicon-cog dropdown-toggle" data-toggle="dropdown" title="Options"></span>
+							    <ul class="dropdown-menu dropdown-menu-right">
+							      <li><a href="">Edit</a></li>
+							      <li><a href="">Delete</a></li>
+							    </ul>		
+								</div>					    
+						  </div>
+					  </div> 
+					  <!-- video test end -->
 	      	
 	      		<!-- audio test start -->
 						<div class="panel panel-default">

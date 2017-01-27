@@ -1,8 +1,9 @@
 /*validate and preview audio from web url*/
 function validateAudioURL() {
 	var urlregex = new RegExp("\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|!:,.;]\\.(mp3)$", "i");
+	var match = urlregex.test(document.getElementById("urlAudioUploadInput").value);
 	
-	if(urlregex.test(document.getElementById("urlAudioUploadInput").value)) {
+	if(match) {
 		var audio = document.createElement('audio');
 		audio.setAttribute('id', 'urlAudio');
 		audio.src = document.getElementById("urlAudioUploadInput").value;
@@ -136,8 +137,8 @@ $(document)
   }
   else if(key == 8 || key == 46) { // backspace || delete key is pressed
   	// clear the last <br> left in text area input when is empty to show the placeholder with css 
-	  if($("#textTitle").text() == '') {
-	      $("#textTitle").empty();
+	  if($("#audioDescription").text() == '') {
+	      $("#audioDescription").empty();
 	  }
   }
 });

@@ -12,12 +12,13 @@ GET     /message        controllers.AsyncController.message
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               					controllers.Assets.versioned(path="/public", file: Asset)
 
+POST		/quotePost									controllers.QuotePostController.quotePost
 POST		/textPost									controllers.TextPostController.textPost
+POST		/localAudio									controllers.AudioPostController.localAudio
+POST		/webAudio									controllers.AudioPostController.webAudio
 POST		/localPhoto									controllers.PhotoPostController.localPhoto
 POST		/webPhoto									controllers.PhotoPostController.webPhoto
-POST		/quotePost									controllers.QuotePostController.quotePost
-POST		/webAudio									controllers.AudioPostController.webAudio
-POST		/localAudio									controllers.AudioPostController.localAudio
+POST		/localVideo									controllers.VideoPostController.localVideo
 
 GET		/loadUpTextPost									controllers.TextPostController.loadUpTextPost
 GET		/loadUpPhotoPost								controllers.PhotoPostController.loadUpPhotoPost
@@ -25,7 +26,9 @@ GET		/loadUpWebPhotoPost								controllers.PhotoPostController.loadUpWebPhotoPo
 GET		/loadUpQuotePost								controllers.QuotePostController.loadUpQuotePost
 GET		/loadUpWebAudioPost								controllers.AudioPostController.loadUpWebAudioPost
 GET		/loadUpLocalAudioPost							controllers.AudioPostController.loadUpLocalAudioPost
+GET		/loadUpLocalVideoPost							controllers.VideoPostController.loadUpLocalVideoPost
 
 GET     /public/images/upload/*file						controllers.Assets.at(path="/public/images/upload", file)
 GET		/public/upload/audio/audio_album_art/*file		controllers.Assets.at(path="/public/upload/audio/audio_album_art", file)
 GET		/public/upload/audio/audio_file/*file			controllers.Assets.at(path="/public/upload/audio/audio_file", file)
+GET		/public/upload/video/*file						controllers.Assets.at(path="/public/upload/video", file)

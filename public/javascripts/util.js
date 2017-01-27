@@ -4,6 +4,7 @@ loadUpWebPhotoPost();
 loadUpQuotePost();
 loadUpWebAudioPost();
 loadUpLocalAudioPost();
+loadUpLocalVideoPost();
 
 function loadUpTextPost() {	
 	$.ajax({
@@ -94,6 +95,22 @@ function loadUpLocalAudioPost() {
      success: function(data) {
     	 for(i = data.length-1; i >= 0 ; i-- ) {
     		 addNewLocalAudioPostFromServer(data[i].localAudioPostId, data[i].localAudioSaveDirectory, data[i].localAudioFileName, data[i].localAudioPostDescription, data[i].localAudioPostTag, data[i].localAudioTrack, data[i].localAudioArtist, data[i].localAudioAlbum, data[i].localAudioAlbumArtSaveDirectory, data[i].localAudioAlbumArtFileName);
+    	 }
+     },
+     error: function(data) {
+    	 console.log("error");
+       console.log(data);
+     }
+	});
+}
+
+function loadUpLocalVideoPost() {	
+	$.ajax({
+		type: "GET",
+    url: "/loadUpLocalVideoPost",
+     success: function(data) {
+    	 for(i = data.length-1; i >= 0 ; i-- ) {
+    		 addLocalVideoPostFromServer(data[i].localVideoSaveDirectory, data[i].localVideoPostCaption, data[i].localVideoPostTag, data[i].localVideoFileName);
     	 }
      },
      error: function(data) {

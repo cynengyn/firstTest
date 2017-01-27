@@ -1,6 +1,12 @@
+/* video will be responsive */
 video {
   width: 100%;
   height: auto;
+}
+
+iframe {
+  width: 100%;
+  height: 304px;
 } 
 
 /* new video panel body*/
@@ -142,6 +148,10 @@ video {
   display: none;
 }
 
+#videoPostPanelBody {
+  padding: 0px;
+}
+
 #videoTag {
   border: none;
   box-shadow: none;
@@ -180,6 +190,11 @@ video {
 
 #videoUploadIconDiv {
   margin-bottom: 10px;
+}
+
+#videoPostTagDiv {
+  font-size: 13px;
+  margin-top: 15px;
 }
 
 /* new video upload right side panel position */

@@ -20,7 +20,7 @@ function handleVideoFiles(files) {
   	swal({
 		  title: "",
 		  text: "Please select a .mp4 video file to \n upload.",
-		  confirmButtonText: "OK"
+		  showConfirmButton: false
 		});
   	console.log("not valid");
   }
@@ -53,12 +53,13 @@ function handleVideoFiles(files) {
 
   					displayFormAfterLocalVideoSelected();
   					document.getElementById("videoCaption").focus();
+  					document.getElementById("videoPostButton").setAttribute("onclick", "addNewLocalVideoPost();");
   	    	}
   	    	else
   	    		swal({
       			  title: "",
       			  text: "Video is too long",
-      			  confirmButtonText: "OK"
+      			  showConfirmButton: false
       			});
   	    }
   	    video.onerror = function() {
@@ -66,32 +67,22 @@ function handleVideoFiles(files) {
 	  	    	swal({
 	    			  title: "",
 	    			  text: "Video could not be decoded.",
-	    			  confirmButtonText: "OK"
+	    			  showConfirmButton: false
 	    			});
   	    }
-
-				/*var reader = new FileReader();
-  	    reader.onload = (function(video) { 
-  	    	return function(e) { 
-  	    		console.log("0");
-  	    		video.src = e.target.result;
-  	  		};
-  	    })(video);
-  	    reader.readAsDataURL(videoFile);*/
-  	    /*console.log(reader.readAsDataURL(videoFile));*/
   		}
   		else {
   			swal({
   			  title: "",
   			  text: "This is not valid .mp4 video file.",
-  			  confirmButtonText: "OK"
+  			  showConfirmButton: false
   			});
 			}
   	});
   }
 }
 
-/*check if the format of the extension can match with mp4 file*/
+/*read selected mp4 file*/
 function checkVideoFileSignature(file, callback) {
 	var mp4box;
 	var chunkSize = 1024 * 1024; // bytes
@@ -122,7 +113,7 @@ function checkVideoFileSignature(file, callback) {
     		  showConfirmButton: false
     		});
         if(Math.ceil(100 * offset / fileSize)==100) {
-        	setTimeout(function(){swal.close();}, 1000); // wait for 3 seconds after finished reading video file and close
+        	setTimeout(function(){swal.close();}, 1000); // wait for 1 second after finished reading video file and close
         }
         
     } else {
