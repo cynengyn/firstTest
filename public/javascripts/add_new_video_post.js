@@ -1,8 +1,98 @@
 /*
- ===============
- new video modal
- ===============
-*/
+ *===================
+ *video post elements
+ *===================
+ */
+function createVideoPostElements() {
+	var divVideoPanel = document.createElement("div");
+	var divVideoPanelHeading = document.createElement("div");
+	var divVideoPanelBody = document.createElement("div");
+	var divVideoPostCaption = document.createElement("div");
+	var divVideoPostTag = document.createElement("div");
+	var divVideoPanelFooter = document.createElement("div");
+	var divVideoPanelFooterDropdown = document.createElement("div");	
+	var aVideoPanelTitle = document.createElement("a");
+	var aVideoTag = document.createElement("a");
+	var aGlyphiconSend = document.createElement("a");
+	var aGlyphiconRetweet = document.createElement("a");
+	var aDropdownMenuEdit = document.createElement("a");
+	var aDropdownMenuDelete = document.createElement("a");	
+	var spanGlyphiconSend = document.createElement("span");
+	var spanGlyphiconRetweet = document.createElement("span");
+	var spanGlyphiconCog = document.createElement("span");	
+	var ulDropdownMenu = document.createElement("ul");	
+	var liDropdownMenuEdit = document.createElement("li");
+	var liDropdownMenuDelete = document.createElement("li");
+	
+	divVideoPanel.setAttribute('class', 'panel panel-default');
+	divVideoPanelHeading.setAttribute('class', 'panel-heading');
+	divVideoPanelBody.setAttribute('class', 'panel-body');
+	divVideoPostCaption.setAttribute('class', 'panel-body');
+	divVideoPanelFooter.setAttribute('class', 'panel-footer');
+	divVideoPanelFooterDropdown.setAttribute('class', 'dropdown');
+	aVideoPanelTitle.setAttribute('class', 'panel-title');
+	spanGlyphiconSend.setAttribute('class', 'glyphicon glyphicon-send');
+	spanGlyphiconRetweet.setAttribute('class', 'glyphicon glyphicon-retweet');
+	spanGlyphiconCog.setAttribute('class', 'glyphicon glyphicon-cog dropdown-toggle');
+	ulDropdownMenu.setAttribute('class', 'dropdown-menu dropdown-menu-right');
+	divVideoPanelBody.setAttribute('id', 'videoPostPanelBody');
+	divVideoPostTag.setAttribute('id', 'videoPostTagDiv');
+	spanGlyphiconCog.setAttribute('data-toggle', 'dropdown');
+	spanGlyphiconSend.setAttribute('Title', 'Share');
+	spanGlyphiconRetweet.setAttribute('Title', 'Reblog');
+	spanGlyphiconCog.setAttribute('Title', 'Options');	
+	
+	aVideoPanelTitle.innerHTML = "groovypeacetimetravel";
+	aDropdownMenuEdit.innerHTML = "Edit";
+	aDropdownMenuDelete.innerHTML = "Delete";
+	
+	divVideoPanelHeading.appendChild(aVideoPanelTitle);
+	divVideoPostTag.appendChild(aVideoTag);
+	divVideoPostCaption.appendChild(divVideoPostTag);	
+	aGlyphiconSend.appendChild(spanGlyphiconSend);
+	aGlyphiconRetweet.appendChild(spanGlyphiconRetweet);
+	liDropdownMenuEdit.appendChild(aDropdownMenuEdit);
+	liDropdownMenuDelete.appendChild(aDropdownMenuDelete);
+	ulDropdownMenu.appendChild(liDropdownMenuEdit);
+	ulDropdownMenu.appendChild(liDropdownMenuDelete);	
+	divVideoPanelFooterDropdown.appendChild(aGlyphiconSend);
+	divVideoPanelFooterDropdown.appendChild(aGlyphiconRetweet);
+	divVideoPanelFooterDropdown.appendChild(spanGlyphiconCog);
+	divVideoPanelFooterDropdown.appendChild(ulDropdownMenu);	
+	divVideoPanelFooter.appendChild(divVideoPanelFooterDropdown);	
+	divVideoPanel.appendChild(divVideoPanelHeading);
+	divVideoPanel.appendChild(divVideoPanelBody);
+	divVideoPanel.appendChild(divVideoPostCaption);
+	divVideoPanel.appendChild(divVideoPanelFooter);
+	
+	var postColumnList = document.getElementById("postColumn");
+	postColumnList.insertBefore(divVideoPanel, postColumnList.childNodes[0]);
+
+	return {
+		postCaption: divVideoPostCaption,
+		postTagDiv: divVideoPostTag,
+		postTag: aVideoTag,
+		videoBody: divVideoPanelBody
+	};
+}
+
+function setVideoPostDescriptionAndTag(postElements, postCaption, postTag) {
+	if(postCaption) // video post caption not empty
+		postElements.postCaption.innerHTML = postCaption;
+	
+	if(postTag) { // video post tag not empty
+		postElements.postCaption.appendChild(postElements.postTagDiv);
+		postElements.postTag.innerHTML = "#" + postTag;
+	}
+	else
+		postElements.postTagDiv.setAttribute("style", "display: none;");
+}
+
+/*
+ *===============
+ *new video modal
+ *===============
+ */
 function videoPostModal() {
 	var videoPost = [
 		'<div class="modal-content">',
@@ -69,16 +159,12 @@ function videoPostModal() {
 }
 
 /*
-===========
-local video
-===========
-*/
-function addNewLocalVideoPost() {  
-	var videoFile = document.getElementById("videoFileInput");
-	var formData = new FormData();
-	formData.append("localVideo", videoFile.files[0]);
-	formData.append("localVideoPostCaption", $('#videoCaption').html());
-	formData.append("localVideoPostTag", $('#videoTag').val());
+ *===========
+ *local video
+ *===========
+ */
+function addNewLocalVideoPost() {
+	var formData = getLocalVideoPostData();
 	
 	$.ajax({
     url: "/localVideo",
@@ -98,78 +184,63 @@ function addNewLocalVideoPost() {
 }
 
 function addLocalVideoPostFromServer(localVideoSaveDirectory, localVideoPostCaption, localVideoPostTag, localVideoFileName) {
-	var divVideoPanel = document.createElement("div");
-	var divVideoPanelHeading = document.createElement("div");
-	var divVideoPanelBody = document.createElement("div");
-	var divVideoPostCaption = document.createElement("div");
-	var divVideoPostTag = document.createElement("div");
-	var divVideoPanelFooter = document.createElement("div");
-	var divVideoPanelFooterDropdown = document.createElement("div");	
-	var aVideoPanelTitle = document.createElement("a");
-	var aVideoTag = document.createElement("a");
-	var aGlyphiconSend = document.createElement("a");
-	var aGlyphiconRetweet = document.createElement("a");
-	var aDropdownMenuEdit = document.createElement("a");
-	var aDropdownMenuDelete = document.createElement("a");	
-	var videoComponent = document.createElement("video");
-	var spanGlyphiconSend = document.createElement("span");
-	var spanGlyphiconRetweet = document.createElement("span");
-	var spanGlyphiconCog = document.createElement("span");	
-	var ulDropdownMenu = document.createElement("ul");	
-	var liDropdownMenuEdit = document.createElement("li");
-	var liDropdownMenuDelete = document.createElement("li");
+	var videoPostElements = createVideoPostElements();
+	var videoElement = createLocalVideoElement(localVideoSaveDirectory, localVideoFileName);
 	
-	divVideoPanel.setAttribute('class', 'panel panel-default');
-	divVideoPanelHeading.setAttribute('class', 'panel-heading');
-	divVideoPanelBody.setAttribute('class', 'panel-body');
-	divVideoPostCaption.setAttribute('class', 'panel-body');
-	divVideoPanelFooter.setAttribute('class', 'panel-footer');
-	divVideoPanelFooterDropdown.setAttribute('class', 'dropdown');
-	aVideoPanelTitle.setAttribute('class', 'panel-title');
-	spanGlyphiconSend.setAttribute('class', 'glyphicon glyphicon-send');
-	spanGlyphiconRetweet.setAttribute('class', 'glyphicon glyphicon-retweet');
-	spanGlyphiconCog.setAttribute('class', 'glyphicon glyphicon-cog dropdown-toggle');
-	ulDropdownMenu.setAttribute('class', 'dropdown-menu dropdown-menu-right');
-	divVideoPanelBody.setAttribute('id', 'videoPostPanelBody');
-	divVideoPostTag.setAttribute('id', 'videoPostTagDiv');
-	spanGlyphiconCog.setAttribute('data-toggle', 'dropdown');
-	videoComponent.setAttribute('controls', 'true');
-	videoComponent.setAttribute('src', localVideoSaveDirectory+localVideoFileName);
-	spanGlyphiconSend.setAttribute('Title', 'Share');
-	spanGlyphiconRetweet.setAttribute('Title', 'Reblog');
-	spanGlyphiconCog.setAttribute('Title', 'Options');
+	setVideoPostDescriptionAndTag(videoPostElements, localVideoPostCaption, localVideoPostTag);
+	videoPostElements.videoBody.appendChild(videoElement);
+}
+
+function getLocalVideoPostData() {
+	var videoFile = document.getElementById("videoFileInput");
+	var formData = new FormData();
+	formData.append("localVideo", videoFile.files[0]);
+	formData.append("localVideoPostCaption", $('#videoCaption').html());
+	formData.append("localVideoPostTag", $('#videoTag').val());
 	
-	aVideoPanelTitle.innerHTML = "groovypeacetimetravel";
+	return formData;
+}
+
+/*
+ *=========
+ *web video
+ *=========
+ */
+function addNewWebVideoPost() {
+	var formData = getWebVideoPostData();
 	
-	if(localVideoPostCaption) // video post caption = true
-		divVideoPostCaption.innerHTML = localVideoPostCaption;
-	if(localVideoPostTag) // video post tag = true
-		aVideoTag.innerHTML = "#" + localVideoPostTag;
-	else // video post tag = false
-		divVideoPostTag.setAttribute("style", "display: none;");
-	aDropdownMenuEdit.innerHTML = "Edit";
-	aDropdownMenuDelete.innerHTML = "Delete";
+	$.ajax({
+    url: "/webVideo",
+		type: "POST",
+		data: formData, // The form with the file inputs.
+		processData: false, // Using FormData, no need to process data.
+    contentType: false,
+	}).done(function(data) {
+		for(i = data.length-1; i >= 0 ; i-- ) {
+			addWebVideoPostFromServer(data[i].webVideoUrlType, data[i].webVideoUrlId, data[i].webVideoPostCaption, data[i].webVideoPostTag);
+			/*console.log("Success: Files sent!");
+		  console.log(data);*/
+		}
+	}).fail(function() {
+		console.log("An error occurred, the files couldn't be sent!");
+	});	
+}
+
+function addWebVideoPostFromServer(webVideoUrlType, webVideoUrlId, webVideoPostCaption, webVideoPostTag) {
+	var videoPostElements = createVideoPostElements();
+	var iFrameVideo = createVideoiFrame(webVideoUrlType, webVideoUrlId);
 	
-	divVideoPanelHeading.appendChild(aVideoPanelTitle);
-	divVideoPanelBody.appendChild(videoComponent);
-	divVideoPostTag.appendChild(aVideoTag);
-	divVideoPostCaption.appendChild(divVideoPostTag);	
-	aGlyphiconSend.appendChild(spanGlyphiconSend);
-	aGlyphiconRetweet.appendChild(spanGlyphiconRetweet);
-	liDropdownMenuEdit.appendChild(aDropdownMenuEdit);
-	liDropdownMenuDelete.appendChild(aDropdownMenuDelete);
-	ulDropdownMenu.appendChild(liDropdownMenuEdit);
-	ulDropdownMenu.appendChild(liDropdownMenuDelete);	
-	divVideoPanelFooterDropdown.appendChild(aGlyphiconSend);
-	divVideoPanelFooterDropdown.appendChild(aGlyphiconRetweet);
-	divVideoPanelFooterDropdown.appendChild(spanGlyphiconCog);
-	divVideoPanelFooterDropdown.appendChild(ulDropdownMenu);	
-	divVideoPanelFooter.appendChild(divVideoPanelFooterDropdown);	
-	divVideoPanel.appendChild(divVideoPanelHeading);
-	divVideoPanel.appendChild(divVideoPanelBody);
-	divVideoPanel.appendChild(divVideoPostCaption);
-	divVideoPanel.appendChild(divVideoPanelFooter);
+	setVideoPostDescriptionAndTag(videoPostElements, webVideoPostCaption, webVideoPostTag);
+	videoPostElements.videoBody.appendChild(iFrameVideo);
+}
+
+function getWebVideoPostData() {
+	var webVideoUrl = $('#urlVideoUploadInput').val();
+	var formData = new FormData();
+	formData.append("webVideoUrlType", parseVideo(webVideoUrl).type);
+	formData.append("webVideoUrlId", parseVideo(webVideoUrl).id);
+	formData.append("webVideoPostCaption", $('#videoCaption').html());
+	formData.append("webVideoPostTag", $('#videoTag').val());
 	
-	var postColumnList = document.getElementById("postColumn");
-	postColumnList.insertBefore(divVideoPanel, postColumnList.childNodes[0]);	
+	return formData;
 }

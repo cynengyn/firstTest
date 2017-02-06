@@ -1,3 +1,176 @@
+function createAudioPostElements() {
+	var divAudioPanel = document.createElement("div");
+	var divAudioPanelHeading = document.createElement("div");
+	var divAudioPostPanelBody = document.createElement("div");
+	var divAudioPostPlayControl = document.createElement("div");
+	var divAudioPostProgressBar = document.createElement("div");
+	var divAudioPostPostAlbumArt = document.createElement("div");
+	var divAudioPostPostDesciptionTagPanelBody = document.createElement("div");
+	var divAudioPostTag = document.createElement("div");
+	var divAudioPanelFooter = document.createElement("div");
+	var divAudioPanelFooterDropdown = document.createElement("div");
+	var aAudioPanelTitle = document.createElement("a");
+	var aAudioTag = document.createElement("a");
+	var aGlyphiconSend = document.createElement("a");
+	var aGlyphiconRetweet = document.createElement("a");
+	var aDropdownMenuEdit = document.createElement("a");
+	var aDropdownMenuDelete = document.createElement("a");
+	var audioUrl = document.createElement("audio");
+	var imgAudioPostAlbumArt = document.createElement("img");
+	var spanAudioPostPlayProgress = document.createElement("span");
+	var spanGlyphiconSend = document.createElement("span");
+	var spanGlyphiconRetweet = document.createElement("span");
+	var spanGlyphiconCog = document.createElement("span");
+	var iAudioPostPlayHead = document.createElement("i");
+	var iAudioPostPlayerButton = document.createElement("i");
+	var ulDropdownMenu = document.createElement("ul");
+	var liAudioPostTrack = document.createElement("li");
+	var liAudioPostArtist = document.createElement("li");
+	var liAudioPostAlbum = document.createElement("li");
+	var liAudioPostDefault = document.createElement("li");
+	var liDropdownMenuEdit = document.createElement("li");
+	var liDropdownMenuDelete = document.createElement("li");
+	
+	divAudioPanel.setAttribute('class', 'panel panel-default');
+	divAudioPanelHeading.setAttribute('class', 'panel-heading');
+	divAudioPostPanelBody.setAttribute('class', 'panel-body');
+	divAudioPostPostDesciptionTagPanelBody.setAttribute('class', 'panel-body');
+	divAudioPanelFooter.setAttribute('class', 'panel-footer');
+	divAudioPanelFooterDropdown.setAttribute('class', 'dropdown');
+	aAudioPanelTitle.setAttribute('class', 'panel-title');
+	imgAudioPostAlbumArt.setAttribute('class', 'img-responsive');
+	iAudioPostPlayerButton.setAttribute('class', 'glyphicon glyphicon-play audioPostPlayerButton');
+	divAudioPostProgressBar.setAttribute('class', 'audioPostProgressBar');
+	spanAudioPostPlayProgress.setAttribute('class', 'playProgress');
+	iAudioPostPlayHead.setAttribute('class', 'playHead');
+	liAudioPostTrack.setAttribute('class', 'glyphicon');
+	liAudioPostArtist.setAttribute('class', 'glyphicon');
+	liAudioPostAlbum.setAttribute('class', 'glyphicon');
+	liAudioPostDefault.setAttribute('class', 'glyphicon');
+	spanGlyphiconSend.setAttribute('class', 'glyphicon glyphicon-send');
+	spanGlyphiconRetweet.setAttribute('class', 'glyphicon glyphicon-retweet');
+	spanGlyphiconCog.setAttribute('class', 'glyphicon glyphicon-cog dropdown-toggle');
+	ulDropdownMenu.setAttribute('class', 'dropdown-menu dropdown-menu-right');
+	divAudioPostPanelBody.setAttribute('id', 'audioPostPanelBody');
+	divAudioPostPlayControl.setAttribute('id', 'audioPostPlayControl');
+	divAudioPostPostAlbumArt.setAttribute('id', 'audioPostAlbumArtDiv');
+	divAudioPostPostDesciptionTagPanelBody.setAttribute('id', 'audioPostDesciptionTagPanelBody');
+	divAudioPostTag.setAttribute('id', 'audioPostTagDiv');
+	liAudioPostTrack.setAttribute('id', 'audioPostTrack');
+	liAudioPostArtist.setAttribute('id', 'audioPostArtist');
+	liAudioPostAlbum.setAttribute('id', 'audioPostAlbum');
+	liAudioPostDefault.setAttribute('id', 'audioPostDefault');
+	spanGlyphiconSend.setAttribute('Title', 'Share');
+	spanGlyphiconRetweet.setAttribute('Title', 'Reblog');
+	spanGlyphiconCog.setAttribute('Title', 'Options');
+	spanGlyphiconCog.setAttribute('data-toggle', 'dropdown');
+	
+	aAudioPanelTitle.innerHTML = "groovypeacetimetravel";
+	aDropdownMenuEdit.innerHTML = "Edit";
+	aDropdownMenuDelete.innerHTML = "Delete";
+	
+	divAudioPanelHeading.appendChild(aAudioPanelTitle);
+	divAudioPostProgressBar.appendChild(spanAudioPostPlayProgress);
+	divAudioPostProgressBar.appendChild(iAudioPostPlayHead);
+	divAudioPostPlayControl.appendChild(divAudioPostProgressBar);
+	divAudioPostPlayControl.appendChild(iAudioPostPlayerButton);
+	divAudioPostPlayControl.appendChild(liAudioPostTrack);
+	divAudioPostPlayControl.appendChild(liAudioPostArtist);
+	divAudioPostPlayControl.appendChild(liAudioPostAlbum);
+	divAudioPostPlayControl.appendChild(liAudioPostDefault);
+	divAudioPostPostAlbumArt.appendChild(imgAudioPostAlbumArt);
+	divAudioPostPanelBody.appendChild(audioUrl);
+	divAudioPostPanelBody.appendChild(divAudioPostPlayControl);
+	divAudioPostPanelBody.appendChild(divAudioPostPostAlbumArt);
+	divAudioPostTag.appendChild(aAudioTag);
+	divAudioPostPostDesciptionTagPanelBody.appendChild(divAudioPostTag);	
+	aGlyphiconSend.appendChild(spanGlyphiconSend);
+	aGlyphiconRetweet.appendChild(spanGlyphiconRetweet);
+	liDropdownMenuEdit.appendChild(aDropdownMenuEdit);
+	liDropdownMenuDelete.appendChild(aDropdownMenuDelete);
+	ulDropdownMenu.appendChild(liDropdownMenuEdit);
+	ulDropdownMenu.appendChild(liDropdownMenuDelete);	
+	divAudioPanelFooterDropdown.appendChild(aGlyphiconSend);
+	divAudioPanelFooterDropdown.appendChild(aGlyphiconRetweet);
+	divAudioPanelFooterDropdown.appendChild(spanGlyphiconCog);
+	divAudioPanelFooterDropdown.appendChild(ulDropdownMenu);	
+	divAudioPanelFooter.appendChild(divAudioPanelFooterDropdown);	
+	divAudioPanel.appendChild(divAudioPanelHeading);
+	divAudioPanel.appendChild(divAudioPostPanelBody);
+	divAudioPanel.appendChild(divAudioPostPostDesciptionTagPanelBody);
+	divAudioPanel.appendChild(divAudioPanelFooter);
+	
+	var postColumnList = document.getElementById("postColumn");
+	postColumnList.insertBefore(divAudioPanel, postColumnList.childNodes[0]);
+
+	return {
+		divAudioPostProgressBar: divAudioPostProgressBar,
+		audioUrl: audioUrl,
+		spanAudioPostPlayProgress: spanAudioPostPlayProgress,
+		iAudioPostPlayHead: iAudioPostPlayHead,
+		iAudioPostPlayerButton: iAudioPostPlayerButton,
+		imgAudioPostAlbumArt: imgAudioPostAlbumArt,
+		liAudioPostDefault: liAudioPostDefault,
+		liAudioPostTrack: liAudioPostTrack,
+		liAudioPostArtist: liAudioPostArtist,
+		liAudioPostAlbum: liAudioPostAlbum,
+		divAudioPostPostAlbumArt: divAudioPostPostAlbumArt,
+		divAudioPostPlayControl: divAudioPostPlayControl,
+		divAudioPostPostDesciptionTagPanelBody: divAudioPostPostDesciptionTagPanelBody,
+		divAudioPostTag: divAudioPostTag,
+		aAudioTag: aAudioTag
+	};
+}
+
+function setAlbumArt(postElements, albumArtDirectory, albumArtFileName) {
+	if(albumArtFileName)
+		postElements.imgAudioPostAlbumArt.setAttribute('src', albumArtDirectory+albumArtFileName);	
+	else { // album art doesn't exists
+		postElements.divAudioPostPostAlbumArt.setAttribute("style", "display: none;");
+		postElements.divAudioPostPlayControl.setAttribute("style", "width: 100%;");
+	}
+}
+
+function setAudioInfo(postElements, audioTrack, audioArtist, audioAlbum) {
+	if(!(audioTrack && audioArtist && audioAlbum)) // id3 data doesn't exists
+		postElements.liAudioPostDefault.innerHTML = "Listen";
+	else { // id3 data exists
+		postElements.liAudioPostTrack.innerHTML = audioTrack;
+		postElements.liAudioPostArtist.innerHTML = audioArtist;
+		postElements.liAudioPostAlbum.innerHTML = audioAlbum;
+	}
+}
+
+function setAudioPostDescriptionAndTag(postElements, postDescription, postTag) {
+	if(postDescription) // audio post description exists
+		postElements.divAudioPostPostDesciptionTagPanelBody.innerHTML = postDescription;
+	
+	if(postTag) {// audio post tag exists
+		postElements.divAudioPostPostDesciptionTagPanelBody.appendChild(postElements.divAudioPostTag);
+		postElements.aAudioTag.innerHTML = "#" + postTag;
+	}
+	else // audio post tag doesn't exists
+		postElements.divAudioPostTag.setAttribute("style", "display: none;");
+}
+
+function setAudioSource(postElements, sourceType, audioSaveDirectory, audioFileName, audioUrl) {
+	if(sourceType == "Local")
+		postElements.audioUrl.setAttribute('src', audioSaveDirectory+audioFileName);
+	else if(sourceType == "Web")
+		postElements.audioUrl.setAttribute('src', audioUrl);
+
+	postElements.audioUrl.setAttribute('onloadedmetadata', 'initilizeUrlAudioPostControl(this, this.id)');
+}
+
+function setElementsId(postElements, audioId) {
+	postElements.divAudioPostProgressBar.setAttribute('id', 'audioPostProgressBar'+audioId);
+	postElements.audioUrl.setAttribute('id', 'urlAudio'+audioId);
+	postElements.spanAudioPostPlayProgress.setAttribute('id', 'playProgress'+audioId);
+	postElements.iAudioPostPlayHead.setAttribute('id', 'playHead'+audioId);
+	postElements.iAudioPostPlayerButton.setAttribute('id', 'audioPostPlayerButton'+audioId);
+	postElements.iAudioPostPlayerButton.setAttribute('onclick', 'togglePlayPauseAudioPost(this.id)');
+}
+
 /*
  ===============
  new audio modal
@@ -23,7 +196,7 @@ function audioPostModal() {
 		        '<div id="newAudioUploadPreview">',
 		        	'<div id="audioPreviewControl">',
 								'<div id="progressBar"><span id="playProgress"></span><i id="playHead"></i></div>',
-								'<i class="glyphicon glyphicon-play" id="audioPlayerButton" onclick="togglePlayPause()"></i>',
+								'<i class="glyphicon glyphicon-play" id="audioPlayerButton" onclick="togglePreviewPlayPause()"></i>',
 								'<input class="glyphicon" id="audioTrackInput">',
 								'<label class="glyphicon" id="audioTrackLabel">Track</label>',
 								'<input class="glyphicon" id="audioArtistInput">',
@@ -90,16 +263,8 @@ function audioPostModal() {
  online audio
  ============
 */
-function addNewWebAudioPost() {	
-	var file = document.getElementById("selectAlbumArtInput");
-	var formData = new FormData();
-	formData.append("webAudioUrl", $('#urlAudioUploadInput').val());	
-	formData.append("webAudioPostDescription", $('#audioDescription').html());
-	formData.append("webAudioPostTag", $('#audioTag').val());
-	formData.append("webAudioAlbumArt", file.files[0]);
-	formData.append("webAudioTrack", $('#audioTrackInput').val());
-	formData.append("webAudioArtist", $('#audioArtistInput').val());
-	formData.append("webAudioAlbum", $('#audioAlbumInput').val());
+function addNewWebAudioPost() {
+	var formData = getWebAudioPostData();
 	
 	$.ajax({
     url: "/webAudio",
@@ -110,8 +275,8 @@ function addNewWebAudioPost() {
 	}).done(function(data) {
 		for(i = data.length-1; i >= 0 ; i-- ) {
 			addNewWebAudioPostFromServer(data[i].webAudioPostId, data[i].webAudioUrl, data[i].webAudioPostDescription, data[i].webAudioPostTag, data[i].webAudioTrack, data[i].webAudioArtist, data[i].webAudioAlbum, data[i].webAudioAlbumArtDirectory, data[i].webAudioAlbumArtFileName);
-			console.log("Success: Files sent!");
-		  console.log(data);
+			/*console.log("Success: Files sent!");
+		  console.log(data);*/
 		}
 	}).fail(function() {
 		console.log("An error occurred, the files couldn't be sent!");
@@ -119,144 +284,26 @@ function addNewWebAudioPost() {
 }
 
 function addNewWebAudioPostFromServer(webAudioPostId, webAudioUrl, webAudioPostDescription, webAudioPostTag, webAudioTrack, webAudioArtist, webAudioAlbum, webAudioAlbumArtDirectory, webAudioAlbumArtFileName) {
-	var divAudioPanel = document.createElement("div");
-	var divAudioPanelHeading = document.createElement("div");
-	var divAudioPostPanelBody = document.createElement("div");
-	var divAudioPostPlayControl = document.createElement("div");
-	var divAudioPostProgressBar = document.createElement("div");
-	var divAudioPostPostAlbumArt = document.createElement("div");
-	var divAudioPostPostDesciptionTagPanelBody = document.createElement("div");
-	var divAudioPostTag = document.createElement("div");
-	var divAudioPanelFooter = document.createElement("div");
-	var divAudioPanelFooterDropdown = document.createElement("div");
-	var aAudioPanelTitle = document.createElement("a");
-	var aAudioTag = document.createElement("a");
-	var aGlyphiconSend = document.createElement("a");
-	var aGlyphiconRetweet = document.createElement("a");
-	var aDropdownMenuEdit = document.createElement("a");
-	var aDropdownMenuDelete = document.createElement("a");
-	var audioUrl = document.createElement("audio");
-	var imgAudioPostAlbumArt = document.createElement("img");
-	var spanAudioPostPlayProgress = document.createElement("span");
-	var spanGlyphiconSend = document.createElement("span");
-	var spanGlyphiconRetweet = document.createElement("span");
-	var spanGlyphiconCog = document.createElement("span");
-	var iAudioPostPlayHead = document.createElement("i");
-	var iAudioPostPlayerButton = document.createElement("i");
-	var ulDropdownMenu = document.createElement("ul");
-	var liAudioPostTrack = document.createElement("li");
-	var liAudioPostArtist = document.createElement("li");
-	var liAudioPostAlbum = document.createElement("li");
-	var liAudioPostDefault = document.createElement("li");
-	var liDropdownMenuEdit = document.createElement("li");
-	var liDropdownMenuDelete = document.createElement("li");
+	var audioPostElements = createAudioPostElements();
+	setElementsId(audioPostElements, webAudioPostId);
+	setAudioSource(audioPostElements, "Web", "", "", webAudioUrl);
+	setAlbumArt(audioPostElements, webAudioAlbumArtDirectory, webAudioAlbumArtFileName);
+	setAudioInfo(audioPostElements, webAudioTrack, webAudioArtist, webAudioAlbum);
+	setAudioPostDescriptionAndTag(audioPostElements, webAudioPostDescription, webAudioPostTag);	
+}
+
+function getWebAudioPostData() {	
+	var albumArtfile = document.getElementById("selectAlbumArtInput");
+	var formData = new FormData();
+	formData.append("webAudioUrl", $('#urlAudioUploadInput').val());	
+	formData.append("webAudioPostDescription", $('#audioDescription').html());
+	formData.append("webAudioPostTag", $('#audioTag').val());
+	formData.append("webAudioAlbumArt", albumArtfile.files[0]);
+	formData.append("webAudioTrack", $('#audioTrackInput').val());
+	formData.append("webAudioArtist", $('#audioArtistInput').val());
+	formData.append("webAudioAlbum", $('#audioAlbumInput').val());
 	
-	divAudioPanel.setAttribute('class', 'panel panel-default');
-	divAudioPanelHeading.setAttribute('class', 'panel-heading');
-	divAudioPostPanelBody.setAttribute('class', 'panel-body');
-	divAudioPostPostDesciptionTagPanelBody.setAttribute('class', 'panel-body');
-	divAudioPanelFooter.setAttribute('class', 'panel-footer');
-	divAudioPanelFooterDropdown.setAttribute('class', 'dropdown');
-	aAudioPanelTitle.setAttribute('class', 'panel-title');
-	imgAudioPostAlbumArt.setAttribute('class', 'img-responsive');
-	iAudioPostPlayerButton.setAttribute('class', 'glyphicon glyphicon-play audioPostPlayerButton');
-	divAudioPostProgressBar.setAttribute('class', 'audioPostProgressBar');
-	spanAudioPostPlayProgress.setAttribute('class', 'playProgress');
-	iAudioPostPlayHead.setAttribute('class', 'playHead');
-	liAudioPostTrack.setAttribute('class', 'glyphicon');
-	liAudioPostArtist.setAttribute('class', 'glyphicon');
-	liAudioPostAlbum.setAttribute('class', 'glyphicon');
-	liAudioPostDefault.setAttribute('class', 'glyphicon');
-	spanGlyphiconSend.setAttribute('class', 'glyphicon glyphicon-send');
-	spanGlyphiconRetweet.setAttribute('class', 'glyphicon glyphicon-retweet');
-	spanGlyphiconCog.setAttribute('class', 'glyphicon glyphicon-cog dropdown-toggle');
-	ulDropdownMenu.setAttribute('class', 'dropdown-menu dropdown-menu-right');
-	divAudioPostPanelBody.setAttribute('id', 'audioPostPanelBody');
-	divAudioPostPlayControl.setAttribute('id', 'audioPostPlayControl');
-	divAudioPostProgressBar.setAttribute('id', 'audioPostProgressBar'+webAudioPostId);
-	divAudioPostPostAlbumArt.setAttribute('id', 'audioPostAlbumArtDiv');
-	divAudioPostTag.setAttribute('id', 'audioPostTagDiv');
-	divAudioPostPostDesciptionTagPanelBody.setAttribute('id', 'audioPostDesciptionTagPanelBody');
-	audioUrl.setAttribute('id', 'urlAudio'+webAudioPostId);
-	spanAudioPostPlayProgress.setAttribute('id', 'playProgress'+webAudioPostId);
-	iAudioPostPlayHead.setAttribute('id', 'playHead'+webAudioPostId);
-	iAudioPostPlayerButton.setAttribute('id', 'audioPostPlayerButton'+webAudioPostId);
-	liAudioPostTrack.setAttribute('id', 'audioPostTrack');
-	liAudioPostArtist.setAttribute('id', 'audioPostArtist');
-	liAudioPostAlbum.setAttribute('id', 'audioPostAlbum');
-	liAudioPostDefault.setAttribute('id', 'audioPostDefault');
-	audioUrl.setAttribute('src', webAudioUrl);
-	audioUrl.setAttribute('onloadedmetadata', 'initilizeUrlAudioPostControl(this, this.id)');
-	iAudioPostPlayerButton.setAttribute('onclick', 'togglePlayPauseAudioPost(this.id)');
-	if(webAudioAlbumArtFileName)
-		imgAudioPostAlbumArt.setAttribute('src', webAudioAlbumArtDirectory+webAudioAlbumArtFileName);
-	spanGlyphiconSend.setAttribute('Title', 'Share');
-	spanGlyphiconRetweet.setAttribute('Title', 'Reblog');
-	spanGlyphiconCog.setAttribute('Title', 'Options');
-	spanGlyphiconCog.setAttribute('data-toggle', 'dropdown');
-	
-	aAudioPanelTitle.innerHTML = "groovypeacetimetravel";
-	if(!(webAudioTrack && webAudioArtist && webAudioAlbum)) // id3 data: false
-		liAudioPostDefault.innerHTML = "Listen";
-	else { // id3 data: true
-		liAudioPostTrack.innerHTML = webAudioTrack;
-		liAudioPostArtist.innerHTML = webAudioArtist;
-		liAudioPostAlbum.innerHTML = webAudioAlbum;
-	}
-	if(!webAudioAlbumArtFileName) { // album art: false
-		divAudioPostPostAlbumArt.setAttribute("style", "display: none;");
-		divAudioPostPlayControl.setAttribute("style", "width: 100%;");
-	}
-	if(webAudioPostDescription) // audio post description: true
-		divAudioPostPostDesciptionTagPanelBody.innerHTML = webAudioPostDescription;
-	if(webAudioPostTag) // audio post tag: true
-		aAudioTag.innerHTML = "#" + webAudioPostTag;
-	else // audio post tag: false
-		divAudioPostTag.setAttribute("style", "display: none;");
-	aDropdownMenuEdit.innerHTML = "Edit";
-	aDropdownMenuDelete.innerHTML = "Delete";
-	
-	divAudioPanelHeading.appendChild(aAudioPanelTitle);
-	divAudioPostProgressBar.appendChild(spanAudioPostPlayProgress);
-	divAudioPostProgressBar.appendChild(iAudioPostPlayHead);
-	divAudioPostPlayControl.appendChild(divAudioPostProgressBar);
-	divAudioPostPlayControl.appendChild(iAudioPostPlayerButton);
-	divAudioPostPlayControl.appendChild(liAudioPostTrack);
-	divAudioPostPlayControl.appendChild(liAudioPostArtist);
-	divAudioPostPlayControl.appendChild(liAudioPostAlbum);
-	divAudioPostPlayControl.appendChild(liAudioPostDefault);
-	divAudioPostPostAlbumArt.appendChild(imgAudioPostAlbumArt);
-	divAudioPostPanelBody.appendChild(audioUrl);
-	divAudioPostPanelBody.appendChild(divAudioPostPlayControl);
-	divAudioPostPanelBody.appendChild(divAudioPostPostAlbumArt);
-	divAudioPostTag.appendChild(aAudioTag);
-	divAudioPostPostDesciptionTagPanelBody.appendChild(divAudioPostTag);	
-	aGlyphiconSend.appendChild(spanGlyphiconSend);
-	aGlyphiconRetweet.appendChild(spanGlyphiconRetweet);
-	liDropdownMenuEdit.appendChild(aDropdownMenuEdit);
-	liDropdownMenuDelete.appendChild(aDropdownMenuDelete);
-	ulDropdownMenu.appendChild(liDropdownMenuEdit);
-	ulDropdownMenu.appendChild(liDropdownMenuDelete);	
-	divAudioPanelFooterDropdown.appendChild(aGlyphiconSend);
-	divAudioPanelFooterDropdown.appendChild(aGlyphiconRetweet);
-	divAudioPanelFooterDropdown.appendChild(spanGlyphiconCog);
-	divAudioPanelFooterDropdown.appendChild(ulDropdownMenu);	
-	divAudioPanelFooter.appendChild(divAudioPanelFooterDropdown);	
-	divAudioPanel.appendChild(divAudioPanelHeading);
-	divAudioPanel.appendChild(divAudioPostPanelBody);
-	divAudioPanel.appendChild(divAudioPostPostDesciptionTagPanelBody);
-	divAudioPanel.appendChild(divAudioPanelFooter);
-	
-	/*if(!webAudioAlbumArtFileName) {
-		divAudioPostPostAlbumArt.setAttribute("style", "display: none;");
-		divAudioPostPlayControl.setAttribute("style", "width: 100%;");
-	}*/
-	
-	/*if(!aAudioTag)
-		aAudioTag.setAttribute("style", "display: none;");*/
-	
-	var postColumnList = document.getElementById("postColumn");
-	postColumnList.insertBefore(divAudioPanel, postColumnList.childNodes[0]);	
+	return formData;
 }
 
 /*
@@ -264,17 +311,8 @@ function addNewWebAudioPostFromServer(webAudioPostId, webAudioUrl, webAudioPostD
 local audio
 ===========
 */
-function addNewLocalAudioPost() {	
-	var audiofile = document.getElementById("audioFileInput");
-	var albumArtfile = document.getElementById("selectAlbumArtInput");
-	var formData = new FormData();
-	formData.append("localAudio", audiofile.files[0]);	
-	formData.append("localAudioPostDescription", $('#audioDescription').html());
-	formData.append("localAudioPostTag", $('#audioTag').val());
-	formData.append("localAudioAlbumArt", albumArtfile.files[0]);
-	formData.append("localAudioTrack", $('#audioTrackInput').val());
-	formData.append("localAudioArtist", $('#audioArtistInput').val());
-	formData.append("localAudioAlbum", $('#audioAlbumInput').val());
+function addNewLocalAudioPost() {
+	var formData = getLocalAudioPostData();
 	
 	$.ajax({
 		url: "/localAudio",
@@ -294,142 +332,25 @@ function addNewLocalAudioPost() {
 }
 
 function addNewLocalAudioPostFromServer(localAudioPostId, localAudioSaveDirectory, localAudioFileName, localAudioPostDescription, localAudioPostTag, localAudioTrack, localAudioArtist, localAudioAlbum, localAudioAlbumArtSaveDirectory, localAudioAlbumArtFileName) {
-	var divAudioPanel = document.createElement("div");
-	var divAudioPanelHeading = document.createElement("div");
-	var divAudioPostPanelBody = document.createElement("div");
-	var divAudioPostPlayControl = document.createElement("div");
-	var divAudioPostProgressBar = document.createElement("div");
-	var divAudioPostPostAlbumArt = document.createElement("div");
-	var divAudioPostPostDesciptionTagPanelBody = document.createElement("div");
-	var divAudioPostTag = document.createElement("div");
-	var divAudioPanelFooter = document.createElement("div");
-	var divAudioPanelFooterDropdown = document.createElement("div");
-	var aAudioPanelTitle = document.createElement("a");
-	var aAudioTag = document.createElement("a");
-	var aGlyphiconSend = document.createElement("a");
-	var aGlyphiconRetweet = document.createElement("a");
-	var aDropdownMenuEdit = document.createElement("a");
-	var aDropdownMenuDelete = document.createElement("a");
-	var audioUrl = document.createElement("audio");
-	var imgAudioPostAlbumArt = document.createElement("img");
-	var spanAudioPostPlayProgress = document.createElement("span");
-	var spanGlyphiconSend = document.createElement("span");
-	var spanGlyphiconRetweet = document.createElement("span");
-	var spanGlyphiconCog = document.createElement("span");
-	var iAudioPostPlayHead = document.createElement("i");
-	var iAudioPostPlayerButton = document.createElement("i");
-	var ulDropdownMenu = document.createElement("ul");
-	var liAudioPostTrack = document.createElement("li");
-	var liAudioPostArtist = document.createElement("li");
-	var liAudioPostAlbum = document.createElement("li");
-	var liAudioPostDefault = document.createElement("li");
-	var liDropdownMenuEdit = document.createElement("li");
-	var liDropdownMenuDelete = document.createElement("li");
+	var audioPostElements = createAudioPostElements();	
+	setElementsId(audioPostElements, localAudioPostId);	
+	setAudioSource(audioPostElements, "Local", localAudioSaveDirectory, localAudioFileName, "");	
+	setAlbumArt(audioPostElements, localAudioAlbumArtSaveDirectory, localAudioAlbumArtFileName);	
+	setAudioInfo(audioPostElements, localAudioTrack, localAudioArtist, localAudioAlbum);	
+	setAudioPostDescriptionAndTag(audioPostElements, localAudioPostDescription, localAudioPostTag);
+}
+
+function getLocalAudioPostData() {
+	var audiofile = document.getElementById("audioFileInput");
+	var albumArtfile = document.getElementById("selectAlbumArtInput");
+	var formData = new FormData();
+	formData.append("localAudio", audiofile.files[0]);	
+	formData.append("localAudioPostDescription", $('#audioDescription').html());
+	formData.append("localAudioPostTag", $('#audioTag').val());
+	formData.append("localAudioAlbumArt", albumArtfile.files[0]);
+	formData.append("localAudioTrack", $('#audioTrackInput').val());
+	formData.append("localAudioArtist", $('#audioArtistInput').val());
+	formData.append("localAudioAlbum", $('#audioAlbumInput').val());
 	
-	divAudioPanel.setAttribute('class', 'panel panel-default');
-	divAudioPanelHeading.setAttribute('class', 'panel-heading');
-	divAudioPostPanelBody.setAttribute('class', 'panel-body');
-	divAudioPostPostDesciptionTagPanelBody.setAttribute('class', 'panel-body');
-	divAudioPanelFooter.setAttribute('class', 'panel-footer');
-	divAudioPanelFooterDropdown.setAttribute('class', 'dropdown');
-	aAudioPanelTitle.setAttribute('class', 'panel-title');
-	imgAudioPostAlbumArt.setAttribute('class', 'img-responsive');
-	iAudioPostPlayerButton.setAttribute('class', 'glyphicon glyphicon-play audioPostPlayerButton');
-	divAudioPostProgressBar.setAttribute('class', 'audioPostProgressBar');
-	spanAudioPostPlayProgress.setAttribute('class', 'playProgress');
-	iAudioPostPlayHead.setAttribute('class', 'playHead');
-	liAudioPostTrack.setAttribute('class', 'glyphicon');
-	liAudioPostArtist.setAttribute('class', 'glyphicon');
-	liAudioPostAlbum.setAttribute('class', 'glyphicon');
-	liAudioPostDefault.setAttribute('class', 'glyphicon');
-	spanGlyphiconSend.setAttribute('class', 'glyphicon glyphicon-send');
-	spanGlyphiconRetweet.setAttribute('class', 'glyphicon glyphicon-retweet');
-	spanGlyphiconCog.setAttribute('class', 'glyphicon glyphicon-cog dropdown-toggle');
-	ulDropdownMenu.setAttribute('class', 'dropdown-menu dropdown-menu-right');
-	divAudioPostPanelBody.setAttribute('id', 'audioPostPanelBody');
-	divAudioPostPlayControl.setAttribute('id', 'audioPostPlayControl');
-	divAudioPostProgressBar.setAttribute('id', 'audioPostProgressBar'+localAudioPostId);
-	divAudioPostPostAlbumArt.setAttribute('id', 'audioPostAlbumArtDiv');
-	divAudioPostPostDesciptionTagPanelBody.setAttribute('id', 'audioPostDesciptionTagPanelBody');
-	divAudioPostTag.setAttribute('id', 'audioPostTagDiv');
-	audioUrl.setAttribute('id', 'urlAudio'+localAudioPostId);
-	spanAudioPostPlayProgress.setAttribute('id', 'playProgress'+localAudioPostId);
-	iAudioPostPlayHead.setAttribute('id', 'playHead'+localAudioPostId);
-	iAudioPostPlayerButton.setAttribute('id', 'audioPostPlayerButton'+localAudioPostId);
-	liAudioPostTrack.setAttribute('id', 'audioPostTrack');
-	liAudioPostArtist.setAttribute('id', 'audioPostArtist');
-	liAudioPostAlbum.setAttribute('id', 'audioPostAlbum');
-	liAudioPostDefault.setAttribute('id', 'audioPostDefault');
-	audioUrl.setAttribute('src', localAudioSaveDirectory+localAudioFileName);
-	audioUrl.setAttribute('onloadedmetadata', 'initilizeUrlAudioPostControl(this, this.id)');
-	iAudioPostPlayerButton.setAttribute('onclick', 'togglePlayPauseAudioPost(this.id)');
-	if(localAudioAlbumArtFileName)
-		imgAudioPostAlbumArt.setAttribute('src', localAudioAlbumArtSaveDirectory+localAudioAlbumArtFileName);
-	spanGlyphiconSend.setAttribute('Title', 'Share');
-	spanGlyphiconRetweet.setAttribute('Title', 'Reblog');
-	spanGlyphiconCog.setAttribute('Title', 'Options');
-	spanGlyphiconCog.setAttribute('data-toggle', 'dropdown');
-	
-	aAudioPanelTitle.innerHTML = "groovypeacetimetravel";
-	if(!(localAudioTrack && localAudioArtist && localAudioAlbum)) // id3 data: false
-		liAudioPostDefault.innerHTML = "Listen";
-	else { // id3 data: true
-		liAudioPostTrack.innerHTML = localAudioTrack;
-		liAudioPostArtist.innerHTML = localAudioArtist;
-		liAudioPostAlbum.innerHTML = localAudioAlbum;
-	}
-	if(!localAudioAlbumArtFileName) { // album art: false
-		divAudioPostPostAlbumArt.setAttribute("style", "display: none;");
-		divAudioPostPlayControl.setAttribute("style", "width: 100%;");
-	}
-	if(localAudioPostDescription) // audio post description: true
-		divAudioPostPostDesciptionTagPanelBody.innerHTML = localAudioPostDescription;
-	if(localAudioPostTag) // audio post tag: true
-		aAudioTag.innerHTML = "#" + localAudioPostTag;
-	else // audio post tag: false
-		aAudioTag.setAttribute("style", "display: none;");
-	aDropdownMenuEdit.innerHTML = "Edit";
-	aDropdownMenuDelete.innerHTML = "Delete";
-	
-	divAudioPanelHeading.appendChild(aAudioPanelTitle);
-	divAudioPostProgressBar.appendChild(spanAudioPostPlayProgress);
-	divAudioPostProgressBar.appendChild(iAudioPostPlayHead);
-	divAudioPostPlayControl.appendChild(divAudioPostProgressBar);
-	divAudioPostPlayControl.appendChild(iAudioPostPlayerButton);
-	divAudioPostPlayControl.appendChild(liAudioPostTrack);
-	divAudioPostPlayControl.appendChild(liAudioPostArtist);
-	divAudioPostPlayControl.appendChild(liAudioPostAlbum);
-	divAudioPostPlayControl.appendChild(liAudioPostDefault);
-	divAudioPostPostAlbumArt.appendChild(imgAudioPostAlbumArt);
-	divAudioPostPanelBody.appendChild(audioUrl);
-	divAudioPostPanelBody.appendChild(divAudioPostPlayControl);
-	divAudioPostPanelBody.appendChild(divAudioPostPostAlbumArt);
-	divAudioPostTag.appendChild(aAudioTag);
-	divAudioPostPostDesciptionTagPanelBody.appendChild(divAudioPostTag);	
-	aGlyphiconSend.appendChild(spanGlyphiconSend);
-	aGlyphiconRetweet.appendChild(spanGlyphiconRetweet);
-	liDropdownMenuEdit.appendChild(aDropdownMenuEdit);
-	liDropdownMenuDelete.appendChild(aDropdownMenuDelete);
-	ulDropdownMenu.appendChild(liDropdownMenuEdit);
-	ulDropdownMenu.appendChild(liDropdownMenuDelete);	
-	divAudioPanelFooterDropdown.appendChild(aGlyphiconSend);
-	divAudioPanelFooterDropdown.appendChild(aGlyphiconRetweet);
-	divAudioPanelFooterDropdown.appendChild(spanGlyphiconCog);
-	divAudioPanelFooterDropdown.appendChild(ulDropdownMenu);	
-	divAudioPanelFooter.appendChild(divAudioPanelFooterDropdown);	
-	divAudioPanel.appendChild(divAudioPanelHeading);
-	divAudioPanel.appendChild(divAudioPostPanelBody);
-	divAudioPanel.appendChild(divAudioPostPostDesciptionTagPanelBody);
-	divAudioPanel.appendChild(divAudioPanelFooter);
-	
-	/*if(!localAudioAlbumArtFileName) {
-		divAudioPostPostAlbumArt.setAttribute("style", "display: none;");
-		divAudioPostPlayControl.setAttribute("style", "width: 100%;");
-	}*/
-	
-	/*if(!aAudioTag)
-		aAudioTag.setAttribute("style", "display: none;");*/
-	
-	var postColumnList = document.getElementById("postColumn");
-	postColumnList.insertBefore(divAudioPanel, postColumnList.childNodes[0]);	
+	return formData;
 }

@@ -5,6 +5,7 @@ loadUpQuotePost();
 loadUpWebAudioPost();
 loadUpLocalAudioPost();
 loadUpLocalVideoPost();
+loadUpWebVideoPost();
 
 function loadUpTextPost() {	
 	$.ajax({
@@ -120,6 +121,22 @@ function loadUpLocalVideoPost() {
 	});
 }
 
+function loadUpWebVideoPost() {	
+	$.ajax({
+		type: "GET",
+    url: "/loadUpWebVideoPost",
+     success: function(data) {
+    	 for(i = data.length-1; i >= 0 ; i-- ) {
+    		 addWebVideoPostFromServer(data[i].webVideoUrlType, data[i].webVideoUrlId, data[i].webVideoPostCaption, data[i].webVideoPostTag);
+    	 }
+     },
+     error: function(data) {
+    	 console.log("error");
+       console.log(data);
+     }
+	});
+}
+
 /*search bar icon background changes to white when focus 
  * and the normal color when blur*/
 $(document).ready(function(){
@@ -132,3 +149,11 @@ $(document).ready(function(){
       $("#glyphiconSearch").css("color", "#ACB1B9");
 		});
 });
+
+function getFileExtension(fileName) {
+  var matches = fileName && fileName.match(/\.([^.]+)$/);
+  if (matches) {
+    return matches[1].toLowerCase();
+  }
+  return '';
+}

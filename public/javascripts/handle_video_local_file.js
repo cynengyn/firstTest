@@ -1,11 +1,10 @@
 /*preview video selected by user*/
 function handleVideoFiles(files) {
   var videoFile = files[0];
-  var extension = videoFile.name.substring(videoFile.name.lastIndexOf('.'));
-  var validFileType = ".mp4"; // white list of extension
+  var extension = getVideoExtension(videoFile);
 
   /*check video file size*/
-  if(videoFile.size > 100 * 1024 * 1024) { // 100MB file size limit
+  if(checkVideoSize(videoFile.size)) { // 100MB file size limit
   	swal({
 		  title: "",
 		  text: "That's an impressively big video. \n Unfortunately, Tumblr can only handle \n 100MB at a time. If you're looking to post \n huuuuuge stuff, just use Vimeo.",
@@ -16,44 +15,23 @@ function handleVideoFiles(files) {
   }
 
   /*check with the white list of extension*/
-  else if (validFileType.toLowerCase().indexOf(extension) < 0) {
+  else if (checkVideoExtension(extension)) {
   	swal({
 		  title: "",
 		  text: "Please select a .mp4 video file to \n upload.",
 		  showConfirmButton: false
 		});
-  	console.log("not valid");
   }
 
   /*check if the filename extension can match with the signature that belongs to it*/
   else {
   	checkVideoFileSignature(videoFile, function(result) {  		
   		if(result) {
-  			var video = document.createElement('video');
-  			video.setAttribute('id', 'urlVideo');
-  			video.setAttribute('controls', 'true');
-  			video.src = URL.createObjectURL(videoFile);
-  			URL.revokeObjectURL(videoFile);
+  			var video = createVideoElement(videoFile);
 
   	    video.oncanplay = function() {
   	    	if(video.duration <= 300) { // 5 minutes limit of video in second
-
-  	    		var spanRemoveButton = document.createElement("span");	
-  					var divVideoGroup = document.createElement("div");
-
-  					spanRemoveButton.setAttribute('id', 'removeVideoButton');
-  					spanRemoveButton.setAttribute('onclick', 'removeLocalVideoPreview()');
-  					spanRemoveButton.innerHTML = "&times;";
-  					divVideoGroup.setAttribute('id', 'removeVideoGroup');
-
-  					divVideoGroup.appendChild(spanRemoveButton);
-  					divVideoGroup.appendChild(video);
-
-  					document.getElementById("newVideoUploadPreview").appendChild(divVideoGroup);	
-
-  					displayFormAfterLocalVideoSelected();
-  					document.getElementById("videoCaption").focus();
-  					document.getElementById("videoPostButton").setAttribute("onclick", "addNewLocalVideoPost();");
+  	    		createVideoPreview("Local", video);
   	    	}
   	    	else
   	    		swal({
@@ -84,13 +62,11 @@ function handleVideoFiles(files) {
 
 /*read selected mp4 file*/
 function checkVideoFileSignature(file, callback) {
-	var mp4box;
+	var mp4box = new MP4Box(false);
 	var chunkSize = 1024 * 1024; // bytes
 	var fileSize = file.size;
 	var offset = 0;
 	var readBlock = null;
-	
-	mp4box = new MP4Box(false);
 	
 	mp4box.onError = function (e) {
     console.log("mp4box failed to parse data.");
@@ -131,8 +107,7 @@ function checkVideoFileSignature(file, callback) {
         	callback(true);
       		return ;
         }
-    }
-    
+    }    
     readBlock(offset, chunkSize, file);
 	}
 	
@@ -141,7 +116,39 @@ function checkVideoFileSignature(file, callback) {
     var blob = _file.slice(_offset, length + _offset);
     r.onload = onBlockRead;
     r.readAsArrayBuffer(blob);
-	}
-	
+	}	
 	readBlock(offset, chunkSize, file);
+}
+
+/*check with the white list of extension*/
+function checkVideoExtension(extension) {
+	var validFileType = ".mp4"; // white list of extension
+
+	if(validFileType.toLowerCase().indexOf(extension) < 0)
+		return true;
+	else
+		return false;
+}
+
+/*check video file size*/
+function checkVideoSize(size) {
+	if(size > 100 * 1024 * 1024) // 100MB file size limit
+		return true;
+	else
+		return false;
+}
+
+function createVideoElement(videoFile) {
+	var video = document.createElement('video');
+	video.setAttribute('id', 'urlVideo');
+	video.setAttribute('controls', 'true');
+	video.src = URL.createObjectURL(videoFile);
+	URL.revokeObjectURL(videoFile);
+	
+	return video;
+}
+
+/*get video file extension*/
+function getVideoExtension(video) {
+	return video.name.substring(video.name.lastIndexOf('.'));
 }

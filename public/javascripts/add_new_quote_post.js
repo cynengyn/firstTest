@@ -1,3 +1,101 @@
+function createQuotePostElements() {	
+	var divQuotePanel = document.createElement("div");
+	var divQuotePanelHeading = document.createElement("div");
+	var divQuotePanelBody = document.createElement("div");
+	var divQuotePostTag = document.createElement("div");
+	var divQuotePanelFooter = document.createElement("div");
+	var divQuotePanelFooterDropdown = document.createElement("div");
+	var aQuotePanelTitle = document.createElement("a");
+	var blockQuote = document.createElement("blockquote");
+	var pQuote = document.createElement("p");
+	var footerQuote = document.createElement("footer");
+	var aQuoteTag = document.createElement("a");
+	var aGlyphiconSend = document.createElement("a");
+	var aGlyphiconRetweet = document.createElement("a");
+	var aDropdownMenuEdit = document.createElement("a");
+	var aDropdownMenuDelete = document.createElement("a");	
+	var imgPhotoResponsive = document.createElement("img");	
+	var spanGlyphiconSend = document.createElement("span");
+	var spanGlyphiconRetweet = document.createElement("span");
+	var spanGlyphiconCog = document.createElement("span");	
+	var ulDropdownMenu = document.createElement("ul");	
+	var liDropdownMenuEdit = document.createElement("li");
+	var liDropdownMenuDelete = document.createElement("li");
+	
+	divQuotePanel.setAttribute('class', 'panel panel-default');
+	divQuotePanelHeading.setAttribute('class', 'panel-heading');
+	divQuotePanelBody.setAttribute('class', 'panel-body');
+	divQuotePanelFooter.setAttribute('class', 'panel-footer');
+	divQuotePanelFooterDropdown.setAttribute('class', 'dropdown');
+	aQuotePanelTitle.setAttribute('class', 'panel-title');
+	spanGlyphiconSend.setAttribute('class', 'glyphicon glyphicon-send');
+	spanGlyphiconRetweet.setAttribute('class', 'glyphicon glyphicon-retweet');
+	spanGlyphiconCog.setAttribute('class', 'glyphicon glyphicon-cog dropdown-toggle');
+	ulDropdownMenu.setAttribute('class', 'dropdown-menu dropdown-menu-right');	
+	divQuotePanelBody.setAttribute('id', 'quotePostBody');
+	divQuotePostTag.setAttribute('id', 'quotePostTagDiv');
+	spanGlyphiconCog.setAttribute('data-toggle', 'dropdown');
+	spanGlyphiconSend.setAttribute('Title', 'Share');
+	spanGlyphiconRetweet.setAttribute('Title', 'Reblog');
+	spanGlyphiconCog.setAttribute('Title', 'Options');
+	
+	aQuotePanelTitle.innerHTML = "groovypeacetimetravel";
+	aDropdownMenuEdit.innerHTML = "Edit";
+	aDropdownMenuDelete.innerHTML = "Delete";
+	
+	divQuotePanelHeading.appendChild(aQuotePanelTitle);	
+	blockQuote.appendChild(pQuote);
+	blockQuote.appendChild(footerQuote);
+	divQuotePanelBody.appendChild(blockQuote);
+	divQuotePostTag.appendChild(aQuoteTag);
+	divQuotePanelBody.appendChild(divQuotePostTag);
+	liDropdownMenuEdit.appendChild(aDropdownMenuEdit);
+	liDropdownMenuDelete.appendChild(aDropdownMenuDelete);
+	ulDropdownMenu.appendChild(liDropdownMenuEdit);
+	ulDropdownMenu.appendChild(liDropdownMenuDelete);
+	aGlyphiconSend.appendChild(spanGlyphiconSend);
+	aGlyphiconRetweet.appendChild(spanGlyphiconRetweet);
+	divQuotePanelFooterDropdown.appendChild(aGlyphiconSend);
+	divQuotePanelFooterDropdown.appendChild(aGlyphiconRetweet);
+	divQuotePanelFooterDropdown.appendChild(spanGlyphiconCog);
+	divQuotePanelFooterDropdown.appendChild(ulDropdownMenu);
+	divQuotePanelFooter.appendChild(divQuotePanelFooterDropdown);
+	divQuotePanel.appendChild(divQuotePanelHeading);
+	divQuotePanel.appendChild(divQuotePanelBody);
+	divQuotePanel.appendChild(divQuotePanelFooter);
+	
+	var postColumnList = document.getElementById("postColumn");
+	postColumnList.insertBefore(divQuotePanel, postColumnList.childNodes[0]);
+	
+	return {
+		pQuote: pQuote,
+		footerQuote: footerQuote,
+		divQuotePostTag: divQuotePostTag,
+		aQuoteTag: aQuoteTag
+	};
+}
+
+function getQuotePostData() {
+	var formData = new FormData();
+	formData.append("quotePostQuote", $('#quoteInput').html());	
+	formData.append("quotePostSource", $('#quoteSourceInput').html());
+	formData.append("quotePostTag", $('#quoteTag').val());
+	
+	return formData;
+}
+
+function setQuotePostAndTag(postElements, quote, quoteSource, postTag) {
+	postElements.pQuote.innerHTML = quote;
+	
+	if(quoteSource)
+		postElements.footerQuote.innerHTML = quoteSource;
+	
+	if(postTag)
+		postElements.aQuoteTag.innerHTML = "#" + postTag;
+	else
+		postElements.divQuotePostTag.setAttribute("style", "display: none;");
+}
+
 /*
 	===============
 	new quote modal
@@ -51,10 +149,7 @@ function quotePostModal() {
 }
 
 function addNewQuotePost() {
-	var formData = new FormData();
-	formData.append("quotePostQuote", $('#quoteInput').html());	
-	formData.append("quotePostSource", $('#quoteSourceInput').html());
-	formData.append("quotePostTag", $('#quoteTag').val());
+	var formData = getQuotePostData();
 	
 	$.ajax({
     url: "/quotePost",
@@ -74,78 +169,6 @@ function addNewQuotePost() {
 }
 
 function addNewQuotePostFromServer(quotePostQuote, quotePostSource, quotePostTag) {
-	var divQuotePanel = document.createElement("div");
-	var divQuotePanelHeading = document.createElement("div");
-	var divQuotePanelBody = document.createElement("div");
-	var divQuotePostTag = document.createElement("div");
-	var divQuotePanelFooter = document.createElement("div");
-	var divQuotePanelFooterDropdown = document.createElement("div");
-	var aQuotePanelTitle = document.createElement("a");
-	var blockQuote = document.createElement("blockquote");
-	var pQuote = document.createElement("p");
-	var footerQuote = document.createElement("footer");
-	var aQuoteTag = document.createElement("a");
-	var aGlyphiconSend = document.createElement("a");
-	var aGlyphiconRetweet = document.createElement("a");
-	var aDropdownMenuEdit = document.createElement("a");
-	var aDropdownMenuDelete = document.createElement("a");	
-	var imgPhotoResponsive = document.createElement("img");	
-	var spanGlyphiconSend = document.createElement("span");
-	var spanGlyphiconRetweet = document.createElement("span");
-	var spanGlyphiconCog = document.createElement("span");	
-	var ulDropdownMenu = document.createElement("ul");	
-	var liDropdownMenuEdit = document.createElement("li");
-	var liDropdownMenuDelete = document.createElement("li");
-	
-	divQuotePanel.setAttribute('class', 'panel panel-default');
-	divQuotePanelHeading.setAttribute('class', 'panel-heading');
-	divQuotePanelBody.setAttribute('class', 'panel-body');
-	divQuotePanelFooter.setAttribute('class', 'panel-footer');
-	divQuotePanelFooterDropdown.setAttribute('class', 'dropdown');
-	aQuotePanelTitle.setAttribute('class', 'panel-title');
-	spanGlyphiconSend.setAttribute('class', 'glyphicon glyphicon-send');
-	spanGlyphiconRetweet.setAttribute('class', 'glyphicon glyphicon-retweet');
-	spanGlyphiconCog.setAttribute('class', 'glyphicon glyphicon-cog dropdown-toggle');
-	ulDropdownMenu.setAttribute('class', 'dropdown-menu dropdown-menu-right');	
-	divQuotePanelBody.setAttribute('id', 'quotePostBody');
-	divQuotePostTag.setAttribute('id', 'quotePostTagDiv');
-	spanGlyphiconCog.setAttribute('data-toggle', 'dropdown');
-	spanGlyphiconSend.setAttribute('Title', 'Share');
-	spanGlyphiconRetweet.setAttribute('Title', 'Reblog');
-	spanGlyphiconCog.setAttribute('Title', 'Options');
-	
-	aQuotePanelTitle.innerHTML = "groovypeacetimetravel";
-	pQuote.innerHTML = quotePostQuote;
-	if(quotePostSource) // quote source: true
-		footerQuote.innerHTML = quotePostSource;
-	if(quotePostTag) // quote post tag: true
-		aQuoteTag.innerHTML = "#" + quotePostTag;
-	else
-		divQuotePostTag.setAttribute("style", "display: none;");
-	aDropdownMenuEdit.innerHTML = "Edit";
-	aDropdownMenuDelete.innerHTML = "Delete";
-	
-	divQuotePanelHeading.appendChild(aQuotePanelTitle);	
-	blockQuote.appendChild(pQuote);
-	blockQuote.appendChild(footerQuote);
-	divQuotePanelBody.appendChild(blockQuote);
-	divQuotePostTag.appendChild(aQuoteTag);
-	divQuotePanelBody.appendChild(divQuotePostTag);
-	liDropdownMenuEdit.appendChild(aDropdownMenuEdit);
-	liDropdownMenuDelete.appendChild(aDropdownMenuDelete);
-	ulDropdownMenu.appendChild(liDropdownMenuEdit);
-	ulDropdownMenu.appendChild(liDropdownMenuDelete);
-	aGlyphiconSend.appendChild(spanGlyphiconSend);
-	aGlyphiconRetweet.appendChild(spanGlyphiconRetweet);
-	divQuotePanelFooterDropdown.appendChild(aGlyphiconSend);
-	divQuotePanelFooterDropdown.appendChild(aGlyphiconRetweet);
-	divQuotePanelFooterDropdown.appendChild(spanGlyphiconCog);
-	divQuotePanelFooterDropdown.appendChild(ulDropdownMenu);
-	divQuotePanelFooter.appendChild(divQuotePanelFooterDropdown);
-	divQuotePanel.appendChild(divQuotePanelHeading);
-	divQuotePanel.appendChild(divQuotePanelBody);
-	divQuotePanel.appendChild(divQuotePanelFooter);
-	
-	var postColumnList = document.getElementById("postColumn");
-	postColumnList.insertBefore(divQuotePanel, postColumnList.childNodes[0]);
+	var quotePostElements = createQuotePostElements();
+	setQuotePostAndTag(quotePostElements, quotePostQuote, quotePostSource, quotePostTag);
 }

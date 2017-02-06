@@ -1,6 +1,5 @@
 /*hide and show quote placeholder and quotation mark*/
-$(document)
-.on('input', '#quoteInput', function() {
+$(document).on('input', '#quoteInput', function() {
 	var quoteValue = document.getElementById("quoteInput").innerHTML;	
 	
 	if(quoteValue) { // quote input area is not empty
@@ -30,8 +29,7 @@ $(document)
 });
 
 /*remove <br type="_moz"> type attribute created in quoteSourceInput when enter key is pressed*/
-$(document)
-.on('keyup', '#quoteInput', function(event) {
+$(document).on('keyup', '#quoteInput', function(event) {
   var key = event.keyCode || event.charCode;
 
   if(key == 13) { // enter key is pressed  	
@@ -66,25 +64,25 @@ $(document)
   }
 });
 
+/*focus quote input area*/
+function focusQuoteInput() {
+	$('#quoteInput').focus();
+}
+
 /*get caret position in contentEditable div*/
 function getCaretPosition(editableDiv) {
   var caretPos = 0, sel, range;
   
   if (window.getSelection) {
-    sel = window.getSelection();
-    
+    sel = window.getSelection();    
     if (sel.rangeCount) {
-      range = sel.getRangeAt(0);
-      
-      if (range.commonAncestorContainer.parentNode == editableDiv) {
+      range = sel.getRangeAt(0);      
+      if (range.commonAncestorContainer.parentNode == editableDiv)
         caretPos = range.endOffset;
-      }
     }
   }
-
   else if (document.selection && document.selection.createRange) {
-    range = document.selection.createRange();
-    
+    range = document.selection.createRange();    
     if (range.parentElement() == editableDiv) {
       var tempEl = document.createElement("span");
       editableDiv.insertBefore(tempEl, editableDiv.firstChild);
@@ -96,11 +94,6 @@ function getCaretPosition(editableDiv) {
     }
   }
   return caretPos;
-}
-
-/*focus quote input area*/
-function focusQuoteInput() {
-	$('#quoteInput').focus();
 }
 
 /*remove <br type="_moz"> created when enter key is pressed*/

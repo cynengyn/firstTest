@@ -19,6 +19,7 @@ POST		/webAudio									controllers.AudioPostController.webAudio
 POST		/localPhoto									controllers.PhotoPostController.localPhoto
 POST		/webPhoto									controllers.PhotoPostController.webPhoto
 POST		/localVideo									controllers.VideoPostController.localVideo
+POST		/webVideo									controllers.VideoPostController.webVideo
 
 GET		/loadUpTextPost									controllers.TextPostController.loadUpTextPost
 GET		/loadUpPhotoPost								controllers.PhotoPostController.loadUpPhotoPost
@@ -27,6 +28,7 @@ GET		/loadUpQuotePost								controllers.QuotePostController.loadUpQuotePost
 GET		/loadUpWebAudioPost								controllers.AudioPostController.loadUpWebAudioPost
 GET		/loadUpLocalAudioPost							controllers.AudioPostController.loadUpLocalAudioPost
 GET		/loadUpLocalVideoPost							controllers.VideoPostController.loadUpLocalVideoPost
+GET		/loadUpWebVideoPost								controllers.VideoPostController.loadUpWebVideoPost
 
 GET     /public/images/upload/*file						controllers.Assets.at(path="/public/images/upload", file)
 GET		/public/upload/audio/audio_album_art/*file		controllers.Assets.at(path="/public/upload/audio/audio_album_art", file)

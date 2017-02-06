@@ -1,50 +1,5 @@
-/* new text modal */
-function textPostModal() {
-	var textPost = [
-		'<div class="modal-content">',
-		'	<div class="panel-heading" id="newPostPanelHead">',
-		'    <a class="panel-title" id="newPostPanelHeadTitle">groovypeacetimetravel</a>',
-		'    <span class="glyphicon glyphicon-cog pull-right"></span>',
-		'  </div>',
-		'  <div class="modal-body" id="newTextModalBody">',
-		'    <form role="form">',
-		'        <span id="textTitle" contenteditable="true"></span>',
-		'        <span id="textAreaPost" contenteditable="true"></span>',
-		'        <input class="form-control" id="textTag" placeholder="#tags" />',
-		'    </form>',
-		'  </div>',
-		'	<div class="modal-footer" id="newPostPanelFooter">',
-	  '	  <button class="btn btn-default pull-left" data-dismiss="modal">Close</button>',
-	  '	  <div class="btn-group">',
-	  '	    <button class="btn btn-primary" data-dismiss="modal" onclick="addNewTextPost()">Post</button>',
-	  '	    <button class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">',
-		'				<span class="caret"></span>',
-		'			</button>',
-	  '	    <ul class="dropdown-menu" id="photoUploadPostDropDown">',
-	  '	      <li><a href="">Post now</a></li>',
-	  '	      <li><a href="">Add to queue</a></li>',
-	  '	      <li><a href="">Save as draft</a></li>',
-	  '	      <li><a href="">Post privately</a></li>',
-	  '	      <li><a href="">Schedule</a></li>',
-	  '	    </ul>',
-	  '	  </div>',
-	  '	</div>',
-		'</div>'
-	].join('');
-		
-	document.getElementById("modalDialog").innerHTML = textPost;
-	
-  $("#modalFade").on("shown.bs.modal", function(){
-    $(this).find('#textAreaPost').focus();
-  });
-}
-
 function addNewTextPost() {
-
-	var formData = new FormData();
-	formData.append("textPostTitle", $('#textTitle').html());	
-	formData.append("textPostText", $('#textAreaPost').html());
-	formData.append("textPostTag", $('#textTag').val());
+	var formData = getTextPostData();
 	
 	$.ajax({
     url: "/textPost",
@@ -64,6 +19,11 @@ function addNewTextPost() {
 }
 
 function addTextPostFromSever(textPostTitle, textPostText, textPostTag) {
+	var textPostElements = createTextPostElements();
+	setTextPostAndTag(textPostElements, textPostTitle, textPostText, textPostTag);
+}
+
+function createTextPostElements() {
 	var divTextPanel = document.createElement("div");
 	var divTextPanelHeading = document.createElement("div");
 	var divTextPanelTitle = document.createElement("div");
@@ -109,14 +69,6 @@ function addTextPostFromSever(textPostTitle, textPostText, textPostTag) {
 	spanGlyphiconCog.setAttribute('Title', 'Options');
 	
 	aTextPanelTitle.innerHTML = "groovypeacetimetravel";
-	if(textPostTitle)
-		h1TextTitle.innerHTML = textPostTitle;
-	if(textPostText)
-		divTextPanelBody.innerHTML = textPostText;
-	if(textPostTag)
-		aTextTag.innerHTML = "#" + textPostTag;
-	else
-		divTextPostTag.setAttribute("style", "display: none;");
 	aDropdownMenuEdit.innerHTML = "Edit";
 	aDropdownMenuDelete.innerHTML = "Delete";
 	
@@ -141,6 +93,75 @@ function addTextPostFromSever(textPostTitle, textPostText, textPostTag) {
 	divTextPanel.appendChild(divTextPanelFooter);
 	
 	var postColumnList = document.getElementById("postColumn");
-	postColumnList.insertBefore(divTextPanel, postColumnList.childNodes[0]);	
+	postColumnList.insertBefore(divTextPanel, postColumnList.childNodes[0]);
+	
+	return {
+		h1TextTitle: h1TextTitle,
+		divTextPanelBody: divTextPanelBody,
+		divTextPostTag: divTextPostTag,
+		aTextTag: aTextTag
+	};
 }
 
+function getTextPostData() {
+	var formData = new FormData();
+	formData.append("textPostTitle", $('#textTitle').html());	
+	formData.append("textPostText", $('#textAreaPost').html());
+	formData.append("textPostTag", $('#textTag').val());
+	
+	return formData;
+}
+
+function setTextPostAndTag(postElements, textTitle, text, postTag) {
+	if(textTitle)
+		postElements.h1TextTitle.innerHTML = textTitle;
+	if(text) {
+		postElements.divTextPanelBody.innerHTML = text;	
+		postElements.divTextPanelBody.appendChild(postElements.divTextPostTag);
+	}
+	if(postTag)
+		postElements.aTextTag.innerHTML = "#" + postTag;
+	else
+		postElements.divTextPostTag.setAttribute("style", "display: none;");
+}
+
+/* new text modal */
+function textPostModal() {
+	var textPost = [
+		'<div class="modal-content">',
+		'	<div class="panel-heading" id="newPostPanelHead">',
+		'    <a class="panel-title" id="newPostPanelHeadTitle">groovypeacetimetravel</a>',
+		'    <span class="glyphicon glyphicon-cog pull-right"></span>',
+		'  </div>',
+		'  <div class="modal-body" id="newTextModalBody">',
+		'    <form role="form">',
+		'        <span id="textTitle" contenteditable="true"></span>',
+		'        <span id="textAreaPost" contenteditable="true"></span>',
+		'        <input class="form-control" id="textTag" placeholder="#tags" />',
+		'    </form>',
+		'  </div>',
+		'	<div class="modal-footer" id="newPostPanelFooter">',
+	  '	  <button class="btn btn-default pull-left" data-dismiss="modal">Close</button>',
+	  '	  <div class="btn-group">',
+	  '	    <button class="btn btn-primary" data-dismiss="modal" onclick="addNewTextPost()">Post</button>',
+	  '	    <button class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">',
+		'				<span class="caret"></span>',
+		'			</button>',
+	  '	    <ul class="dropdown-menu" id="photoUploadPostDropDown">',
+	  '	      <li><a href="">Post now</a></li>',
+	  '	      <li><a href="">Add to queue</a></li>',
+	  '	      <li><a href="">Save as draft</a></li>',
+	  '	      <li><a href="">Post privately</a></li>',
+	  '	      <li><a href="">Schedule</a></li>',
+	  '	    </ul>',
+	  '	  </div>',
+	  '	</div>',
+		'</div>'
+	].join('');
+		
+	document.getElementById("modalDialog").innerHTML = textPost;
+	
+  $("#modalFade").on("shown.bs.modal", function(){
+    $(this).find('#textAreaPost').focus();
+  });
+}

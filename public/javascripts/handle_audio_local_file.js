@@ -1,11 +1,10 @@
 /*preview audio selected by user*/
 function handleAudioFiles(files) {
   var audioFile = files[0];
-  var extension = audioFile.name.substring(audioFile.name.lastIndexOf('.'));
-  var validFileType = ".mp3"; // white list of extension  
+  var extension = getFileExtension(audioFile.name);
 
   /*check audio file size*/
-  if(audioFile.size > 10 * 1024 * 1024) { // 10MB file size limit
+  if(checkAudioSize(audioFile.size)) { // 10MB file size limit
   	swal({
 		  title: "",
 		  text: "The file is too big. Squish it \n down, and try again!",
@@ -14,7 +13,7 @@ function handleAudioFiles(files) {
   }
 
   /*check with the white list of extension*/
-  else if (validFileType.toLowerCase().indexOf(extension) < 0) {
+  else if (checkAudioExtension(extension)) {
   	swal({
 		  title: "",
 		  text: "Please select an audio file to \n upload.",
@@ -24,30 +23,12 @@ function handleAudioFiles(files) {
 
   /*check if the filename extension can match with the signature that belongs to it*/
   else {
-  	checkAudioFileSignature(audioFile, function(result) {
+  	checkAudioFileSignature(extension, audioFile, function(result) {
   		if(result) {
-  			var audio = document.createElement('audio');
-  			audio.setAttribute('id', 'urlAudio');
-  			audio.file = audioFile;
+  			var audio = createAudioElement();
+  			audio.file = audioFile;		
+  			createAudioPreview("Local", audio);
 
-				var spanRemoveButton = document.createElement("span");	
-				var divAudioGroup = document.createElement("div");
-				
-				spanRemoveButton.setAttribute('id', 'removeAudioButton');
-				spanRemoveButton.setAttribute('onclick', 'removeAudioUrl()');
-				spanRemoveButton.innerHTML = "&times;";
-				divAudioGroup.setAttribute('id', 'removeAudioGroup');
-				
-				divAudioGroup.appendChild(spanRemoveButton);
-				divAudioGroup.appendChild(audio);
-				
-				document.getElementById("newAudioUploadPreview").appendChild(divAudioGroup);
-				
-				initilizeUrlAudioControl(audio);
-				displayFormAfterLocalAudioSelected();
-		    document.getElementById("audioDescription").focus();
-		    document.getElementById("audioPostButton").setAttribute("onclick", "addNewLocalAudioPost();");
-  	    
   	    var reader = new FileReader();
   	    reader.onload = (function(audio) { 
   	    	return function(e) { 
@@ -58,13 +39,7 @@ function handleAudioFiles(files) {
   	    
   	    ID3.loadTags(audioFile, function() {
   	    	var tags = ID3.getAllTags(audioFile);
-  	    	if(tags.title)
-  	    		document.getElementById("audioTrackInput").value = tags.title;
-  	    	if(tags.artist)
-  	    		document.getElementById("audioArtistInput").value = tags.artist;
-  	    	if(tags.album)
-  	    		document.getElementById("audioAlbumInput").value = tags.album;
-  	    	/*alert(tags.artist + " - " + tags.title + ", " + tags.album);*/
+  	    	insertID3(tags)
   	  	}, {
   	      dataReader: ID3.FileAPIReader(audioFile)
   	  	});
@@ -80,32 +55,13 @@ function handleAudioFiles(files) {
   }
 }
 
-/*display audio post description and tag form after local audio is selected*/
-function displayFormAfterLocalAudioSelected() {
-	document.getElementById("audioPermission").style.display = "block";
-	document.getElementById("audioDescription").style.display = "block";
-	document.getElementById("audioDescription").style.marginTop = "40px";
-	document.getElementById("audioTag").style.display = "block";
-	document.getElementById("audioUrlInputGroup").style.display = "none";
-	document.getElementById("newAudioUploadPreview").style.display = "block";
-}
-
-/*get the extension of a file*/
-function getFileExtension(fileName) {
-  var matches = fileName && fileName.match(/\.([^.]+)$/);
-  if (matches) {
-    return matches[1].toLowerCase();
-  }
-  return '';
-}
-
 /*Provide a 24 bit int implementation for DataViews*/
 DataView.prototype.getUint24 = function(pos) {
 	return (this.getUint16(pos) << 8) + this.getUint8(pos+2);
 }
 
 /*detect if the format of the extension can match with the signature that belongs to*/
-function checkAudioFileSignature(file, callback) {
+function checkAudioFileSignature(extension, file, callback) {
 	var signature = {
 		mp3: {
 			/* FFFB: MPEG-1 Audio Layer 3 with/without ID3v2 Tag
@@ -118,8 +74,7 @@ function checkAudioFileSignature(file, callback) {
 			sizet: 3
 		}
 	}
-  var ext = getFileExtension(file.name);
-	var fileSign = signature[ext];
+	var fileSign = signature[extension];
   var slice = file.slice(fileSign.offset, fileSign.offset + fileSign.sizet);
   var reader = new FileReader();  
   reader.onload = function(e) {
@@ -161,4 +116,32 @@ function checkAudioFileSignature(file, callback) {
     }
   };
   reader.readAsArrayBuffer(slice); // Read the slice of the file
+}
+
+/*check with the white list of extension*/
+function checkAudioExtension(extension) {
+	var validFileType = "mp3"; // white list of extension
+
+	if(validFileType.toLowerCase().indexOf(extension) < 0)
+		return true;
+	else
+		return false;
+}
+
+/*check audio file size*/
+function checkAudioSize(size) {
+	if(size > 10 * 1024 * 1024) // 10MB file size limit
+		return true;
+	else
+		return false;
+}
+
+/*auto insert ID3 info if exists*/
+function insertID3(tags) {
+	if(tags.title)
+		document.getElementById("audioTrackInput").value = tags.title;
+	if(tags.artist)
+		document.getElementById("audioArtistInput").value = tags.artist;
+	if(tags.album)
+		document.getElementById("audioAlbumInput").value = tags.album;
 }

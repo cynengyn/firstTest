@@ -19,25 +19,31 @@
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	    <script src="assets/javascripts/sweetalert.min.js"></script>
+	    <script src="assets/javascripts/id3-minimized.js"></script>
+	    <script src="assets/javascripts/mp4box.all.min.js"></script>
+	    <script src="assets/javascripts/vissense.min.js"></script>
+	    <script src="assets/javascripts/handle_drag_drop.js"></script>
+	    <script src="assets/javascripts/audio_preview_player_control.js"></script>
+	    <script src="assets/javascripts/audio_post_player_control.js"></script>
 	    <script src="assets/javascripts/util.js"></script>
 	    <script src="assets/javascripts/text.js"></script>
 	    <script src="assets/javascripts/photo.js"></script>
 	    <script src="assets/javascripts/quote.js"></script>
+	    <script src="assets/javascripts/link.js"></script>
 	    <script src="assets/javascripts/audio.js"></script>
 	    <script src="assets/javascripts/video.js"></script>
-	    <script src="assets/javascripts/id3-minimized.js"></script>
-	    <script src="assets/javascripts/handle_audio_local_file.js"></script>
-	    <script src="assets/javascripts/handle_audio_album_art.js"></script>
-	    <script src="assets/javascripts/audio_post_player_control.js"></script>
-	    <script src="assets/javascripts/handle_video_local_file.js"></script>
-	    <script src="assets/javascripts/handle_video_youtube_vimeo.js"></script>
 	    <script src="assets/javascripts/add_new_text_post.js"></script>
 	    <script src="assets/javascripts/add_new_photo_post.js"></script>
 	    <script src="assets/javascripts/add_new_quote_post.js"></script>
 	    <script src="assets/javascripts/add_new_audio_post.js"></script>
      	<script src="assets/javascripts/add_new_video_post.js"></script>
-	    <script src="assets/javascripts/mp4box.all.min.js"></script>
-	    <script src="assets/javascripts/vissense.min.js"></script>
+	    <script src="assets/javascripts/handle_photo_local_file.js"></script>
+	    <script src="assets/javascripts/handle_photo_web_url.js"></script>
+	    <script src="assets/javascripts/handle_audio_local_file.js"></script>
+	    <script src="assets/javascripts/handle_audio_web_url.js"></script>
+	    <script src="assets/javascripts/handle_audio_album_art.js"></script>
+	    <script src="assets/javascripts/handle_video_local_file.js"></script>
+	    <script src="assets/javascripts/handle_video_youtube_vimeo.js"></script>
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/sweetalert.css">
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/main.css">
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/text.css">
@@ -45,6 +51,7 @@
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/quote.css">
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/audio.css">
 	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/video.css">
+	    <link rel="stylesheet" type="text/css" href="assets/stylesheets/link.css">
 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 			<!-- material icons font -->
 			<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -80,10 +87,13 @@
 			        <a class="btn btn-primary btn-lg" onclick="photoPostModal()" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-camera"></span><br>Photo</a>			        
 			        <!-- quote button -->
 			        <a class="btn btn-primary btn-lg" onclick="quotePostModal()" data-toggle="modal" data-target="#modalFade"><span class="fa fa-quote-left" aria-hidden="true"></span><br>Quote</a>			        
-			        
-			        <a class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-link"></span><br>Link</a>
+			        <!-- link button -->
+			        <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-link"></span><br>Link</a>
+			        <!-- chat button -->
 			        <a class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-comment"></span><br>Chat</a>
+			        <!-- audio button -->
 			        <a class="btn btn-primary btn-lg" onclick="audioPostModal()" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-headphones"></span><br>Audio</a>
+			        <!-- video button -->
 			        <a class="btn btn-primary btn-lg" onclick="videoPostModal()" data-toggle="modal" data-target="#modalFade"><span class="glyphicon glyphicon-facetime-video"></span><br>Video</a>
 			        </div>
 			        <!-- new posts buttons modal start-->
@@ -173,7 +183,7 @@
 														  <div><span id="photoUploadLabel">Upload photos</span></div>
 														</div>													
 														
-														<div class="col-md-6" id="photoWebColumn" onclick=photoUrlPanelDisplay()>
+														<div class="col-md-6" id="photoWebColumn" onclick=displayPhotoUrlPanel()>
 															<div><i class="glyphicon glyphicon-globe" id="photoWebIcon"></i></div>
 														 	<div><span id="photoWebLabel">Add photo from web</span></div>
 														</div>
@@ -354,6 +364,53 @@
 											</div>
 									  </div>
 									</div>-->
+									
+									<div class="modal-content">
+										<div class="panel-heading" id="newPostPanelHead">
+									    <a class="panel-title" id="newPostPanelHeadTitle">groovypeacetimetravel</a>
+									    <span class="glyphicon glyphicon-cog pull-right"></span>
+									  </div>
+									  <div class="modal-body" id="newLinkPostModalBody">
+											<form id="formWithFiles" method="post" enctype="multipart/form-data">
+									      <div class="container-fluid">	
+													<div class="row" id="linkUrlInputPanel">
+														<div class="col-md-12" id="linkUrlInputPanelDiv">
+														  <input id="linkUrlInput" oninput="validateLinkInput()" placeholder="Type or paste a URL"></input>
+														</div>	
+													</div>											
+													<div class="row" id="newVideoUploadPreview"></div>
+													<div id="videoPermission">
+														<label class="binary_switch">
+															<input id="videoPermissionCheckBox" type="checkbox">
+															<span class="binary_switch_track"></span>
+															<span class="binary_switch_button"></span>
+														</label>
+														<span id="videoPermissionText" onclick="$('#videoPermissionCheckBox').click()">
+															This is my original work, or I <a> have permission </a> to post this.
+														</span>
+													</div>
+									        <span id="videoCaption" contenteditable="true"></span>
+									        <input class="form-control" id="videoTag" name="videoTag" placeholder="#tags" type="text" />
+									      </div>
+									    </form>
+									  </div>
+									  <div class="modal-footer" id="newPostPanelFooter">
+									    <button class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+									    <div class="btn-group">
+										    <button class="btn btn-primary" data-dismiss="modal" onclick="">Post</button>
+										    <button class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+											    <span class="caret"></span>
+											  </button>
+											  <ul class="dropdown-menu" id="uploadPostDropDown">
+											    <li><a href="">Post now</a></li>
+											    <li><a href="">Add to queue</a></li>
+											    <li><a href="">Save as draft</a></li>
+											    <li><a href="">Post privately</a></li>
+											    <li><a href="">Schedule</a></li>
+											  </ul>
+											</div>
+									  </div>
+									</div>
 									
 									
 			          </div>

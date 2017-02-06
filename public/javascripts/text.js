@@ -1,6 +1,5 @@
 /*remove <br type="_moz"> type attribute created when enter key is pressed*/
-$(document)
-.on('keyup', '#textTitle', function(event) {
+$(document).on('keyup', '#textTitle', function(event) {
   var key = event.keyCode || event.charCode;
 
   if(key == 13) { // enter key is pressed

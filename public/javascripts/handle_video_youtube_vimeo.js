@@ -1,51 +1,22 @@
 /*validate and preview video from web url*/
 function validateVideoURL() {
 	var videoURL = getVideoUrl(),
-			type = parseVideo(videoURL).type,
-			id = parseVideo(videoURL).id,
+			videoAttrib = parseVideo(videoURL),
+			type = videoAttrib.type,
+			id = videoAttrib.id,
 			video = createVideoiFrame(type, id);
 
 	if(video && type == "YouTube") {
 		checkYouTubeVideo(id, function(result) {
 			if(result) {
-				var spanRemoveButton = document.createElement("span");	
-				var divVideoGroup = document.createElement("div");
-		
-				spanRemoveButton.setAttribute('id', 'removeVideoButton');
-				spanRemoveButton.setAttribute('onclick', 'removeWebVideoPreview()');
-				spanRemoveButton.innerHTML = "&times;";
-				divVideoGroup.setAttribute('id', 'removeVideoGroup');
-		
-				divVideoGroup.appendChild(spanRemoveButton);
-				divVideoGroup.appendChild(video);
-		
-				document.getElementById("newVideoUploadPreview").appendChild(divVideoGroup);	
-		
-				displayFormAfterLocalVideoSelected();
-				document.getElementById("videoCaption").focus();
-				/*document.getElementById("videoPostButton").setAttribute("onclick", "addNewLocalVideoPost();");*/
+				createVideoPreview("Web", video);
 			}
 		});
 	}
 	else if(video && type == "Vimeo") {
 		checkVimeoVideo(id, function(result) {
 			if(result) {
-				var spanRemoveButton = document.createElement("span");	
-				var divVideoGroup = document.createElement("div");
-		
-				spanRemoveButton.setAttribute('id', 'removeVideoButton');
-				spanRemoveButton.setAttribute('onclick', 'removeWebVideoPreview()');
-				spanRemoveButton.innerHTML = "&times;";
-				divVideoGroup.setAttribute('id', 'removeVideoGroup');
-		
-				divVideoGroup.appendChild(spanRemoveButton);
-				divVideoGroup.appendChild(video);
-		
-				document.getElementById("newVideoUploadPreview").appendChild(divVideoGroup);	
-		
-				displayFormAfterLocalVideoSelected();
-				document.getElementById("videoCaption").focus();
-				/*document.getElementById("videoPostButton").setAttribute("onclick", "addNewLocalVideoPost();");*/
+				createVideoPreview("Web", video);
 			}
 		});
 	}
@@ -57,7 +28,6 @@ function checkYouTubeVideo(id, callback) {
 		part: "snippet,statistics",
 		id: id
 	}, function(data) {
-		console.log(data);
 		if (data.items.length === 0) {
 			callback(false);
 			return;
@@ -71,15 +41,14 @@ function checkYouTubeVideo(id, callback) {
 }
 
 function checkVimeoVideo(id, callback) {
-	$.getJSON("http://vimeo.com/api/v2/video/"+id+".json", {
+	$.getJSON("https://vimeo.com/api/v2/video/"+id+".json", {
 	}, function(data) {
-		console.log(data);
 		if(data) {
 			callback(true);
 			return;
 		}
 		else {
-			callback(true);
+			callback(false);
 			return;
 		}
 	}).fail(function(jqXHR, textStatus, errorThrown) {
@@ -92,17 +61,26 @@ function parseVideo(url) {
 	url.match(/(http:|https:|)\/\/(player.|www.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
 	
 	if (RegExp.$3.indexOf('youtu') > -1) {
-    var type = 'YouTube';
     return {
-      type: type,
+      type: 'YouTube',
       id: RegExp.$6
   	};
 	}
 	else if (RegExp.$3.indexOf('vimeo') > -1) {
-    var type = 'Vimeo';
+		var id;
+	  $.ajax({ // get vimeo id using api solution instead of regexp
+	    url: 'https://vimeo.com/api/oembed.json?url='+url,
+	    type: 'GET',
+	    async: false,
+	    success: function(response) {
+	      if(response.video_id) {
+	        id = response.video_id;
+	      }
+	    }
+	  });
     return {
-      type: type,
-      id: RegExp.$6
+      type: 'Vimeo',
+      id: id
   	};
 	}
 	else
@@ -110,22 +88,19 @@ function parseVideo(url) {
 }
 
 function createVideoiFrame(type, id) {	
+	var iframeVideo = document.createElement('iframe');
+	iframeVideo.setAttribute('id', 'urlVideo');
+	iframeVideo.setAttribute('frameborder', '0');
+	iframeVideo.setAttribute('allowfullscreen', '');
+	
 	if(type == "YouTube") {
-		var iframeVideo = document.createElement('iframe');
-		iframeVideo.setAttribute('id', 'urlVideo');
-		iframeVideo.setAttribute('frameborder', '0');
-		iframeVideo.setAttribute('allowfullscreen', '');
 		iframeVideo.src = '//www.youtube.com/embed/' + id;
 
 		return iframeVideo;
 	}
 	else if(type == "Vimeo") {
-		var iframeVideo = document.createElement('iframe');
-		iframeVideo.setAttribute('id', 'urlVideo');
-		iframeVideo.setAttribute('frameborder', '0');
 		iframeVideo.setAttribute('webkitallowfullscreen', '');
 		iframeVideo.setAttribute('mozallowfullscreen', '');
-		iframeVideo.setAttribute('allowfullscreen', '');
 		iframeVideo.src = '//player.vimeo.com/video/' + id;
 		
 		return iframeVideo;
@@ -135,5 +110,5 @@ function createVideoiFrame(type, id) {
 }
 
 function getVideoUrl() {
-	return document.getElementById("urlVideoUploadInput").value
+	return document.getElementById("urlVideoUploadInput").value;
 }
