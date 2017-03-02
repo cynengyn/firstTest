@@ -1,7 +1,18 @@
-/*preview video selected by user*/
+/**
+ * Functions to handle local video file.
+ * 
+ * @class HandleLocalVideoFile
+*/
+
+/**
+ * Preview video file selected by user.
+ * 
+ * @method handleVideoFiles
+ * @param files {Files} Local video file.
+ */
 function handleVideoFiles(files) {
   var videoFile = files[0];
-  var extension = getVideoExtension(videoFile);
+  var extension = getFileExtension(videoFile.name);
 
   /*check video file size*/
   if(checkVideoSize(videoFile.size)) { // 100MB file size limit
@@ -60,7 +71,30 @@ function handleVideoFiles(files) {
   }
 }
 
-/*read selected mp4 file*/
+/**
+ * Check mp4 file selected by user with the white list of extension.
+ * 
+ * @method checkVideoExtension
+ * @param extension {String} Video file extension.
+ * @return {Boolean} True or False.
+ */
+function checkVideoExtension(extension) {
+	var validFileType = "mp4"; // white list of extension
+
+	if(validFileType.toLowerCase().indexOf(extension) < 0)
+		return true;
+	else
+		return false;
+}
+
+/**
+ * Validate mp4 file selected by user.
+ * 
+ * @method checkVideoFileSignature
+ * @param file {Video file}
+ * @param {Function} callback
+ * @return {callback} True or False.
+ */
 function checkVideoFileSignature(file, callback) {
 	var mp4box = new MP4Box(false);
 	var chunkSize = 1024 * 1024; // bytes
@@ -120,17 +154,13 @@ function checkVideoFileSignature(file, callback) {
 	readBlock(offset, chunkSize, file);
 }
 
-/*check with the white list of extension*/
-function checkVideoExtension(extension) {
-	var validFileType = ".mp4"; // white list of extension
-
-	if(validFileType.toLowerCase().indexOf(extension) < 0)
-		return true;
-	else
-		return false;
-}
-
-/*check video file size*/
+/**
+ * Check if video file size is greater than 100MB.
+ * 
+ * @method checkVideoSize
+ * @param {size} Video file size.
+ * @return {Boolean} True or False.
+ */
 function checkVideoSize(size) {
 	if(size > 100 * 1024 * 1024) // 100MB file size limit
 		return true;
@@ -138,6 +168,13 @@ function checkVideoSize(size) {
 		return false;
 }
 
+/**
+ * Create HTML video element.
+ * 
+ * @method createVideoElement
+ * @param videoFile {mp4}
+ * @return {video} HTML video element.
+ */
 function createVideoElement(videoFile) {
 	var video = document.createElement('video');
 	video.setAttribute('id', 'urlVideo');
@@ -146,9 +183,4 @@ function createVideoElement(videoFile) {
 	URL.revokeObjectURL(videoFile);
 	
 	return video;
-}
-
-/*get video file extension*/
-function getVideoExtension(video) {
-	return video.name.substring(video.name.lastIndexOf('.'));
 }

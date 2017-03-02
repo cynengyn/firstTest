@@ -14,7 +14,7 @@ function loadUpTextPost() {
     url: "/loadUpTextPost",
      success: function(data) {
     	 for(i = data.length-1; i >= 0 ; i-- ) {
-    		 addTextPostFromSever(data[i].textPostTitle, data[i].textPostText, data[i].textPostTag);
+    		 displayTextPostFromSever(data[i].textPostTitle, data[i].textPostText, data[i].textPostTag);
     	 }
      },
      error: function(data) {
@@ -27,10 +27,10 @@ function loadUpTextPost() {
 function loadUpPhotoPost() {	
 	$.ajax({
 		type: "GET",
-    url: "/loadUpPhotoPost",
+    url: "/loadUpLocalPhotoPost",
      success: function(data) {
     	 for(i = data.length-1; i >= 0 ; i-- ) {
-    		 addLocalPhotoPostFromServer(data[i].photoSaveDirectory, data[i].photoCaption, 
+    		 displayLocalPhotoPostFromServer(data[i].photoSaveDirectory, data[i].photoCaption, 
     				 data[i].photoTag, data[i].imageFileName);
     	 }
      },
@@ -47,7 +47,7 @@ function loadUpWebPhotoPost() {
     url: "/loadUpWebPhotoPost",
      success: function(data) {
     	 for(i = data.length-1; i >= 0 ; i-- ) {
-    		 addNewWebPhotoPostFromServer(data[i].webPhotoUrl, data[i].webPhotoCaption, data[i].webPhotoPostTag);
+    		 displayWebPhotoPostFromServer(data[i].webPhotoUrl, data[i].webPhotoCaption, data[i].webPhotoPostTag);
     	 }
      },
      error: function(data) {
@@ -63,7 +63,7 @@ function loadUpQuotePost() {
     url: "/loadUpQuotePost",
      success: function(data) {
     	 for(i = data.length-1; i >= 0 ; i-- ) {
-    		 addNewQuotePostFromServer(data[i].quotePostQuote, data[i].quotePostSource, data[i].quotePostTag);
+    		 displayQuotePostFromServer(data[i].quotePostQuote, data[i].quotePostSource, data[i].quotePostTag);
     	 }
      },
      error: function(data) {
@@ -79,7 +79,7 @@ function loadUpWebAudioPost() {
     url: "/loadUpWebAudioPost",
      success: function(data) {
     	 for(i = data.length-1; i >= 0 ; i-- ) {
-    		 addNewWebAudioPostFromServer(data[i].webAudioPostId, data[i].webAudioUrl, data[i].webAudioPostDescription, data[i].webAudioPostTag, data[i].webAudioTrack, data[i].webAudioArtist, data[i].webAudioAlbum, data[i].webAudioAlbumArtDirectory, data[i].webAudioAlbumArtFileName);
+    		 displayWebAudioPostFromServer(data[i].webAudioPostId, data[i].webAudioUrl, data[i].webAudioPostDescription, data[i].webAudioPostTag, data[i].webAudioTrack, data[i].webAudioArtist, data[i].webAudioAlbum, data[i].webAudioAlbumArtDirectory, data[i].webAudioAlbumArtFileName);
     	 }
      },
      error: function(data) {
@@ -95,7 +95,7 @@ function loadUpLocalAudioPost() {
     url: "/loadUpLocalAudioPost",
      success: function(data) {
     	 for(i = data.length-1; i >= 0 ; i-- ) {
-    		 addNewLocalAudioPostFromServer(data[i].localAudioPostId, data[i].localAudioSaveDirectory, data[i].localAudioFileName, data[i].localAudioPostDescription, data[i].localAudioPostTag, data[i].localAudioTrack, data[i].localAudioArtist, data[i].localAudioAlbum, data[i].localAudioAlbumArtSaveDirectory, data[i].localAudioAlbumArtFileName);
+    		 displayLocalAudioPostFromServer(data[i].localAudioPostId, data[i].localAudioSaveDirectory, data[i].localAudioFileName, data[i].localAudioPostDescription, data[i].localAudioPostTag, data[i].localAudioTrack, data[i].localAudioArtist, data[i].localAudioAlbum, data[i].localAudioAlbumArtSaveDirectory, data[i].localAudioAlbumArtFileName);
     	 }
      },
      error: function(data) {
@@ -111,7 +111,7 @@ function loadUpLocalVideoPost() {
     url: "/loadUpLocalVideoPost",
      success: function(data) {
     	 for(i = data.length-1; i >= 0 ; i-- ) {
-    		 addLocalVideoPostFromServer(data[i].localVideoSaveDirectory, data[i].localVideoPostCaption, data[i].localVideoPostTag, data[i].localVideoFileName);
+    		 displayLocalVideoPostFromServer(data[i].localVideoSaveDirectory, data[i].localVideoPostCaption, data[i].localVideoPostTag, data[i].localVideoFileName);
     	 }
      },
      error: function(data) {
@@ -127,7 +127,7 @@ function loadUpWebVideoPost() {
     url: "/loadUpWebVideoPost",
      success: function(data) {
     	 for(i = data.length-1; i >= 0 ; i-- ) {
-    		 addWebVideoPostFromServer(data[i].webVideoUrlType, data[i].webVideoUrlId, data[i].webVideoPostCaption, data[i].webVideoPostTag);
+    		 displayWebVideoPostFromServer(data[i].webVideoUrlType, data[i].webVideoUrlId, data[i].webVideoPostCaption, data[i].webVideoPostTag);
     	 }
      },
      error: function(data) {
@@ -137,8 +137,9 @@ function loadUpWebVideoPost() {
 	});
 }
 
-/*search bar icon background changes to white when focus 
- * and the normal color when blur*/
+/**
+ * Search bar icon background changes to white when focus and changes to normal color when blur.
+ */
 $(document).ready(function(){
     $("#search").focus(function(){
 			$("#searchIcon").css("background", "white");
@@ -150,6 +151,13 @@ $(document).ready(function(){
 		});
 });
 
+/**
+ * Get file extension.
+ * 
+ * @method getFileExtension
+ * @param fileName {String} File name.
+ * @return File extension.
+ */
 function getFileExtension(fileName) {
   var matches = fileName && fileName.match(/\.([^.]+)$/);
   if (matches) {

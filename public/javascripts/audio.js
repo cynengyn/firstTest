@@ -1,4 +1,12 @@
-/*remove <br type="_moz"> type attribute created when enter key is pressed*/
+/**
+ * Functions for Audio Post HTML Elements.
+ * 
+ * @class Audio
+*/
+
+/**
+ * Remove <br type="_moz"> type attribute created when enter key is pressed.
+ */
 $(document).on('keyup', '#audioDescription', function(event) {
   var key = event.keyCode || event.charCode;
 
@@ -19,6 +27,12 @@ $(document).on('keyup', '#audioDescription', function(event) {
   }
 });
 
+/**
+ * Create HTML audio element.
+ * 
+ * @method createAudioElement
+ * @return {audio} HTML audio element.
+ */
 function createAudioElement() {
 	var audio = document.createElement('audio');
 	audio.setAttribute('id', 'urlAudio');
@@ -26,6 +40,11 @@ function createAudioElement() {
 	return audio;
 }
 
+/**
+ * Create audio preview element.
+ * 
+ * @method createAudioPreview
+ */
 function createAudioPreview(type, audio) {
 	var spanRemoveButton = document.createElement("span");
 	var divAudioGroup = document.createElement("div");
@@ -39,7 +58,7 @@ function createAudioPreview(type, audio) {
 	document.getElementById("newAudioUploadPreview").appendChild(divAudioGroup);
 	
 	displayFormAfterAudioSelected(type);
-	initilizeUrlAudioPreviewControl(audio);
+	initializeUrlAudioPreviewControl(audio);
 	
 	if(type == "Local") {
 		spanRemoveButton.setAttribute('onclick', 'removeAudioPreview("Local")');
@@ -51,7 +70,12 @@ function createAudioPreview(type, audio) {
 	}
 }
 
-/*display audio post description and tag form after audio is selected*/
+/**
+ * Display audio post description and tag input after audio is selected.
+ * 
+ * @method displayFormAfterAudioSelected
+ * @param displayType {String} Local audio or not.
+ */
 function displayFormAfterAudioSelected(displayType) {
 	document.getElementById("audioDescription").style.display = "block";
 	document.getElementById("audioTag").style.display = "block";
@@ -65,7 +89,12 @@ function displayFormAfterAudioSelected(displayType) {
   }
 }
 
-/*clear and hide all necessary fields when audio url is removed*/
+/**
+ * Clear and hide all unnecessary fields when audio preview is removed.
+ * 
+ * @method removeAudioPreview
+ * @param removeType {String} Local or Web.
+ */
 function removeAudioPreview(removeType) {
 	document.getElementById("audioUrlInputGroup").style.display = "table";
 	document.getElementById("newAudioUploadPreview").style.display = "none";

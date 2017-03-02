@@ -1,4 +1,15 @@
-/*preview photos selected by user*/
+/**
+ * Functions to handle photo image selected by user.
+ * 
+ * @class HandleLocalPhoto
+*/
+
+/**
+ * Validate and preview image file selected by user.
+ * 
+ * @method handlePhotoFiles
+ * @param files {Files} Image file.
+ */
 function handlePhotoFiles(files) {
   for (var i = 0; i < files.length; i++) {
     var file = files[i];
@@ -52,7 +63,31 @@ function handlePhotoFiles(files) {
   }
 }
 
-/*detect if the format of the extension can match with the signature that belongs to*/
+/**
+ * Check image file extension with the white list of extension.
+ * 
+ * @method checkPhotoExtension
+ * @param extension {String} Extension of image file.
+ * @return {Boolean} True of False.
+ */
+function checkPhotoExtension(extension) {
+	var validFileType = "bmp, gif, jpg, jpeg, png"; // white list of extension
+
+	if(validFileType.toLowerCase().indexOf(extension) < 0)
+		return true;
+	else
+		return false;
+}
+
+/**
+ * Validate if the format of the extension can match with the signature that belongs to.
+ * 
+ * @method checkPhotoSignature
+ * @param extension {String} Extension of image file.
+ * @param file {Image file}
+ * @param {Function} callback
+ * @return {Boolean} True of False.
+ */
 function checkPhotoSignature(extension, file, callback) {
 	var signature = {
     jpg: {
@@ -129,17 +164,13 @@ function checkPhotoSignature(extension, file, callback) {
   reader.readAsArrayBuffer(slice); // Read the slice of the file
 }
 
-/*check with the white list of extension*/
-function checkPhotoExtension(extension) {
-	var validFileType = "bmp, gif, jpg, jpeg, png"; // white list of extension
-
-	if(validFileType.toLowerCase().indexOf(extension) < 0)
-		return true;
-	else
-		return false;
-}
-
-/*check image file size*/
+/**
+ * Check if image file size greater than 10MB.
+ * 
+ * @method checkPhotoSize
+ * @param {size} Image file size.
+ * @return {Boolean} True of False.
+ */
 function checkPhotoSize(size) {
 	if(size > 10 * 1024 * 1024) // 10MB file size limit
 		return true;
@@ -147,6 +178,13 @@ function checkPhotoSize(size) {
 		return false;
 }
 
+/**
+ * Create HTML image element.
+ * 
+ * @method createLocalImgElement
+ * @param imgFile (Image file) Local image file selected by user.
+ * @return HTML image element.
+ */
 function createLocalImgElement(imgFile) {
 	var img = document.createElement("img");
   img.classList.add("img-responsive");

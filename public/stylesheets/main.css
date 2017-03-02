@@ -165,3 +165,7 @@ ul.dropdown-menu-right {
 #uploadPostDropDown li > a {
   color: #444444;
 }
+
+#helperInput {
+  margin-left: -40px;
+}

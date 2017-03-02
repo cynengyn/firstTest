@@ -22,10 +22,15 @@ public class QuotePostController extends Controller {
 		public QuotePostController(play.data.FormFactory formFactory) {
 			this.formFactory = formFactory;
 		}
+  	
+  	public Result quotePost() {    	
+  		setQuotePostObject();
+  		return loadUpQuotePost();
+  	}
 		
 		public Result loadUpQuotePost() {
 			// find last 10 post
-			List<QuotePost> res = QuotePost.find.orderBy().desc("quote_post_id").setMaxRows(10).findList();      
+			List<QuotePost> res = QuotePost.find.orderBy().desc("quote_post_creation_date").setMaxRows(10).findList();      
 			ArrayNode resJson = play.libs.Json.newArray();
 			
 			for(QuotePost p: res) {
@@ -34,28 +39,13 @@ public class QuotePostController extends Controller {
 			return ok (resJson);		
 		}
   	
-  	public Result quotePost() {    	
+  	public void setQuotePostObject() {
   		DynamicForm requestData = formFactory.form().bindFromRequest();
-  		String quote = requestData.get("quotePostQuote");
-  		String source = requestData.get("quotePostSource");
-  		String tag = requestData.get("quotePostTag");
-  		
   		QuotePost post = new QuotePost();
   		post.quotePostCreationDate = new Date();
-  		post.quotePostQuote = quote;
-  		post.quotePostSource = source;
-  		post.quotePostTag = tag;
+  		post.quotePostQuote = requestData.get("quotePostQuote");
+  		post.quotePostSource = requestData.get("quotePostSource");
+  		post.quotePostTag = requestData.get("quotePostTag");
   		post.save();
-
-	  	// find last 10 post
-  		List<QuotePost> res = QuotePost.find.orderBy().desc("quote_post_id").setMaxRows(10).findList();
-      
-  		ArrayNode resJson = play.libs.Json.newArray();
-  		
-  		for(QuotePost p: res) {
-  		  resJson.add(play.libs.Json.toJson(p));	
-  		}
-
-  		return ok (resJson);
   	}
 }

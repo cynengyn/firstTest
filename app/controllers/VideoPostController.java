@@ -3,48 +3,94 @@ package controllers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
-
 import javax.inject.Inject;
 
 import org.apache.commons.io.FilenameUtils;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import models.FileName;
 import models.LocalVideoPost;
 import models.WebVideoPost;
 /*import models.WebVideoPost;*/
 import play.data.DynamicForm;
 import play.mvc.*;
 import play.mvc.Http.MultipartFormData;
-import play.mvc.Http.MultipartFormData.FilePart;
 
 public class VideoPostController extends Controller {
 	
 	private final play.data.FormFactory formFactory;
+  private static final String VIDEO_SAVE_DIRECTORY = "public/upload/video/";
 	
 	@Inject
 	public VideoPostController(play.data.FormFactory formFactory) {
 		this.formFactory = formFactory;
 	}
 	
-	public Result loadUpWebVideoPost() {
-		// find last 10 post
-		List<WebVideoPost> res = WebVideoPost.find.orderBy().desc("web_video_post_id").setMaxRows(10).findList();      
-		ArrayNode resJson = play.libs.Json.newArray();
-		
-		for(WebVideoPost p: res) {
-		  resJson.add(play.libs.Json.toJson(p));	
-		}
-		return ok (resJson);		
-	}
+	public Result videoPosts(String type) {
+  	if(type == "localVideo" && checkLocalVideoFile()) {
+  		LocalVideoPost post = new LocalVideoPost();
+  		setLocalVideoObject(post);
+  		copyLocalVideoFile(post);
+  		return loadUpLocalVideoPost();
+  	}
+  	else if(type == "webVideo" && checkWebVideoUrl()) {
+  		WebVideoPost post = new WebVideoPost();
+  		setWebVideoObject(post); 		
+  		return loadUpWebVideoPost();
+  	}
+		return null;
+  }
+	
+	public boolean checkLocalVideoFile() {
+  	if(getVideoFile() != null)
+  		return true;
+  	else
+  		return false;
+  }
+	
+	public boolean checkWebVideoUrl() {
+  	DynamicForm requestData = formFactory.form().bindFromRequest();  	
+  	if(requestData.get("webVideoUrlType") != null && requestData.get("webVideoUrlId") != null)
+  		return true;
+  	else
+  		return false;
+  }
+	
+	public void copyLocalVideoFile(LocalVideoPost post) {
+  	if(checkLocalVideoFile()) {
+  		try {
+        File dstFile = new File(VIDEO_SAVE_DIRECTORY + post.localVideoFileName);
+        FileInputStream in = new FileInputStream(getVideoFile());
+        FileOutputStream out = new FileOutputStream(dstFile);
+
+        byte[] buf = new byte[1024];
+        int len;
+        while((len = in .read(buf)) > 0) {
+          out.write(buf, 0, len);
+        } in .close();
+        out.close();
+      } catch(Exception e) {
+        System.out.println(e);
+      }
+  	}
+  }
+	
+	public File getVideoFile() {
+  	MultipartFormData <File> body = request().body().asMultipartFormData();
+  	return body.getFile("localVideo").getFile();
+  }
+	
+	public String getVideoFileName() {
+  	MultipartFormData <File> body = request().body().asMultipartFormData();
+  	return body.getFile("localVideo").getFilename();
+  }
 	
 	public Result loadUpLocalVideoPost() {
 		// find last 10 post
-		List<LocalVideoPost> res = LocalVideoPost.find.orderBy().desc("local_video_post_id").setMaxRows(10).findList();      
+		List<LocalVideoPost> res = LocalVideoPost.find.orderBy().desc("local_video_post_creation_date").setMaxRows(10).findList();      
 		ArrayNode resJson = play.libs.Json.newArray();
 		
 		for(LocalVideoPost p: res) {
@@ -53,81 +99,36 @@ public class VideoPostController extends Controller {
 		return ok (resJson);		
 	}
 	
-	public Result localVideo() {
-		DynamicForm requestData = formFactory.form().bindFromRequest();
-		MultipartFormData<File> body = request().body().asMultipartFormData();
-		FilePart<File> video = body.getFile("localVideo");
-		String description = requestData.get("localVideoPostCaption");
-		String tag = requestData.get("localVideoPostTag");
-		String videoSaveDirectory, videoFileName, newVideoFileName;
-		
-		if(video!=null) {
-			videoSaveDirectory = "public/upload/video/";
-			videoFileName = video.getFilename();
-			newVideoFileName = UUID.randomUUID().toString().replaceAll("-", "") + new SimpleDateFormat("yyyyMMddHHmmssSSS'.'").format(new Date()) + FilenameUtils.getExtension(videoFileName);
-			File videofile = video.getFile();
-			
-			LocalVideoPost post = new LocalVideoPost();
-			post.localVideoPostCreationDate = new Date();
-	    post.localVideoSaveDirectory = videoSaveDirectory;
-	    post.localVideoFileName = newVideoFileName;
-	    post.localVideoOriginalFileName = videoFileName;
-	    post.localVideoFileType = FilenameUtils.getExtension(videoFileName);
-			post.localVideoPostCaption = description;
-			post.localVideoPostTag = tag;
-			post.save();
-			
-			try {
-	      File dstFile = new File(videoSaveDirectory + post.localVideoFileName);
-	      FileInputStream in = new FileInputStream(videofile);
-	      FileOutputStream out = new FileOutputStream(dstFile);
-
-	      byte[] buf = new byte[1024];
-	      int len;
-	      while ((len = in.read(buf)) > 0) { 
-    			out.write(buf, 0, len);
-	      }
-				in.close();
-				out.close();
-			} catch (Exception e) {
-				System.out.println(e);
-			}
-		}
-
-		List<LocalVideoPost> res = LocalVideoPost.find.orderBy().desc("local_video_post_id").setMaxRows(10).findList();
-    
-		ArrayNode resJson = play.libs.Json.newArray();
-		
-		for(LocalVideoPost p: res) {
-		  resJson.add(play.libs.Json.toJson(p));	
-		}
-
-		return ok (resJson);
-	}
-	
-	public Result webVideo() {
-		DynamicForm requestData = formFactory.form().bindFromRequest();
-		String videoProvider = requestData.get("webVideoUrlType");
-		String videoId = requestData.get("webVideoUrlId");
-		String description = requestData.get("webVideoPostCaption");
-		String tag = requestData.get("webVideoPostTag");
-		
-		WebVideoPost post = new WebVideoPost();
-		post.webVideoPostCreationDate = new Date();
-    post.webVideoUrlType = videoProvider;
-    post.webVideoUrlId = videoId;
-		post.webVideoPostCaption = description;
-		post.webVideoPostTag = tag;
-		post.save();
-
-		List<WebVideoPost> res = WebVideoPost.find.orderBy().desc("web_video_post_id").setMaxRows(10).findList();
-    
+	public Result loadUpWebVideoPost() {
+		// find last 10 post
+		List<WebVideoPost> res = WebVideoPost.find.orderBy().desc("web_video_post_creation_date").setMaxRows(10).findList();      
 		ArrayNode resJson = play.libs.Json.newArray();
 		
 		for(WebVideoPost p: res) {
 		  resJson.add(play.libs.Json.toJson(p));	
 		}
-
-		return ok (resJson);
+		return ok (resJson);		
 	}
+	
+	public void setLocalVideoObject(LocalVideoPost post) {
+  	DynamicForm requestData = formFactory.form().bindFromRequest();
+    post.localVideoPostCreationDate = new Date();
+    post.localVideoSaveDirectory = VIDEO_SAVE_DIRECTORY;
+    post.localVideoFileName = FileName.setRandomName(getVideoFileName());
+    post.localVideoOriginalFileName = getVideoFileName();
+    post.localVideoFileType = FilenameUtils.getExtension(getVideoFileName());
+    post.localVideoPostCaption = requestData.get("localVideoPostCaption");
+    post.localVideoPostTag = requestData.get("localVideoPostTag");
+    post.save();
+  }
+	
+	public void setWebVideoObject(WebVideoPost post) {
+  	DynamicForm requestData = formFactory.form().bindFromRequest();
+    post.webVideoPostCreationDate = new Date();
+    post.webVideoUrlType = requestData.get("webVideoUrlType");
+    post.webVideoUrlId = requestData.get("webVideoUrlId");
+    post.webVideoPostCaption = requestData.get("webVideoPostCaption");
+    post.webVideoPostTag = requestData.get("webVideoPostTag");
+    post.save();
+  }
 }

@@ -5,11 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
-
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 
@@ -17,184 +14,197 @@ import org.apache.commons.io.FilenameUtils;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import models.FileName;
 import models.LocalAudioPost;
 import models.WebAudioPost;
 import play.data.DynamicForm;
 import play.mvc.*;
 import play.mvc.Http.MultipartFormData;
-import play.mvc.Http.MultipartFormData.FilePart;
 
 public class AudioPostController extends Controller {
-	
-	private final play.data.FormFactory formFactory;
-	
-	@Inject
-	public AudioPostController(play.data.FormFactory formFactory) {
-		this.formFactory = formFactory;
-	}
-	
-	public Result loadUpWebAudioPost() {
-		// find last 10 post
-		List<WebAudioPost> res = WebAudioPost.find.orderBy().desc("web_audio_post_id").setMaxRows(10).findList();      
-		ArrayNode resJson = play.libs.Json.newArray();
-		
-		for(WebAudioPost p: res) {
-		  resJson.add(play.libs.Json.toJson(p));	
-		}
-		return ok (resJson);		
-	}
-	
-	public Result loadUpLocalAudioPost() {
-		// find last 10 post
-		List<LocalAudioPost> res = LocalAudioPost.find.orderBy().desc("local_audio_post_id").setMaxRows(10).findList();      
-		ArrayNode resJson = play.libs.Json.newArray();
-		
-		for(LocalAudioPost p: res) {
-		  resJson.add(play.libs.Json.toJson(p));	
-		}
-		return ok (resJson);		
-	}
-	
-	public Result webAudio() {
-		DynamicForm requestData = formFactory.form().bindFromRequest();
-		MultipartFormData<File> body = request().body().asMultipartFormData();
-		String audioUrl = requestData.get("webAudioUrl");		
-		String description = requestData.get("webAudioPostDescription");
-		String tag = requestData.get("webAudioPostTag"); 
-		FilePart<File> albumArt = body.getFile("webAudioAlbumArt");
-		String track = requestData.get("webAudioTrack");
-		String artist = requestData.get("webAudioArtist");
-		String album = requestData.get("webAudioAlbum");
-		String audioFileName = audioUrl.substring(audioUrl.lastIndexOf('/')+1);
-		String albumArtSaveDirectory, albumArtFileName, newAlbumArtFileName;
-		
-		WebAudioPost post = new WebAudioPost();
-		post.webAudioPostCreationDate = new Date();
-    post.webAudioUrl = audioUrl;
-    post.webAudioFileName = audioFileName;
-    post.webAudioFileType = FilenameUtils.getExtension(audioFileName);
-		post.webAudioPostDescription = description;
-		post.webAudioPostTag = tag;
-		post.webAudioTrack = track;
-		post.webAudioArtist = artist;
-		post.webAudioAlbum = album;
-		post.save();
-		
-		if (albumArt != null) {  	    	
-			albumArtSaveDirectory = "public/upload/audio/audio_album_art/";
-			albumArtFileName = albumArt.getFilename();
-      File file = albumArt.getFile();
-      // generate a random file name
-      newAlbumArtFileName = UUID.randomUUID().toString().replaceAll("-", "") + new SimpleDateFormat("yyyyMMddHHmmssSSS'.'").format(new Date()) + FilenameUtils.getExtension(albumArtFileName);
-      
-      post.webAudioAlbumArtDirectory = albumArtSaveDirectory;
-      post.webAudioAlbumArtFileName = newAlbumArtFileName;
-  		post.webAudioAlbumArtOriginalFileName = albumArtFileName;
-  		post.webAudioAlbumArtFileType = FilenameUtils.getExtension(albumArtFileName);
-  		post.save();
 
+  private final play.data.FormFactory formFactory;
+  private static final String ALBUM_ART_SAVE_DIRECTORY = "public/upload/audio/audio_album_art/";
+  private static final String AUDIO_SAVE_DIRECTORY = "public/upload/audio/audio_file/";
+  
+  @Inject
+  public AudioPostController(play.data.FormFactory formFactory) {
+    this.formFactory = formFactory;
+  }
+  
+  public Result audioPosts(String type) {
+  	if(type == "localAudio" && checkLocalAudioFile()) {
+  		LocalAudioPost post = new LocalAudioPost();
+  		setLocalAudioObject(post);
+  		copyLocalAudioFile(post);
+  		copyLocalAudioAlbumArt(post);
+  		return loadUpLocalAudioPost();
+  	}
+  	else if(type == "webAudio" && checkWebAudioUrl()) {
+  		WebAudioPost post = new WebAudioPost();
+  		setWebAudioObject(post);
+  		copyWebAudioAlbumArt(post);  		
+  		return loadUpWebAudioPost();
+  	}
+		return null;
+  }
+  
+  public boolean checkLocalAudioFile() {
+  	if(getAudioFile() != null)
+  		return true;
+  	else
+  		return false;
+  }
+  
+  public boolean checkWebAudioUrl() {
+  	DynamicForm requestData = formFactory.form().bindFromRequest();  	
+  	if(requestData.get("webAudioUrl") != null)
+  		return true;
+  	else
+  		return false;
+  }
+  
+  public void copyLocalAudioAlbumArt(LocalAudioPost post) {
+  	if(getAlbumFile("local") != null) {
+  		setLocalAudioAlbumArtInfo(post);
       try {
-      	// read image in and write it back, metadata isn't read
-				BufferedImage image = ImageIO.read(file);
-				ImageIO.write(image, post.webAudioAlbumArtFileType, new File(albumArtSaveDirectory + post.webAudioAlbumArtFileName)); // new image without metadata
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
+        File file = getAlbumFile("local");        
+        BufferedImage image = ImageIO.read(file); // read image in and write it back, metadata isn't read
+        ImageIO.write(image, post.localAudioAlbumArtFileType, new File(post.localAudioAlbumArtSaveDirectory + post.localAudioAlbumArtFileName)); // new image without metadata
+      } catch(IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
       /*System.out.println("Success");*/
-		}
+    }
+  }
+  
+  public void copyWebAudioAlbumArt(WebAudioPost post) {
+  	if(getAlbumFile("web") != null) {
+  		setWebAudioAlbumArtInfo(post);
+      try {
+        File file = getAlbumFile("web");        
+        BufferedImage image = ImageIO.read(file); // read image in and write it back, metadata isn't read
+        ImageIO.write(image, post.webAudioAlbumArtFileType, new File(post.webAudioAlbumArtDirectory + post.webAudioAlbumArtFileName)); // new image without metadata
+      } catch(IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      /*System.out.println("Success");*/
+    }
+  }
+  
+  public void copyLocalAudioFile(LocalAudioPost post) {
+  	if(checkLocalAudioFile()) {
+  		try {
+        File dstFile = new File(AUDIO_SAVE_DIRECTORY + post.localAudioFileName);
+        FileInputStream in = new FileInputStream(getAudioFile());
+        FileOutputStream out = new FileOutputStream(dstFile);
 
-		List<WebAudioPost> res = WebAudioPost.find.orderBy().desc("web_audio_post_id").setMaxRows(10).findList();
-    
-		ArrayNode resJson = play.libs.Json.newArray();
-		
-		for(WebAudioPost p: res) {
-		  resJson.add(play.libs.Json.toJson(p));	
-		}
+        byte[] buf = new byte[1024];
+        int len;
+        while((len = in .read(buf)) > 0) {
+          out.write(buf, 0, len);
+        } in .close();
+        out.close();
+      } catch(Exception e) {
+        System.out.println(e);
+      }
+  	}
+  }
+  
+  public File getAlbumFile(String type) {
+  	MultipartFormData <File> body = request().body().asMultipartFormData();
+  	if(type == "local")
+  		return body.getFile("localAudioAlbumArt").getFile();
+  	else if(type == "web")
+  		return body.getFile("webAudioAlbumArt").getFile();
+		return null;
+  }
+  
+  public String getAlbumFileName(String type) {
+  	MultipartFormData <File> body = request().body().asMultipartFormData();
+  	if(type == "local")
+  		return body.getFile("localAudioAlbumArt").getFilename();
+  	else if(type == "web")
+  		return body.getFile("webAudioAlbumArt").getFilename();
+		return null;
+  }
+  
+  public File getAudioFile() {
+  	MultipartFormData <File> body = request().body().asMultipartFormData();
+  	return body.getFile("localAudio").getFile();
+  }
+  
+  public String getAudioFileName() {
+  	MultipartFormData <File> body = request().body().asMultipartFormData();
+  	return body.getFile("localAudio").getFilename();
+  }
 
-		return ok (resJson);
-	}
-	
-	public Result localAudio() {
-		DynamicForm requestData = formFactory.form().bindFromRequest();
-		MultipartFormData<File> body = request().body().asMultipartFormData();
-		FilePart<File> audio = body.getFile("localAudio");
-		String description = requestData.get("localAudioPostDescription");
-		String tag = requestData.get("localAudioPostTag"); 
-		FilePart<File> albumArt = body.getFile("localAudioAlbumArt");
-		String track = requestData.get("localAudioTrack");
-		String artist = requestData.get("localAudioArtist");
-		String album = requestData.get("localAudioAlbum");
-		String audioSaveDirectory, audioFileName, newAudioFileName, albumArtSaveDirectory, albumArtFileName, newAlbumArtFileName;
-		
-		if(audio!=null) {
-			audioSaveDirectory = "public/upload/audio/audio_file/";
-			audioFileName = audio.getFilename();
-			newAudioFileName = UUID.randomUUID().toString().replaceAll("-", "") + new SimpleDateFormat("yyyyMMddHHmmssSSS'.'").format(new Date()) + FilenameUtils.getExtension(audioFileName);
-			File audiofile = audio.getFile();
-			
-			LocalAudioPost post = new LocalAudioPost();
-			post.localAudioPostCreationDate = new Date();
-	    post.localAudioSaveDirectory = audioSaveDirectory;
-	    post.localAudioFileName = newAudioFileName;
-	    post.localAudioOriginalFileName = audioFileName;
-	    post.localAudioFileType = FilenameUtils.getExtension(audioFileName);
-			post.localAudioPostDescription = description;
-			post.localAudioPostTag = tag;
-			post.localAudioTrack = track;
-			post.localAudioArtist = artist;
-			post.localAudioAlbum = album;
-			post.save();
-			
-			try {
-	      File dstFile = new File(audioSaveDirectory + post.localAudioFileName);
-	      FileInputStream in = new FileInputStream(audiofile);
-	      FileOutputStream out = new FileOutputStream(dstFile);
+  public Result loadUpLocalAudioPost() {
+    // find last 10 post
+    List <LocalAudioPost> res = LocalAudioPost.find.orderBy().desc("local_audio_post_creation_date").setMaxRows(10).findList();
+    ArrayNode resJson = play.libs.Json.newArray();
 
-	      byte[] buf = new byte[1024];
-	      int len;
-	      while ((len = in.read(buf)) > 0) { 
-    			out.write(buf, 0, len);
-	      }
-				in.close();
-				out.close();
-			} catch (Exception e) {
-				System.out.println(e);
-			}	   
-		
-			if(albumArt!=null) {  	    	
-				albumArtSaveDirectory = "public/upload/audio/audio_album_art/";
-				albumArtFileName = albumArt.getFilename();
-	      // generate a random file name
-	      newAlbumArtFileName = UUID.randomUUID().toString().replaceAll("-", "") + new SimpleDateFormat("yyyyMMddHHmmssSSS'.'").format(new Date()) + FilenameUtils.getExtension(albumArtFileName);
-	      File albumArtfile = albumArt.getFile();
-	      
-	      post.localAudioAlbumArtSaveDirectory = albumArtSaveDirectory;
-	      post.localAudioAlbumArtFileName = newAlbumArtFileName;
-	  		post.localAudioAlbumArtOriginalFileName = albumArtFileName;
-	  		post.localAudioAlbumArtFileType = FilenameUtils.getExtension(albumArtFileName);
-	  		post.save();
-	
-	      try {
-	      	// read image in and write it back, metadata isn't read
-					BufferedImage image = ImageIO.read(albumArtfile);
-					ImageIO.write(image, post.localAudioAlbumArtFileType, new File(albumArtSaveDirectory + post.localAudioAlbumArtFileName)); // new image without metadata
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}	
-	      /*System.out.println("Success");*/
-			}
-		}
+    for(LocalAudioPost p: res) {
+      resJson.add(play.libs.Json.toJson(p));
+    }
+    return ok(resJson);
+  }
 
-		List<LocalAudioPost> res = LocalAudioPost.find.orderBy().desc("local_audio_post_id").setMaxRows(10).findList();
-    
-		ArrayNode resJson = play.libs.Json.newArray();
-		
-		for(LocalAudioPost p: res) {
-		  resJson.add(play.libs.Json.toJson(p));	
-		}
+  public Result loadUpWebAudioPost() {
+    // find last 10 post
+    List <WebAudioPost> res = WebAudioPost.find.orderBy().desc("web_audio_post_creation_date").setMaxRows(10).findList();
+    ArrayNode resJson = play.libs.Json.newArray();
 
-		return ok (resJson);
-	}
+    for(WebAudioPost p: res) {
+      resJson.add(play.libs.Json.toJson(p));
+    }
+    return ok(resJson);
+  }
+  
+  public void setLocalAudioAlbumArtInfo(LocalAudioPost post) {
+  	post.localAudioAlbumArtSaveDirectory = ALBUM_ART_SAVE_DIRECTORY;
+    post.localAudioAlbumArtFileName = FileName.setRandomName(getAlbumFileName("local")); // generate a random file name
+    post.localAudioAlbumArtOriginalFileName = getAlbumFileName("local");
+    post.localAudioAlbumArtFileType = FilenameUtils.getExtension(getAlbumFileName("local"));
+    post.save();
+  }
+  
+  public void setLocalAudioObject(LocalAudioPost post) {
+  	DynamicForm requestData = formFactory.form().bindFromRequest();
+    post.localAudioPostCreationDate = new Date();
+    post.localAudioSaveDirectory = AUDIO_SAVE_DIRECTORY;
+    post.localAudioFileName = FileName.setRandomName(getAudioFileName());
+    post.localAudioOriginalFileName = getAudioFileName();
+    post.localAudioFileType = FilenameUtils.getExtension(getAudioFileName());
+    post.localAudioPostDescription = requestData.get("localAudioPostDescription");
+    post.localAudioPostTag = requestData.get("localAudioPostTag");
+    post.localAudioTrack = requestData.get("localAudioTrack");
+    post.localAudioArtist = requestData.get("localAudioArtist");
+    post.localAudioAlbum = requestData.get("localAudioAlbum");
+    post.save();
+  }
+  
+  public void setWebAudioAlbumArtInfo(WebAudioPost post) {
+  	post.webAudioAlbumArtDirectory = ALBUM_ART_SAVE_DIRECTORY;
+    post.webAudioAlbumArtFileName = FileName.setRandomName(getAlbumFileName("web")); // generate a random file name
+    post.webAudioAlbumArtOriginalFileName = getAlbumFileName("web");
+    post.webAudioAlbumArtFileType = FilenameUtils.getExtension(getAlbumFileName("web"));
+    post.save();
+  }
+  
+  public void setWebAudioObject(WebAudioPost post) {
+  	DynamicForm requestData = formFactory.form().bindFromRequest();
+    post.webAudioPostCreationDate = new Date();
+    post.webAudioUrl = requestData.get("webAudioUrl");
+    post.webAudioFileName = FileName.getWebFileName(post.webAudioUrl);
+    post.webAudioFileType = FilenameUtils.getExtension(post.webAudioFileName);
+    post.webAudioPostDescription = requestData.get("webAudioPostDescription");
+    post.webAudioPostTag = requestData.get("webAudioPostTag");
+    post.webAudioTrack = requestData.get("webAudioTrack");
+    post.webAudioArtist = requestData.get("webAudioArtist");
+    post.webAudioAlbum = requestData.get("webAudioAlbum");
+    post.save();
+  }
 }

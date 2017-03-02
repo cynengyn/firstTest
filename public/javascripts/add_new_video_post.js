@@ -1,8 +1,65 @@
-/*
- *===================
- *video post elements
- *===================
+/**
+ * Video Post Functions.
+ * 
+ * @class AddNewVideoPost
+*/
+
+/**
+ * Insert new local video post data into database.
+ * 
+ * @method addNewLocalVideoPost
  */
+function addNewLocalVideoPost() {
+	var formData = getLocalVideoPostData();
+	
+	$.ajax({
+    url: "/videoPosts/localVideo",
+		type: "POST",
+		data: formData, // The form with the file inputs.
+		processData: false, // Using FormData, no need to process data.
+    contentType: false,
+	}).done(function(data) {
+		for(i = data.length-1; i >= 0 ; i-- ) {
+			displayLocalVideoPostFromServer(data[i].localVideoSaveDirectory, data[i].localVideoPostCaption, data[i].localVideoPostTag, data[i].localVideoFileName);
+			/*console.log("Success: Files sent!");
+		  console.log(data);*/
+		}
+	}).fail(function() {
+		console.log("An error occurred, the files couldn't be sent!");
+	});	
+}
+
+/**
+ * Insert new web video post data into database.
+ * 
+ * @method addNewWebVideoPost
+ */
+function addNewWebVideoPost() {
+	var formData = getWebVideoPostData();
+	
+	$.ajax({
+    url: "/videoPosts/webVideo",
+		type: "POST",
+		data: formData, // The form with the file inputs.
+		processData: false, // Using FormData, no need to process data.
+    contentType: false,
+	}).done(function(data) {
+		for(i = data.length-1; i >= 0 ; i-- ) {
+			displayWebVideoPostFromServer(data[i].webVideoUrlType, data[i].webVideoUrlId, data[i].webVideoPostCaption, data[i].webVideoPostTag);
+			/*console.log("Success: Files sent!");
+		  console.log(data);*/
+		}
+	}).fail(function() {
+		console.log("An error occurred, the files couldn't be sent!");
+	});	
+}
+
+/**
+ * Create HTML elements for video post.
+ * 
+ * @method createVideoPostElements
+ * @return {Array} Video post HTML elements.
+*/
 function createVideoPostElements() {
 	var divVideoPanel = document.createElement("div");
 	var divVideoPanelHeading = document.createElement("div");
@@ -76,7 +133,82 @@ function createVideoPostElements() {
 	};
 }
 
-function setVideoPostDescriptionAndTag(postElements, postCaption, postTag) {
+/**
+ * Display local video post from database.
+ *
+ * @method displayLocalVideoPostFromServer
+ * @param localVideoSaveDirectory {String} Local video file save directory.
+ * @param localVideoPostCaption {String} Local video post caption.
+ * @param localVideoPostTag {String} Local video post tag.
+ * @param localVideoFileName {String} Local video file name.
+ */
+function displayLocalVideoPostFromServer(localVideoSaveDirectory, localVideoPostCaption, localVideoPostTag, localVideoFileName) {
+	var videoPostElements = createVideoPostElements();
+	var videoElement = createLocalVideoElement(localVideoSaveDirectory, localVideoFileName);
+	
+	setVideoPostCaptionAndTag(videoPostElements, localVideoPostCaption, localVideoPostTag);
+	videoPostElements.videoBody.appendChild(videoElement);
+}
+
+/**
+ * Display web video post from database.
+ *
+ * @method displayWebVideoPostFromServer
+ * @param webVideoUrlType {String} Web video URL from YouTube or Vimeo.
+ * @param webVideoUrlId {String} Web video ID.
+ * @param webVideoPostCaption {String} Web video post caption.
+ * @param webVideoPostTag {String} Web video post tag.
+ */
+function displayWebVideoPostFromServer(webVideoUrlType, webVideoUrlId, webVideoPostCaption, webVideoPostTag) {
+	var videoPostElements = createVideoPostElements();
+	var iFrameVideo = createVideoiFrame(webVideoUrlType, webVideoUrlId);
+	
+	setVideoPostCaptionAndTag(videoPostElements, webVideoPostCaption, webVideoPostTag);
+	videoPostElements.videoBody.appendChild(iFrameVideo);
+}
+
+/**
+ * Get new local video post data.
+ * 
+ * @method getLocalVideoPostData
+ * @returns {FormData} Local video file, Local video post caption, Local video post tag.
+ */
+function getLocalVideoPostData() {
+	var videoFile = document.getElementById("videoFileInput");
+	var formData = new FormData();
+	formData.append("localVideo", videoFile.files[0]);
+	formData.append("localVideoPostCaption", $('#videoCaption').html());
+	formData.append("localVideoPostTag", $('#videoTag').val());
+	
+	return formData;
+}
+
+/**
+ * Get new web video post data.
+ * 
+ * @method getWebVideoPostData
+ * @returns {FormData} Web video URL from YouTube or Vimeo, Web video ID, Web video post caption, Web video post tag.
+ */
+function getWebVideoPostData() {
+	var webVideoUrl = $('#urlVideoUploadInput').val();
+	var formData = new FormData();
+	formData.append("webVideoUrlType", parseVideo(webVideoUrl).type);
+	formData.append("webVideoUrlId", parseVideo(webVideoUrl).id);
+	formData.append("webVideoPostCaption", $('#videoCaption').html());
+	formData.append("webVideoPostTag", $('#videoTag').val());
+	
+	return formData;
+}
+
+/**
+ * Set video post caption and tag.
+ *
+ * @method setVideoPostCaptionAndTag
+ * @param postElements {Array} Video post HTML elements.
+ * @param postCaption {String} Video post caption.
+ * @param postTag {String} Video post tag.
+ */
+function setVideoPostCaptionAndTag(postElements, postCaption, postTag) {
 	if(postCaption) // video post caption not empty
 		postElements.postCaption.innerHTML = postCaption;
 	
@@ -88,10 +220,10 @@ function setVideoPostDescriptionAndTag(postElements, postCaption, postTag) {
 		postElements.postTagDiv.setAttribute("style", "display: none;");
 }
 
-/*
- *===============
- *new video modal
- *===============
+/**
+ * Modal for video post button.
+ *
+ * @method videoPostModal
  */
 function videoPostModal() {
 	var videoPost = [
@@ -156,91 +288,4 @@ function videoPostModal() {
 	].join('');
 	
 	document.getElementById("modalDialog").innerHTML = videoPost;
-}
-
-/*
- *===========
- *local video
- *===========
- */
-function addNewLocalVideoPost() {
-	var formData = getLocalVideoPostData();
-	
-	$.ajax({
-    url: "/localVideo",
-		type: "POST",
-		data: formData, // The form with the file inputs.
-		processData: false, // Using FormData, no need to process data.
-    contentType: false,
-	}).done(function(data) {
-		for(i = data.length-1; i >= 0 ; i-- ) {
-			addLocalVideoPostFromServer(data[i].localVideoSaveDirectory, data[i].localVideoPostCaption, data[i].localVideoPostTag, data[i].localVideoFileName);
-			/*console.log("Success: Files sent!");
-		  console.log(data);*/
-		}
-	}).fail(function() {
-		console.log("An error occurred, the files couldn't be sent!");
-	});	
-}
-
-function addLocalVideoPostFromServer(localVideoSaveDirectory, localVideoPostCaption, localVideoPostTag, localVideoFileName) {
-	var videoPostElements = createVideoPostElements();
-	var videoElement = createLocalVideoElement(localVideoSaveDirectory, localVideoFileName);
-	
-	setVideoPostDescriptionAndTag(videoPostElements, localVideoPostCaption, localVideoPostTag);
-	videoPostElements.videoBody.appendChild(videoElement);
-}
-
-function getLocalVideoPostData() {
-	var videoFile = document.getElementById("videoFileInput");
-	var formData = new FormData();
-	formData.append("localVideo", videoFile.files[0]);
-	formData.append("localVideoPostCaption", $('#videoCaption').html());
-	formData.append("localVideoPostTag", $('#videoTag').val());
-	
-	return formData;
-}
-
-/*
- *=========
- *web video
- *=========
- */
-function addNewWebVideoPost() {
-	var formData = getWebVideoPostData();
-	
-	$.ajax({
-    url: "/webVideo",
-		type: "POST",
-		data: formData, // The form with the file inputs.
-		processData: false, // Using FormData, no need to process data.
-    contentType: false,
-	}).done(function(data) {
-		for(i = data.length-1; i >= 0 ; i-- ) {
-			addWebVideoPostFromServer(data[i].webVideoUrlType, data[i].webVideoUrlId, data[i].webVideoPostCaption, data[i].webVideoPostTag);
-			/*console.log("Success: Files sent!");
-		  console.log(data);*/
-		}
-	}).fail(function() {
-		console.log("An error occurred, the files couldn't be sent!");
-	});	
-}
-
-function addWebVideoPostFromServer(webVideoUrlType, webVideoUrlId, webVideoPostCaption, webVideoPostTag) {
-	var videoPostElements = createVideoPostElements();
-	var iFrameVideo = createVideoiFrame(webVideoUrlType, webVideoUrlId);
-	
-	setVideoPostDescriptionAndTag(videoPostElements, webVideoPostCaption, webVideoPostTag);
-	videoPostElements.videoBody.appendChild(iFrameVideo);
-}
-
-function getWebVideoPostData() {
-	var webVideoUrl = $('#urlVideoUploadInput').val();
-	var formData = new FormData();
-	formData.append("webVideoUrlType", parseVideo(webVideoUrl).type);
-	formData.append("webVideoUrlId", parseVideo(webVideoUrl).id);
-	formData.append("webVideoPostCaption", $('#videoCaption').html());
-	formData.append("webVideoPostTag", $('#videoTag').val());
-	
-	return formData;
 }

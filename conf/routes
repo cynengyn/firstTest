@@ -12,21 +12,18 @@ GET     /message        controllers.AsyncController.message
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               					controllers.Assets.versioned(path="/public", file: Asset)
 
-POST		/quotePost									controllers.QuotePostController.quotePost
-POST		/textPost									controllers.TextPostController.textPost
-POST		/localAudio									controllers.AudioPostController.localAudio
-POST		/webAudio									controllers.AudioPostController.webAudio
-POST		/localPhoto									controllers.PhotoPostController.localPhoto
-POST		/webPhoto									controllers.PhotoPostController.webPhoto
-POST		/localVideo									controllers.VideoPostController.localVideo
-POST		/webVideo									controllers.VideoPostController.webVideo
+POST		/audioPosts/:type							controllers.AudioPostController.audioPosts(type: String)
+POST		/photoPosts/:type							controllers.PhotoPostController.photoPosts(type: String)
+POST		/quotePosts									controllers.QuotePostController.quotePost
+POST		/textPosts									controllers.TextPostController.textPost
+POST		/videoPosts/:type							controllers.VideoPostController.videoPosts(type: String)
 
-GET		/loadUpTextPost									controllers.TextPostController.loadUpTextPost
-GET		/loadUpPhotoPost								controllers.PhotoPostController.loadUpPhotoPost
+GET		/loadUpLocalAudioPost							controllers.AudioPostController.loadUpLocalAudioPost
+GET		/loadUpWebAudioPost								controllers.AudioPostController.loadUpWebAudioPost
+GET		/loadUpLocalPhotoPost							controllers.PhotoPostController.loadUpLocalPhotoPost
 GET		/loadUpWebPhotoPost								controllers.PhotoPostController.loadUpWebPhotoPost
 GET		/loadUpQuotePost								controllers.QuotePostController.loadUpQuotePost
-GET		/loadUpWebAudioPost								controllers.AudioPostController.loadUpWebAudioPost
-GET		/loadUpLocalAudioPost							controllers.AudioPostController.loadUpLocalAudioPost
+GET		/loadUpTextPost									controllers.TextPostController.loadUpTextPost
 GET		/loadUpLocalVideoPost							controllers.VideoPostController.loadUpLocalVideoPost
 GET		/loadUpWebVideoPost								controllers.VideoPostController.loadUpWebVideoPost
 
@@ -34,3 +31,10 @@ GET     /public/images/upload/*file						controllers.Assets.at(path="/public/ima
 GET		/public/upload/audio/audio_album_art/*file		controllers.Assets.at(path="/public/upload/audio/audio_album_art", file)
 GET		/public/upload/audio/audio_file/*file			controllers.Assets.at(path="/public/upload/audio/audio_file", file)
 GET		/public/upload/video/*file						controllers.Assets.at(path="/public/upload/video", file)
+
+#GET     /login                      controllers.AuthController.login()
+#POST    /login                      controllers.AuthController.authenticate()
+#GET     /logout                     controllers.AuthController.logout()
+GET     /signUp                     controllers.Application.signUp()
+POST    /signUp                     controllers.Application.newUser()
+GET		/users/:id					controllers.Application.show(id: Long)

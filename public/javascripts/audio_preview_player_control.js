@@ -1,5 +1,16 @@
-/*custom audio control*/
-function initilizeUrlAudioPreviewControl(audio) {
+/**
+ * Audio post preview player control.
+ * 
+ * @class AudioPreviewPlayerControl
+*/
+
+/**
+ * Initialize audio preview player control.
+ * 
+ * @method initializeUrlAudioPreviewControl
+ * @param audio {File source} Local audio or Web audio from YouTube/Vimeo.
+ */
+function initializeUrlAudioPreviewControl(audio) {
 	audio.controls = false;
 	
 	audio.addEventListener("timeupdate", updatePreviewProgress, false);
@@ -22,7 +33,24 @@ function initilizeUrlAudioPreviewControl(audio) {
 	progressBar.addEventListener("click", previewSeek);
 }
 
-/*play or pause audio*/
+/**
+ * Move or skip to a new position in the preview audio.
+ * 
+ * @method previewSeek
+ * @param e
+ */
+function previewSeek(e) {
+	var audio = document.getElementById("urlAudio");
+  var percent = e.offsetX / this.offsetWidth;
+  audio.currentTime = percent * audio.duration;
+  progressBar.value = percent / 100;
+}
+
+/**
+ * Play or pause preview audio.
+ * 
+ * @method togglePreviewPlayPause
+ */
 function togglePreviewPlayPause() {
 	var audio = document.getElementById("urlAudio");
   var playpause = document.getElementById("audioPlayerButton");
@@ -36,7 +64,11 @@ function togglePreviewPlayPause() {
   }
 }
 
-/*update play progress when audio is playing*/
+/**
+ * Update play progress when preview audio is playing.
+ * 
+ * @method updatePreviewProgress
+ */
 function updatePreviewProgress() {
 	var audio = document.getElementById("urlAudio");
 	var progress = document.getElementById("playProgress");
@@ -48,12 +80,4 @@ function updatePreviewProgress() {
 	}
 	progress.style.width = value + "%";
 	head.style.left = value + "%";
-}
-
-/*move or skip to a new position in the audio*/
-function previewSeek(e) {
-	var audio = document.getElementById("urlAudio");
-  var percent = e.offsetX / this.offsetWidth;
-  audio.currentTime = percent * audio.duration;
-  progressBar.value = percent / 100;
 }

@@ -1,4 +1,12 @@
-/*remove <br type="_moz"> type attribute created when enter key is pressed*/
+/**
+ * Functions for Video Post HTML Elements.
+ * 
+ * @class Video
+*/
+
+/**
+ * remove <br type="_moz"> type attribute created when enter key is pressed
+ */
 $(document).on('keyup', '#videoCaption', function(event) {
   var key = event.keyCode || event.charCode;
 
@@ -19,8 +27,9 @@ $(document).on('keyup', '#videoCaption', function(event) {
   }
 });
 
-/* auto play video when 75% of its area is visible
- * auto pause video when 50% of its area is hidden
+/**
+ * Auto play video when 75% of its area is visible.
+ * Auto pause video when 50% of its area is hidden.
  */
 $(document).ready(function() {
   var videos = $('video'); // all video elements
@@ -43,12 +52,25 @@ $(document).ready(function() {
   });
 });
 
+/**
+ * Close web video URL input field.
+ * 
+ * @Method closeVideoUrlPanel
+ */
 function closeVideoUrlPanel() {
 	document.getElementById("newVideoUploadPanel").style.display = "block";
 	document.getElementById("urlVideoUploadPanel").style.display = "none";
 	document.getElementById("urlVideoUploadInput").value = "";
 }
 
+/**
+ * Create HTML video element.
+ * 
+ * @Method createLocalVideoElement
+ * @param videoSaveDirectory {String} Path where video is stored.
+ * @param videoFileName {Video file} Local video file.
+ * @return video {video} HTML image element.
+ */
 function createLocalVideoElement(videoSaveDirectory, videoFileName) {
 	var video = document.createElement("video");
 	video.setAttribute('controls', 'true');
@@ -57,6 +79,13 @@ function createLocalVideoElement(videoSaveDirectory, videoFileName) {
 	return video;
 }
 
+/**
+ * Create HTML elements for video preview.
+ * 
+ * @Method createVideoPreview
+ * @param type {String} Indicate if video is from local or web.
+ * @param video {video} HTML video element.
+ */
 function createVideoPreview(type, video) {
 	var spanRemoveButton = document.createElement("span");	
 	var divVideoGroup = document.createElement("div");
@@ -81,7 +110,12 @@ function createVideoPreview(type, video) {
 	}
 }
 
-/*display video post description and tag form after local video is selected*/
+/**
+ * Display video post caption and tag input after video is selected.
+ * 
+ * @method displayFormAfterVideoSelected
+ * @param displayType {String} Indicate if video is from local or web.
+ */
 function displayFormAfterVideoSelected(displayType) {
 	document.getElementById("videoCaption").style.display = "block";
 	document.getElementById("videoTag").style.display = "block";
@@ -95,7 +129,12 @@ function displayFormAfterVideoSelected(displayType) {
   }
 }
 
-/*clear and hide all necessary fields when video url is removed*/
+/**
+ * Clear and hide all unnecessary fields when video preview is removed.
+ * 
+ * @Method removeVideoPreview
+ * @Param removeType {String} Indicate if video is from local or web.
+ */
 function removeVideoPreview(removeType) {
 	document.getElementById("newVideoUploadPanel").style.display = "block";
 	document.getElementById("newVideoUploadPreview").style.display = "none";
@@ -111,7 +150,11 @@ function removeVideoPreview(removeType) {
   }  	
 }
 
-/*show url video upload panel and hide the normal video upload panel*/
+/**
+ * Show web video upload panel and hide the normal video upload panel.
+ * 
+ * @Method videoUrlPanelDisplay
+ */
 function videoUrlPanelDisplay() {
 	document.getElementById("newVideoUploadPanel").style.display = "none";
 	document.getElementById("urlVideoUploadPanel").style.display = "block";

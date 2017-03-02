@@ -1,4 +1,12 @@
-/*remove <br type="_moz"> type attribute created when enter key is pressed*/
+/**
+ * Functions for Photo Post HTML Elements.
+ * 
+ * @class Photo
+*/
+
+/**
+ * Remove <br type="_moz"> type attribute created when enter key is pressed.
+ */
 $(document).on('keyup', '#photoCaption', function(event) {
   var key = event.keyCode || event.charCode;
 
@@ -19,11 +27,25 @@ $(document).on('keyup', '#photoCaption', function(event) {
   }
 });
 
+/**
+ * Close web photo URL input field.
+ * 
+ * @Method closePhotoUrlPanel
+ */
 function closePhotoUrlPanel() {
 	document.getElementById("newPhotoUploadPanel").style.display = "block";
 	document.getElementById("urlPhotoUploadPanel").style.display = "none";
 }
 
+/**
+ * Create HTML image element.
+ * 
+ * @Method createImgElement
+ * @param type {String} Indicate if image is from local or web.
+ * @param imgFile {Image file} Local image file.
+ * @param imgUrl {String} Web image URL.
+ * @return {img} HTML image element.
+ */
 function createImgElement(type, imgFile, imgUrl) {
 	var img = document.createElement("img");
   img.classList.add("img-responsive");
@@ -37,6 +59,13 @@ function createImgElement(type, imgFile, imgUrl) {
   return img;
 }
 
+/**
+ * Create HTML elements for image preview.
+ * 
+ * @Method createPhotoPreview
+ * @param type {String} Indicate if image is from local or web.
+ * @param photo {img} HTML image element.
+ */
 function createPhotoPreview(type, photo) {
 	var spanRemoveButton = document.createElement("span");
 	var divPhotoGroup = document.createElement("div");
@@ -61,12 +90,22 @@ function createPhotoPreview(type, photo) {
 	}
 }
 
+/**
+ * Show "Add another photo from web" button.
+ * 
+ * @Method displayAgainAddAnotherPhotoFromWebButton
+ */
 function displayAgainAddAnotherPhotoFromWebButton() {
 	document.getElementById("addAnotherPhotoFromWebButton").style.display = "block"; // show add another photo from web button
 	document.getElementById("addAnotherPhotoFromWebDiv").style.display = "none";
 }
 
-/*display photo post caption and tag form after photos selected*/
+/**
+ * Show photo post caption and tag input after image selected*.
+ * 
+ * @Method displayFormAfterPhotoSelected
+ * @Param displayType {String} Indicate if image is from local or web.
+ */
 function displayFormAfterPhotoSelected(displayType) {
 	document.getElementById("photoCaption").style.display = "block";
 	document.getElementById("photoTag").style.display = "block";
@@ -82,6 +121,11 @@ function displayFormAfterPhotoSelected(displayType) {
 	}
 }
 
+/**
+ * Show web image URL input field.
+ * 
+ * @Method displayPhotoURLInput
+ */
 function displayPhotoURLInput() {
 	document.getElementById("addAnotherPhotoFromWebButton").style.display = "none";
 	document.getElementById("addAnotherPhotoFromWebDiv").style.display = "block";
@@ -89,13 +133,23 @@ function displayPhotoURLInput() {
 	$("#addAnotherPhotoFromWebDiv").find("#addAnotherPhotoFromWebInput").focus();
 }
 
-/*show url photo upload panel and hide the normal photo upload panel*/
+/**
+ * Show web photo upload panel and hide the normal photo upload panel.
+ * 
+ * @Method displayPhotoUrlPanel
+ */
 function displayPhotoUrlPanel() {
 	document.getElementById("newPhotoUploadPanel").style.display = "none";
 	document.getElementById("urlPhotoUploadPanel").style.display = "block";
 	document.getElementById("urlPhotoUploadInput").focus();
 }
 
+/**
+ * Clear and hide all unnecessary fields when image preview is removed.
+ * 
+ * @Method removePhotoPreview
+ * @Param removeType {String} Indicate if image is from local or web.
+ */
 function removePhotoPreview(removeType) {
 	document.getElementById("newPhotoUploadPanel").style.display = "block";
 	document.getElementById("removeImageButtonGroup").remove();

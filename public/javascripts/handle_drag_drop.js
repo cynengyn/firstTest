@@ -1,4 +1,6 @@
-/*photo upload using drag and drop $("#modalFade").on("shown.bs.modal", function()*/
+/**
+ * Select photo image file to upload using drag and drop.
+ */
 $(document).ready(function() {
 	$("#modalFade").on("shown.bs.modal", function() {
 		var dropboxPhotoUploadColumn;

@@ -1,3 +1,64 @@
+/**
+ * Photo Post Functions.
+ * 
+ * @class AddNewPhotoPost
+*/
+
+/**
+ * Insert new local photo post data into database.
+ * 
+ * @method addNewLocalPhotoPost
+ */
+function addNewLocalPhotoPost() {
+	var formData = getLocalPhotoPostData();
+	
+	$.ajax({
+    url: "/photoPosts/localPhoto",
+		type: "POST",
+		data: formData, // The form with the file inputs.
+		processData: false, // Using FormData, no need to process data.
+    contentType: false,
+	}).done(function(data) {
+		for(i = data.length-1; i >= 0 ; i-- ) {
+			displayLocalPhotoPostFromServer(data[i].photoSaveDirectory, data[i].photoCaption, data[i].photoTag, data[i].imageFileName);
+			/*console.log("Success: Files sent!");
+		  console.log(data);*/
+		}
+	}).fail(function() {
+		console.log("An error occurred, the files couldn't be sent!");
+	});	
+}
+
+/**
+ * Insert new web photo post data into database.
+ * 
+ * @method addNewWebPhotoPost
+ */
+function addNewWebPhotoPost() {	
+	$.ajax({
+		type: "POST",
+    data: {
+    	'webPhotoUrl': document.getElementById("urlPhotoUploadInput").value,
+    	'webPhotoCaption': $('#photoCaption').html(),
+    	'webPhotoTag': $('#photoTag').val()
+    },
+    url: "/photoPosts/webPhoto",
+		}).done(function(data) {
+			for(i = data.length-1; i >= 0 ; i-- ) {
+				displayWebPhotoPostFromServer(data[i].webPhotoUrl, data[i].webPhotoCaption, data[i].webPhotoPostTag);    		 
+			}
+		}).fail(function() {
+			console.log("error");
+			console.log(data);
+		});	
+}
+
+/**
+ * Create HTML elements for photo post.
+ * 
+ * @method createPhotoPostElements
+ * @return {Array} Photo post HTML elements.
+*/
 function createPhotoPostElements() {
 	var divPhotoPanel = document.createElement("div");
 	var divPhotoPanelHeading = document.createElement("div");
@@ -74,30 +135,56 @@ function createPhotoPostElements() {
 	};
 }
 
-function setPhotoPostCaptionAndTag(postElements, postCaption, postTag) {
-	if(postCaption) // photo post caption exists
-		postElements.divPhotoTextPanelBody.innerHTML = postCaption;
+/**
+ * Display local photo post from database.
+ *
+ * @method displayLocalPhotoPostFromServer
+ * @param photoSaveDirectory {String} Local image file save directory.
+ * @param photoCaption {String} Local photo post description.
+ * @param photoTag {String} Local photo post tag.
+ * @param imageFileName {String} Local photo post image file name.
+ */
+function displayLocalPhotoPostFromServer(photoSaveDirectory, photoCaption, photoTag, imageFileName) {
+	var photoPostElements = createPhotoPostElements();
+	setPhotoSource(photoPostElements, "Local", photoSaveDirectory, imageFileName, "");
+	setPhotoPostCaptionAndTag(photoPostElements, photoCaption, photoTag);
+}
+
+/**
+ * Display web photo post from database.
+ *
+ * @method displayWebPhotoPostFromServer
+ * @param webPhotoUrl {String} Web image URL.
+ * @param webPhotoCaption {String} Web photo post description.
+ * @param webPhotoPostTag {String} Web photo post tag.
+ */
+function displayWebPhotoPostFromServer(webPhotoUrl, webPhotoCaption, webPhotoPostTag) {
+	var photoPostElements = createPhotoPostElements();
+	setPhotoSource(photoPostElements, "Web", "", "", webPhotoUrl);
+	setPhotoPostCaptionAndTag(photoPostElements, webPhotoCaption, webPhotoPostTag);
+}
+
+/**
+ * Get new local photo post data.
+ * 
+ * @method getLocalPhotoPostData
+ * @returns {FormData} Local image file, Local photo post caption, Local photo post tag.
+ */
+function getLocalPhotoPostData() {	
+	var photoFile = document.getElementById("photoFileInput");
+	var formData = new FormData();
+	formData.append("photoFileInput", photoFile.files[0]);
+	formData.append("photoCaption", $('#photoCaption').html());
+	formData.append("photoTag", $('#photoTag').val());
 	
-	if(postTag) {// photo post tag exists
-		postElements.divPhotoTextPanelBody.appendChild(postElements.divPhotoPostTag);
-		postElements.aPhotoTag.innerHTML = "#" + postTag;
-	}
-	else // photo post tag doesn't exists
-		postElements.divPhotoPostTag.setAttribute("style", "display: none;");
+	return formData;
 }
 
-function setPhotoSource(postElements, sourceType, photoSaveDirectory, photoFileName, photoUrl) {
-	if(sourceType == "Local")
-		postElements.imgPhotoResponsive.setAttribute('src', photoSaveDirectory+photoFileName);
-	else if(sourceType == "Web")
-		postElements.imgPhotoResponsive.setAttribute('src', photoUrl);
-}
-
-/*
- ===============
- new photo modal
- ===============
-*/
+/**
+ * Modal for photo post button.
+ *
+ * @method photoPostModal
+ */
 function photoPostModal() {
 	var photoPost = [
 		'<div class="modal-content" id="newPhotoPostModal">',
@@ -165,73 +252,39 @@ function photoPostModal() {
 	document.getElementById("modalDialog").innerHTML = photoPost;
 }
 
-/*
- ===========
- local photo
- ===========
-*/
-function addNewLocalPhotoPost() {
-	var formData = getLocalPhotoPostData();
+/**
+ * Set photo post caption and tag.
+ *
+ * @method setPhotoPostCaptionAndTag
+ * @param postElements {Array} Photo post HTML elements.
+ * @param postCaption {String} Photo post caption.
+ * @param postTag {String} Photo post tag.
+ */
+function setPhotoPostCaptionAndTag(postElements, postCaption, postTag) {
+	if(postCaption) // photo post caption exists
+		postElements.divPhotoTextPanelBody.innerHTML = postCaption;
 	
-	$.ajax({
-    url: "/localPhoto",
-		type: "POST",
-		data: formData, // The form with the file inputs.
-		processData: false, // Using FormData, no need to process data.
-    contentType: false,
-	}).done(function(data) {
-		for(i = data.length-1; i >= 0 ; i-- ) {
-			addLocalPhotoPostFromServer(data[i].photoSaveDirectory, data[i].photoCaption, data[i].photoTag, data[i].imageFileName);
-			/*console.log("Success: Files sent!");
-		  console.log(data);*/
-		}
-	}).fail(function() {
-		console.log("An error occurred, the files couldn't be sent!");
-	});	
+	if(postTag) {// photo post tag exists
+		postElements.divPhotoTextPanelBody.appendChild(postElements.divPhotoPostTag);
+		postElements.aPhotoTag.innerHTML = "#" + postTag;
+	}
+	else // photo post tag doesn't exists
+		postElements.divPhotoPostTag.setAttribute("style", "display: none;");
 }
 
-function addLocalPhotoPostFromServer(photoSaveDirectory, photoCaption, photoTag, imageFileName) {
-	var photoPostElements = createPhotoPostElements();
-	setPhotoSource(photoPostElements, "Local", photoSaveDirectory, imageFileName, "");
-	setPhotoPostCaptionAndTag(photoPostElements, photoCaption, photoTag);
-}
-
-function getLocalPhotoPostData() {	
-	var photoFile = document.getElementById("photoFileInput");
-	var formData = new FormData();
-	formData.append("photoFileInput", photoFile.files[0]);
-	formData.append("photoCaption", $('#photoCaption').html());
-	formData.append("photoTag", $('#photoTag').val());
-	
-	return formData;
-}
-
-/*
- =========
- web photo
- =========
-*/
-function addNewWebPhotoPost() {	
-	$.ajax({
-		type: "POST",
-    data: {
-    	'webPhotoUrl': document.getElementById("urlPhotoUploadInput").value,
-    	'webPhotoCaption': $('#photoCaption').html(),
-    	'webPhotoTag': $('#photoTag').val()
-    },
-    url: "/webPhoto",
-		}).done(function(data) {
-			for(i = data.length-1; i >= 0 ; i-- ) {
-				addNewWebPhotoPostFromServer(data[i].webPhotoUrl, data[i].webPhotoCaption, data[i].webPhotoPostTag);    		 
-			}
-		}).fail(function() {
-			console.log("error");
-			console.log(data);
-		});	
-}
-
-function addNewWebPhotoPostFromServer(webPhotoUrl, webPhotoCaption, webPhotoPostTag) {
-	var photoPostElements = createPhotoPostElements();
-	setPhotoSource(photoPostElements, "Web", "", "", webPhotoUrl);
-	setPhotoPostCaptionAndTag(photoPostElements, webPhotoCaption, webPhotoPostTag);
+/**
+ * Set photo file source.
+ *
+ * @method setPhotoSource
+ * @param postElements {Array} Photo post HTML elements.
+ * @param sourceType {String} Local image file or Web image.
+ * @param photoSaveDirectory {String} Local image file directory.
+ * @param photoFileName {String} Local image file name.
+ * @param photoUrl {String} Web image URL.
+ */
+function setPhotoSource(postElements, sourceType, photoSaveDirectory, photoFileName, photoUrl) {
+	if(sourceType == "Local")
+		postElements.imgPhotoResponsive.setAttribute('src', photoSaveDirectory+photoFileName);
+	else if(sourceType == "Web")
+		postElements.imgPhotoResponsive.setAttribute('src', photoUrl);
 }

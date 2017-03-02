@@ -1,15 +1,26 @@
+/**
+ * Text Post Functions.
+ * 
+ * @class AddNewTextPost
+*/
+
+/**
+ * Insert new text post data into database.
+ * 
+ * @method addNewTextPost
+ */
 function addNewTextPost() {
 	var formData = getTextPostData();
 	
 	$.ajax({
-    url: "/textPost",
+    url: "/textPosts",
 		type: "POST",
 		data: formData, // The form with the file inputs.
 		processData: false, // Using FormData, no need to process data.
     contentType: false,
 	}).done(function(data) {
 		for(i = data.length-1; i >= 0 ; i-- ) {
-			addTextPostFromSever(data[i].textPostTitle, data[i].textPostText, data[i].textPostTag);
+			displayTextPostFromSever(data[i].textPostTitle, data[i].textPostText, data[i].textPostTag);
 			/*console.log("Success: Files sent!");
 		  console.log(data);*/
 		}
@@ -18,11 +29,12 @@ function addNewTextPost() {
 	});
 }
 
-function addTextPostFromSever(textPostTitle, textPostText, textPostTag) {
-	var textPostElements = createTextPostElements();
-	setTextPostAndTag(textPostElements, textPostTitle, textPostText, textPostTag);
-}
-
+/**
+ * Create HTML elements for text post.
+ * 
+ * @method createTextPostElements
+ * @return {Array} Text post HTML elements.
+*/
 function createTextPostElements() {
 	var divTextPanel = document.createElement("div");
 	var divTextPanelHeading = document.createElement("div");
@@ -103,6 +115,26 @@ function createTextPostElements() {
 	};
 }
 
+/**
+ * Display text post from database.
+ *
+ * @method displayTextPostFromSever
+ * @param textPostTitle {String} Text post title.
+ * @param textPostText {String} Text.
+ * @param textPostTag {String} Text post tag.
+ */
+function displayTextPostFromSever(textPostTitle, textPostText, textPostTag) {
+	var textPostElements = createTextPostElements();
+	setTextPostAndTag(textPostElements, textPostTitle, textPostText, textPostTag);
+}
+
+
+/**
+ * Get new text post data.
+ * 
+ * @method getTextPostData
+ * @returns {FormData} Text post title, Text content, Text post tag.
+ */
 function getTextPostData() {
 	var formData = new FormData();
 	formData.append("textPostTitle", $('#textTitle').html());	
@@ -112,6 +144,15 @@ function getTextPostData() {
 	return formData;
 }
 
+/**
+ * Set text post content and tag.
+ *
+ * @method setTextPostAndTag
+ * @param postElements {Array} Text post HTML elements.
+ * @param textTitle {String} Text post title.
+ * @param text {String} Text post content.
+ * @param postTag {String} Text post tag.
+ */
 function setTextPostAndTag(postElements, textTitle, text, postTag) {
 	if(textTitle)
 		postElements.h1TextTitle.innerHTML = textTitle;
@@ -125,7 +166,11 @@ function setTextPostAndTag(postElements, textTitle, text, postTag) {
 		postElements.divTextPostTag.setAttribute("style", "display: none;");
 }
 
-/* new text modal */
+/**
+ * Modal for text post button.
+ *
+ * @method textPostModal
+ */
 function textPostModal() {
 	var textPost = [
 		'<div class="modal-content">',

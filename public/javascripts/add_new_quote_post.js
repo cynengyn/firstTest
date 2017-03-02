@@ -1,3 +1,40 @@
+/**
+ * Quote Post Functions.
+ * 
+ * @class AddNewQuotePost
+*/
+
+/**
+ * Insert new quote post data into database.
+ * 
+ * @method addNewQuotePost
+ */
+function addNewQuotePost() {
+	var formData = getQuotePostData();
+	
+	$.ajax({
+    url: "/quotePosts",
+		type: "POST",
+		data: formData, // The form with the file inputs.
+		processData: false, // Using FormData, no need to process data.
+    contentType: false,
+	}).done(function(data) {
+		for(i = data.length-1; i >= 0 ; i-- ) {
+			displayQuotePostFromServer(data[i].quotePostQuote, data[i].quotePostSource, data[i].quotePostTag);
+			/*console.log("Success: Files sent!");
+		  console.log(data);*/
+		}
+	}).fail(function() {
+		console.log("An error occurred, the files couldn't be sent!");
+	});
+}
+
+/**
+ * Create HTML elements for quote post.
+ * 
+ * @method createQuotePostElements
+ * @return {Array} Photo post HTML elements.
+ */
 function createQuotePostElements() {	
 	var divQuotePanel = document.createElement("div");
 	var divQuotePanelHeading = document.createElement("div");
@@ -75,6 +112,25 @@ function createQuotePostElements() {
 	};
 }
 
+/**
+ * Display quote post from database.
+ *
+ * @method displayQuotePostFromServer
+ * @param quotePostQuote {String} Quote.
+ * @param quotePostSource {String} Quote source.
+ * @param quotePostTag {String} Quote post tag.
+ */
+function displayQuotePostFromServer(quotePostQuote, quotePostSource, quotePostTag) {
+	var quotePostElements = createQuotePostElements();
+	setQuotePostAndTag(quotePostElements, quotePostQuote, quotePostSource, quotePostTag);
+}
+
+/**
+ * Get new quote post data.
+ * 
+ * @method getQuotePostData
+ * @returns {FormData} Quote, Quote source, Quote post tag.
+ */
 function getQuotePostData() {
 	var formData = new FormData();
 	formData.append("quotePostQuote", $('#quoteInput').html());	
@@ -84,23 +140,11 @@ function getQuotePostData() {
 	return formData;
 }
 
-function setQuotePostAndTag(postElements, quote, quoteSource, postTag) {
-	postElements.pQuote.innerHTML = quote;
-	
-	if(quoteSource)
-		postElements.footerQuote.innerHTML = quoteSource;
-	
-	if(postTag)
-		postElements.aQuoteTag.innerHTML = "#" + postTag;
-	else
-		postElements.divQuotePostTag.setAttribute("style", "display: none;");
-}
-
-/*
-	===============
-	new quote modal
-	===============
-*/
+/**
+ * Modal for quote post button.
+ *
+ * @method quotePostModal
+ */
 function quotePostModal() {
 	var quotePost = [
 		'<div class="modal-content">',
@@ -148,27 +192,23 @@ function quotePostModal() {
   });
 }
 
-function addNewQuotePost() {
-	var formData = getQuotePostData();
+/**
+ * Set quote post content and tag.
+ *
+ * @method setQuotePostAndTag
+ * @param postElements {Array} Quote post HTML elements.
+ * @param quote {String} Quote.
+ * @param quoteSource {String} Quote source.
+ * @param postTag {String} Quote post tag.
+ */
+function setQuotePostAndTag(postElements, quote, quoteSource, postTag) {
+	postElements.pQuote.innerHTML = quote;
 	
-	$.ajax({
-    url: "/quotePost",
-		type: "POST",
-		data: formData, // The form with the file inputs.
-		processData: false, // Using FormData, no need to process data.
-    contentType: false,
-	}).done(function(data) {
-		for(i = data.length-1; i >= 0 ; i-- ) {
-			addNewQuotePostFromServer(data[i].quotePostQuote, data[i].quotePostSource, data[i].quotePostTag);
-			/*console.log("Success: Files sent!");
-		  console.log(data);*/
-		}
-	}).fail(function() {
-		console.log("An error occurred, the files couldn't be sent!");
-	});
-}
-
-function addNewQuotePostFromServer(quotePostQuote, quotePostSource, quotePostTag) {
-	var quotePostElements = createQuotePostElements();
-	setQuotePostAndTag(quotePostElements, quotePostQuote, quotePostSource, quotePostTag);
+	if(quoteSource)
+		postElements.footerQuote.innerHTML = quoteSource;
+	
+	if(postTag)
+		postElements.aQuoteTag.innerHTML = "#" + postTag;
+	else
+		postElements.divQuotePostTag.setAttribute("style", "display: none;");
 }

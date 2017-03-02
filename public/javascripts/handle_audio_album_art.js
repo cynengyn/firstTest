@@ -1,11 +1,21 @@
-/*preview photos selected by user*/
+/**
+ * Functions to handle audio album art.
+ * 
+ * @class HandleAudioAlbumArt
+*/
+
+/**
+ * Validate and preview album art image file selected by user.
+ * 
+ * @method handleAlbumArt
+ * @param files {Files} Album art image file.
+ */
 function handleAlbumArt(files) {
   var artFile = files[0];
-  var extension = artFile.name.substring(artFile.name.lastIndexOf('.'));
-  var validFileType = ".bmp, .gif, .jpg, .jpeg, .png"; // white list of extension
+  var extension = getFileExtension(artFile.name);
   
   /*check image file size*/
-  if(artFile.size > 10 * 1024 * 1024) { // 10MB file size limit
+  if(checkAlbumArtSize(artFile.size)) { // 10MB file size limit
   	swal({
 		  title: "",
 		  text: "The file is too big. Squish it \n down, and try again!",
@@ -14,7 +24,7 @@ function handleAlbumArt(files) {
   }
   
   /*check with the white list of extension*/
-  else if (validFileType.toLowerCase().indexOf(extension) < 0) {
+  else if (checkAlbumArtExtension(extension)) {
   	swal({
 		  title: "",
 		  text: artFile.name + "\n Nice image, but we don't support \n that format. Try resaving it as a \n gif, jpg, or png.",
@@ -26,23 +36,8 @@ function handleAlbumArt(files) {
   else {
   	checkFileSignature(artFile, function(result) {
   		if(result) {
-  			var img = document.createElement("img");
-  	    img.classList.add("img-responsive");
-  	    img.id = "albumArtPreview"
-  	    img.file = artFile;
-  	    
-  	    var spanRemoveButton = document.createElement("div");	
-  			var spanButtonImageGroup = document.createElement("div");
-  			
-  			spanRemoveButton.setAttribute('id', 'removeAlbumArtImage');
-  			spanRemoveButton.setAttribute('onclick', 'removeAlbumArtImage()');
-  			spanRemoveButton.innerHTML = "Remove image";
-  			spanButtonImageGroup.setAttribute('id', 'removeAlbumArtGroup');			
-  			
-  			spanButtonImageGroup.appendChild(spanRemoveButton);
-  			spanButtonImageGroup.appendChild(img);
-  			
-  	    document.getElementById("audioAlbumArtPreview").appendChild(spanButtonImageGroup);
+  			var img = createImgElement(artFile);
+  			createAlbumArtPreview(img);
   	    
   	    /*using FileReader to display the image content*/
   	    var reader = new FileReader(); // asynchronously read the contents of files
@@ -52,9 +47,6 @@ function handleAlbumArt(files) {
   	  		};
   	    })(img);
   	    reader.readAsDataURL(artFile);
-
-  	    document.getElementById("selectAudioAlbumArtDiv").style.display = "none";
-  	    document.getElementById("audioAlbumArtPreview").style.display = "block";
   		}
   		else {
   			swal({
@@ -67,16 +59,44 @@ function handleAlbumArt(files) {
   }
 }
 
-/*get the extension of a file*/
-function getFileExtension(fileName) {
-  var matches = fileName && fileName.match(/\.([^.]+)$/);
-  if (matches) {
-    return matches[1].toLowerCase();
-  }
-  return '';
+/**
+ * Check album art image file extension with the white list of extension.
+ * 
+ * @method checkAlbumArtExtension
+ * @param extension {String} Extension of album art image file.
+ * @return {Boolean} True of False.
+ */
+function checkAlbumArtExtension(extension) {
+	var validFileType = "bmp, gif, jpg, jpeg, png"; // white list of extension
+
+	if(validFileType.toLowerCase().indexOf(extension) < 0)
+		return true;
+	else
+		return false;
 }
 
-/*detect if the format of the extension can match with the signature that belongs to*/
+/**
+ * Check if album art image file size is greater than 10MB.
+ * 
+ * @method checkAlbumArtSize
+ * @param {size} Album art image file size.
+ * @return {Boolean} True of False.
+ */
+function checkAlbumArtSize(size) {
+	if(size > 10 * 1024 * 1024) // 10MB file size limit
+		return true;
+	else
+		return false;
+}
+
+/**
+ * Validate if the format of the album art image file extension can match with the signature that belongs to.
+ * 
+ * @method checkFileSignature
+ * @param file {Image file}
+ * @param {Function} callback
+ * @return {Boolean} True of False.
+ */
 function checkFileSignature(file, callback) {
 	var signature = {
     jpg: {
@@ -154,6 +174,49 @@ function checkFileSignature(file, callback) {
   reader.readAsArrayBuffer(slice); // Read the slice of the file
 }
 
+/**
+ * Create album art preview element.
+ * 
+ * @method createAlbumArtPreview
+ * @param {img} HTML image element.
+ */
+function createAlbumArtPreview(img) {
+	var spanRemoveButton = document.createElement("div");	
+	var spanButtonImageGroup = document.createElement("div");
+	
+	spanRemoveButton.setAttribute('id', 'removeAlbumArtImage');
+	spanRemoveButton.setAttribute('onclick', 'removeAlbumArtImage()');
+	spanRemoveButton.innerHTML = "Remove image";
+	spanButtonImageGroup.setAttribute('id', 'removeAlbumArtGroup');			
+	
+	spanButtonImageGroup.appendChild(spanRemoveButton);
+	spanButtonImageGroup.appendChild(img);
+	document.getElementById("audioAlbumArtPreview").appendChild(spanButtonImageGroup);	
+	
+	document.getElementById("selectAudioAlbumArtDiv").style.display = "none";
+  document.getElementById("audioAlbumArtPreview").style.display = "block";
+}
+
+/**
+ * Create HTML image element.
+ * 
+ * @method createImgElement
+ * @return HTML image element.
+ */
+function createImgElement(artFile) {
+	var img = document.createElement('img');
+	img.classList.add("img-responsive");
+	img.id = "albumArtPreview"
+	img.file = artFile;
+	
+	return img;
+}
+
+/**
+ * Remove album art image on preview.
+ * 
+ * @method removeAlbumArtImage
+ */
 function removeAlbumArtImage() {
 	document.getElementById("albumArtPreview").remove();
   document.getElementById("audioAlbumArtPreview").style.display = "none";

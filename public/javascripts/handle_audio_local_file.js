@@ -1,4 +1,15 @@
-/*preview audio selected by user*/
+/**
+ * Functions to handle local audio file.
+ * 
+ * @class HandleLocalAudioFile
+*/
+
+/**
+ * Preview audio file selected by user.
+ * 
+ * @method handleAudioFiles
+ * @param files {Files} Local audio file.
+ */
 function handleAudioFiles(files) {
   var audioFile = files[0];
   var extension = getFileExtension(audioFile.name);
@@ -55,12 +66,38 @@ function handleAudioFiles(files) {
   }
 }
 
-/*Provide a 24 bit int implementation for DataViews*/
+/**
+ * Check audio file selected by user with the white list of extension.
+ * 
+ * @method checkAudioExtension
+ * @param extension {String} Audio file extension.
+ * @return {Boolean} True or False.
+ */
+function checkAudioExtension(extension) {
+	var validFileType = "mp3"; // white list of extension
+
+	if(validFileType.toLowerCase().indexOf(extension) < 0)
+		return true;
+	else
+		return false;
+}
+
+/**
+ * Provide a 24 bit integer implementation for DataViews.
+ */
 DataView.prototype.getUint24 = function(pos) {
 	return (this.getUint16(pos) << 8) + this.getUint8(pos+2);
 }
 
-/*detect if the format of the extension can match with the signature that belongs to*/
+/**
+ * Validate if the format of the extension can match with the signature that belongs to.
+ * 
+ * @method checkAudioFileSignature
+ * @param extension {String} Audio file extension.
+ * @param file {Audio file}
+ * @param {Function} callback
+ * @return {callback} True or False.
+ */
 function checkAudioFileSignature(extension, file, callback) {
 	var signature = {
 		mp3: {
@@ -118,17 +155,13 @@ function checkAudioFileSignature(extension, file, callback) {
   reader.readAsArrayBuffer(slice); // Read the slice of the file
 }
 
-/*check with the white list of extension*/
-function checkAudioExtension(extension) {
-	var validFileType = "mp3"; // white list of extension
-
-	if(validFileType.toLowerCase().indexOf(extension) < 0)
-		return true;
-	else
-		return false;
-}
-
-/*check audio file size*/
+/**
+ * Check if audio file size is greater than 10MB.
+ * 
+ * @method checkAudioSize
+ * @param {size} Audio file size.
+ * @return {Boolean} True or False.
+ */
 function checkAudioSize(size) {
 	if(size > 10 * 1024 * 1024) // 10MB file size limit
 		return true;
@@ -136,7 +169,12 @@ function checkAudioSize(size) {
 		return false;
 }
 
-/*auto insert ID3 info if exists*/
+/**
+ * Auto insert ID3 info if exists.
+ * 
+ * @method insertID3
+ * @param {tags} Audio file ID3 tags.
+ */
 function insertID3(tags) {
 	if(tags.title)
 		document.getElementById("audioTrackInput").value = tags.title;

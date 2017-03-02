@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.Date;
 import java.util.List;
+
 import javax.inject.Inject;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -21,41 +22,31 @@ public class TextPostController extends Controller {
 		@Inject
 		public TextPostController(play.data.FormFactory formFactory) {
 			this.formFactory = formFactory;
-		}
-
-  	public Result loadUpTextPost() {
+		}	
+  	
+  	public Result textPost() {  	
+  		setTextPostObject();
+  		return loadUpTextPost();
+  	}	
+		
+		public Result loadUpTextPost() {
   		// find last 10 post
-  		List<TextPost> res = TextPost.find.orderBy().desc("text_post_id").setMaxRows(10).findList();      
+  		List<TextPost> res = TextPost.find.orderBy().desc("text_post_creation_date").setMaxRows(10).findList();      
   		ArrayNode resJson = play.libs.Json.newArray();
   		
   		for(TextPost p: res) {
   		  resJson.add(play.libs.Json.toJson(p));	
   		}
-  		return ok (resJson);		
+  		return ok (resJson);
   	}
   	
-  	public Result textPost() {  	
+  	public void setTextPostObject() {
   		DynamicForm requestData = formFactory.form().bindFromRequest();
-  		String title = requestData.get("textPostTitle");
-  		String text = requestData.get("textPostText");
-  		String tag = requestData.get("textPostTag");
-
   		TextPost post = new TextPost();
   		post.textPostCreationDate = new Date();
-  		post.textPostTitle = title;
-  		post.textPostText = text;
-  		post.textPostTag = tag;
+  		post.textPostTitle = requestData.get("textPostTitle");
+  		post.textPostText = requestData.get("textPostText");
+  		post.textPostTag = requestData.get("textPostTag");
   		post.save();
-  		
-  		// find last 10 post
-  		List<TextPost> res = TextPost.find.orderBy().desc("text_post_id").setMaxRows(10).findList();
-      
-  		ArrayNode resJson = play.libs.Json.newArray();
-  		
-  		for(TextPost p: res) {
-  		  resJson.add(play.libs.Json.toJson(p));	
-  		}  		
-  		
-  		return ok (resJson);
   	}
 }

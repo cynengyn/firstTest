@@ -1,9 +1,17 @@
-/*
-	===================================
-	web audio post custom audio control
-	===================================
+/**
+ * Audio post audio player control.
+ * 
+ * @class AudioPostPlayerControl
 */
-function initilizeUrlAudioPostControl(audio, id) {
+
+/**
+ * Initialize audio post audio player control.
+ * 
+ * @method initializeUrlAudioPostControl
+ * @param audio {File source} Local audio or Web audio from YouTube/Vimeo.
+ * @param id {Integer} Audio post ID.
+ */
+function initializeUrlAudioPostControl(audio, id) {
 	if(id) {
 		var audioId = id.replace(/urlAudio/, '');
 	
@@ -30,11 +38,27 @@ function initilizeUrlAudioPostControl(audio, id) {
 	}
 }
 
-/*
-	===================
-	play or pause audio
-	===================
-*/
+/**
+ * Move or skip to a new position in the audio.
+ * 
+ * @method seek
+ * @param e
+ */
+function seek(e) {
+	var audioId = this.id.replace(/audioPostProgressBar/, '');
+	var audio = document.getElementById("urlAudio"+audioId);
+  var percent = e.offsetX / this.offsetWidth;
+  
+	audio.currentTime = percent * audio.duration;
+  audioPostProgressBar.value = percent / 100;
+}
+
+/**
+ * Play or pause audio.
+ * 
+ * @method togglePlayPauseAudioPost
+ * @param id {Integer} Audio post ID.
+ */
 function togglePlayPauseAudioPost(id) {
 	var audioId = id.replace(/audioPostPlayerButton/, '');
 	var audio = document.getElementById("urlAudio"+audioId);
@@ -49,11 +73,11 @@ function togglePlayPauseAudioPost(id) {
   }
 }
 
-/*
-	==========================================
-	update play progress when audio is playing
-	==========================================
-*/
+/**
+ * Update play progress when audio is playing.
+ * 
+ * @method updateProgress
+ */
 function updateProgress() {
 	var audioId = this.id.replace(/urlAudio/, '');
 	var audio = document.getElementById("urlAudio"+audioId);
@@ -67,18 +91,4 @@ function updateProgress() {
 	}
 	progress.style.width = value + "%";
 	head.style.left = value + "%";
-}
-
-/*
-	===========================================
-	move or skip to a new position in the audio
-	===========================================
-*/
-function seek(e) {
-	var audioId = this.id.replace(/audioPostProgressBar/, '');
-	var audio = document.getElementById("urlAudio"+audioId);
-  var percent = e.offsetX / this.offsetWidth;
-  
-	audio.currentTime = percent * audio.duration;
-  audioPostProgressBar.value = percent / 100;
 }

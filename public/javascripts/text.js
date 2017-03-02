@@ -1,4 +1,12 @@
-/*remove <br type="_moz"> type attribute created when enter key is pressed*/
+/**
+ * Functions for Text Post HTML Elements.
+ * 
+ * @class Text
+*/
+
+/**
+ * Remove <br type="_moz"> type attribute created when enter key is pressed.
+ */
 $(document).on('keyup', '#textTitle', function(event) {
   var key = event.keyCode || event.charCode;
 

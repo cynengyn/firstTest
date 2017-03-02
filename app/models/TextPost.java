@@ -12,15 +12,15 @@ public class TextPost extends Model {
 	@Id
   public Long textPostId;
 
-  public String textPostUsername;
+	public String textPostUsername;
   
-  public Date textPostCreationDate;
+	public Date textPostCreationDate;
 
-  public String textPostTitle;
+	public String textPostTitle;
   
-  public String textPostText;
+	public String textPostText;
   
-  public String textPostTag;
+	public String textPostTag;
 
-  public static Finder<Long, TextPost> find = new Finder<Long,TextPost>(TextPost.class);
+	public static Finder<Long, TextPost> find = new Finder<Long,TextPost>(TextPost.class);
 }
